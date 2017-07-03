@@ -9,7 +9,7 @@ import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 public class SearchInterface {
 
     public interface view extends BaseMvpInterface.View {
-
+        void goToResultCustomer();
     }
 
     public interface presenter extends BaseMvpInterface.Presenter<SearchInterface.view> {

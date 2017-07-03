@@ -1,16 +1,23 @@
 package th.co.thiensurat.tsr_history.search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.network.ConnectionDetector;
+import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.utils.Config;
 
 public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
@@ -26,6 +33,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
         return R.layout.activity_search;
     }
 
+    @Bind(R.id.inputSearch) EditText inputSearch;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -38,7 +46,18 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
 
     @Override
     public void setupView() {
+        inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
 
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -107,5 +126,11 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void goToResultCustomer() {
+        startActivity(new Intent(getApplicationContext(), CustomerResultActivity.class));
+        finish();
     }
 }

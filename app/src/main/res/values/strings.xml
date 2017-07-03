@@ -9,4 +9,9 @@
     <string name="dialog_button_confirm">ตั้งค่า</string>
 
     <string name="text_search">ค้นหาข้อมูล</string>
+
+    <string name="button_save_log">บันทึก</string>
+    <string name="button_cancel">ยกเลิก</string>
+
+    <string name="list_total">รวม</string>
 </resources>
