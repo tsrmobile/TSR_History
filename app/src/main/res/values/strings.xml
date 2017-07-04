@@ -4,6 +4,7 @@
     <string name="search_hint">กรุณาใส่ชื่อนามสกุล หรือเลขบัตรประชาชนของลูกค้า</string>
 
     <string name="dialog_title_warning">คำเตือน</string>
+    <string name="dialog_title_error">พบข้อผิดพลาด</string>
     <string name="dialog_text_msg">ไม่สามารถเชื่อมต่อินเตอร์เน็ตได้ \n กรุณาตั้งค่าอินเตอร์เน็ต</string>
     <string name="dialog_button_cancel">ไม่</string>
     <string name="dialog_button_confirm">ตั้งค่า</string>
@@ -14,4 +15,9 @@
     <string name="button_cancel">ยกเลิก</string>
 
     <string name="list_total">รวม</string>
+    <string name="price_amount">จำนวนเงิน</string>
+    <string name="sale">ผู้ขาย</string>
+
+    <string name="load_fail">ไม่พบข้อมูลที่ค้นหา\nกรุณาลองใหม่อีกครั้ง</string>
+    <string name="try_again">ลองอีกครั้ง</string>
 </resources>

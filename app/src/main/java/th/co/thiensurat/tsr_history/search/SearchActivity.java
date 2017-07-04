@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -18,10 +20,12 @@ import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.network.ConnectionDetector;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
+import th.co.thiensurat.tsr_history.result.item.CustomerItem;
 import th.co.thiensurat.tsr_history.utils.Config;
 
-public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
-    implements SearchInterface.view{
+public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> implements SearchInterface.view{
+
+    private SweetAlertDialog sweetAlertDialog;
 
     public SearchActivity() {
         super();
@@ -30,6 +34,16 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
     @Override
     public SearchInterface.presenter createPresenter() {
         return SearchPresenter.create();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -56,7 +70,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
-                    getPresenter().goToResultCustomer();
+                    getPresenter().requestCustomer(inputSearch.getText().toString());
                     return true;
                 }
                 return false;
@@ -98,8 +112,9 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
             }
         });
     }
+
     private void dialogConfirm() {
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
         sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg));
         sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
@@ -134,6 +149,19 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
 
     @Override
     public void goToResultCustomer() {
-        startActivity(new Intent(getApplicationContext(), CustomerResultActivity.class));
+        Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
+
+        /*Bundle bundle = new Bundle();
+        bundle.putParcelable(Config.KEY_ITEM, getPresenter().getCustomer());
+        intent.putExtra(Config.KEY_ITEM, bundle);*/
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFail(String failed) {
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_error));
+        sweetAlertDialog.setContentText(failed);
+        sweetAlertDialog.show();
     }
 }

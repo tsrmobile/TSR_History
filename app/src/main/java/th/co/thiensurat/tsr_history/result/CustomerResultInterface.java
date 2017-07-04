@@ -9,7 +9,7 @@ import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 public class CustomerResultInterface {
 
     public interface view extends BaseMvpInterface.View {
-
+        void receiveItem();
     }
 
     public interface presenter extends BaseMvpInterface.Presenter<CustomerResultInterface.view> {

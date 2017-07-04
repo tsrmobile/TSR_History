@@ -15,12 +15,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
+            android:paddingTop="4dp"
             android:gravity="center">
 
             <RelativeLayout
                 android:id="@+id/dateLayout"
-                android:layout_width="250dp"
+                android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@drawable/background_round">
@@ -31,7 +32,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Jul, 04 2017"
-                    android:textSize="26sp"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
@@ -44,24 +44,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1. เครื่องกรองน้ำ Alkaline Deluxe"
-            android:textSize="36sp"
             android:textStyle="bold"
-            android:padding="8dp"/>
+            android:padding="4dp"/>
 
         <TextView
             android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="จำนวนเงิน 7,490"
-            android:textSize="36sp"
-            android:padding="8dp"/>
+            android:padding="4dp"/>
 
         <LinearLayout
             android:id="@+id/bottomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="8dp"
+            android:paddingLeft="4dp"
             android:orientation="horizontal">
 
             <TextView
@@ -69,8 +66,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="รหัสผู้ขาย : 000001"
-                android:textSize="28sp"/>
+                android:text="รหัสผู้ขาย : 000001"/>
 
             <TextView
                 android:id="@+id/statusTitle"
@@ -78,12 +74,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:gravity="right"
-                android:text="สถานะ"
-                android:textSize="28sp"/>
+                android:text="สถานะ"/>
 
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.3">
 
                 <TextView
@@ -92,7 +87,7 @@
                     android:layout_height="match_parent"
                     android:text="N"
                     android:gravity="center"
-                    android:textSize="40sp"
+                    android:textSize="20sp"
                     android:textColor="@color/colorPrimaryDark"/>
 
             </RelativeLayout>

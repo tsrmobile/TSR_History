@@ -8,8 +8,9 @@
 
     <LinearLayout
         android:id="@+id/layoutTop"
+        android:layout_above="@+id/layoutSummary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -19,7 +20,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
                 android:minHeight="?attr/actionBarSize"
                 android:titleTextColor="#ffffff">
@@ -32,9 +33,9 @@
 
                 <ImageView
                     android:id="@+id/logoToolbar"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:padding="8dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="16dp"
                     android:background="@drawable/circle_shape"
                     android:src="@mipmap/ic_launcher"/>
 
@@ -42,14 +43,75 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nameTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="ขื่อ:"/>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.7"
+                android:text="ลูกค้า ดีเด่น"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/addressTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="ที่อยู่:"/>
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.7"
+                android:text="43/9 หมู่7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด อ.ปากเกร็ด จ.นนทบุรี 11120"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/phoneTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="โทรศัพท์:"/>
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.7"
+                android:text="02-819-8888 กด 7"/>
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
-        <TextView
-            android:id="@+id/detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="8dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -58,9 +120,12 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <include layout="@layout/view_unvailable"/>
+
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/layoutSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layoutBottom"
@@ -78,8 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="@string/list_total"
-                android:textSize="24sp"/>
+                android:text="@string/list_total"/>
 
             <TextView
                 android:id="@+id/totalSummary"
@@ -88,7 +152,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="0"
-                android:textSize="24sp"
                 android:textColor="@color/Red"/>
 
         </LinearLayout>
@@ -113,7 +176,6 @@
                 android:layout_weight="1"
                 android:text="@string/button_save_log"
                 android:textColor="@color/White"
-                android:textSize="22sp"
                 android:backgroundTint="@color/colorAccent"/>
 
             <Button
@@ -123,10 +185,11 @@
                 android:layout_weight="1"
                 android:text="@string/button_cancel"
                 android:textColor="@color/White"
-                android:textSize="22sp"
                 android:backgroundTint="@color/colorPrimary"/>
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 
