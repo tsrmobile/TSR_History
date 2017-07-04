@@ -14,5 +14,6 @@ public class SearchInterface {
 
     public interface presenter extends BaseMvpInterface.Presenter<SearchInterface.view> {
 
+        void goToResultCustomer();
     }
 }

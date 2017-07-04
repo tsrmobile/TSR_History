@@ -23,6 +23,10 @@ import th.co.thiensurat.tsr_history.utils.Config;
 public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
     implements SearchInterface.view{
 
+    public SearchActivity() {
+        super();
+    }
+
     @Override
     public SearchInterface.presenter createPresenter() {
         return SearchPresenter.create();
@@ -52,7 +56,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
-
+                    getPresenter().goToResultCustomer();
                     return true;
                 }
                 return false;
@@ -131,6 +135,5 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter>
     @Override
     public void goToResultCustomer() {
         startActivity(new Intent(getApplicationContext(), CustomerResultActivity.class));
-        finish();
     }
 }

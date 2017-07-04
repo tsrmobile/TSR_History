@@ -12,4 +12,8 @@ public class SearchPresenter extends BaseMvpPresenter<SearchInterface.view>
     public static SearchInterface.presenter create() {
         return new SearchPresenter();
     }
+
+    public void goToResultCustomer() {
+        getView().goToResultCustomer();
+    }
 }
