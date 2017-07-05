@@ -12,13 +12,14 @@ import th.co.thiensurat.tsr_history.result.item.CustomerItem;
 public class SearchInterface {
 
     public interface view extends BaseMvpInterface.View {
-        void goToResultCustomer();
+        void goToResultCustomer(String data);
 
         void onFail(String failed);
     }
 
     public interface presenter extends BaseMvpInterface.Presenter<SearchInterface.view> {
 
-        void requestCustomer(String data);
+        void goToResultCustomer(String data);
+        boolean onLoginValidation(String deviceId);
     }
 }

@@ -36,19 +36,18 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
 
     @Override
     public void onBindViewHolder(CustomerResultAdapter.ViewHolder holder, int position) {
-        //CustomerItem item = customerItems.get(position);
+        CustomerItem item = customerItems.get(position);
         int no = position + 1;
-        holder.dateTime.setText("Jul, 04 2017");
-        holder.productName.setText(no + ". " + "เครื่องกรองน้ำ Alkaline Deluxe");
-        holder.productPrice.setText(context.getResources().getString(R.string.price_amount) + ": " + " 7,490");
-        holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + "000001");
-        holder.statusCode.setText("N");
+        holder.dateTime.setText(item.getDate());
+        holder.productName.setText(no + ". " + item.getProduct());
+        holder.productPrice.setText(context.getResources().getString(R.string.price_amount) + ": " + item.getPrice());
+        holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSale());
+        holder.statusCode.setText(item.getStatus().toUpperCase());
     }
 
     @Override
     public int getItemCount() {
-        //return customerItems.size();
-        return 1;
+        return customerItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

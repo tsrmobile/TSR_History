@@ -9,6 +9,9 @@
     <string name="dialog_button_cancel">ไม่</string>
     <string name="dialog_button_confirm">ตั้งค่า</string>
 
+    <string name="dialog_login_msg">กรุณาเข้าสู่ระบบ \n ผ่านทางแอพพลิเคชั่น TSR Mobile</string>
+    <string name="dialog_button_login">เข้าสู่ระบบ</string>
+
     <string name="text_search">ค้นหาข้อมูล</string>
 
     <string name="button_save_log">บันทึก</string>

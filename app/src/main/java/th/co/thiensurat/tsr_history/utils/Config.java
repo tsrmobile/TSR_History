@@ -7,6 +7,8 @@ package th.co.thiensurat.tsr_history.utils;
 public class Config {
 
     public static final int REQUEST_SETTINGS = 01;
+    public static final int REQUEST_LOGIN = 02;
 
-    public static final String KEY_ITEM = "ITEM";
+    public static final String KEY_DATA = "DATA";
+    public static final String KEY_DEVICE_ID = "DEVICEID";
 }
