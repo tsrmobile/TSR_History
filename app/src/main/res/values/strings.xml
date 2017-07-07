@@ -8,6 +8,7 @@
     <string name="dialog_text_msg">ไม่สามารถเชื่อมต่อินเตอร์เน็ตได้ \n กรุณาตั้งค่าอินเตอร์เน็ต</string>
     <string name="dialog_button_cancel">ไม่</string>
     <string name="dialog_button_confirm">ตั้งค่า</string>
+    <string name="dialog_msg_empty_error">กรุณาใส่ข้อมูลที่ต้องการค้นหา</string>
 
     <string name="dialog_login_msg">กรุณาเข้าสู่ระบบ \n ผ่านทางแอพพลิเคชั่น TSR Mobile</string>
     <string name="dialog_button_login">เข้าสู่ระบบ</string>

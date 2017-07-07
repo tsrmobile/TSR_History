@@ -2,20 +2,14 @@ package th.co.thiensurat.tsr_history.search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,10 +18,9 @@ import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.network.ConnectionDetector;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
-import th.co.thiensurat.tsr_history.result.item.CustomerItem;
+import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
-import th.co.thiensurat.tsr_history.utils.test;
 
 public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> implements SearchInterface.view{
 
@@ -76,15 +69,21 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
-                    if (!inputSearch.getText().toString().isEmpty())
+                    if (!inputSearch.getText().toString().isEmpty()) {
                         getPresenter().goToResultCustomer(inputSearch.getText().toString());
-                    else
+                        return true;
+                    } else {
+                        alert();
                         return false;
-                    return true;
+                    }
                 }
                 return false;
             }
         });
+    }
+
+    private void alert() {
+        AlertDialog.dialogSearchEmpty(this);
     }
 
     @Override
@@ -115,9 +114,9 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     private void OnNetworkChecking() {
         boolean isNetworkAvailable = ConnectionDetector.isConnectingToInternet(this);
         if (!isNetworkAvailable) {
-            dialogConfirm();
+            AlertDialog.dialogNetworkError(this);
         } else {
-            dialogLoginConfirm();
+            //dialogLoginConfirm();
         }
     }
 
@@ -137,7 +136,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         });
     }
 
-    private void dialogConfirm() {
+    /*private void dialogConfirm() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
         sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg));
@@ -160,7 +159,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                 });
         sweetAlertDialog.show();
         sweetAlertDialog.setCancelable(false);
-    }
+    }*/
 
     private void dialogLoginConfirm() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);

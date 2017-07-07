@@ -40,6 +40,9 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
     @Bind(R.id.btn_cancel) Button cancel;
+    @Bind(R.id.name) TextView customerName;
+    @Bind(R.id.address) TextView customerAddress;
+    @Bind(R.id.phone) TextView customerPhone;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
