@@ -8,6 +8,7 @@ public class Config {
 
     public static final int REQUEST_SETTINGS = 01;
     public static final int REQUEST_LOGIN = 02;
+    public static final int REQUEST_IMAGE_VIEW = 03;
 
     public static final String KEY_DATA = "DATA";
     public static final String KEY_DEVICE_ID = "DEVICEID";

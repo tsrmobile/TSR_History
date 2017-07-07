@@ -35,9 +35,10 @@
                     android:id="@+id/logoToolbar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="16dp"
+                    android:padding="20dp"
                     android:background="@drawable/circle_shape"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@drawable/camera"
+                    android:tint="@color/White"/>
 
             </RelativeLayout>
 
