@@ -13,7 +13,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
-import th.co.thiensurat.tsr_history.result.item.CustomerItem;
+import th.co.thiensurat.tsr_history.result.item.ListItem;
 
 /**
  * Created by teerayut.k on 7/4/2017.
@@ -22,10 +22,10 @@ import th.co.thiensurat.tsr_history.result.item.CustomerItem;
 public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAdapter.ViewHolder> {
 
     private Context context;
-    private List<CustomerItem> customerItems = new ArrayList<CustomerItem>();
-    public CustomerResultAdapter(Context context, List<CustomerItem> customerItems) {
+    private List<ListItem> listItems = new ArrayList<ListItem>();
+    public CustomerResultAdapter(Context context, List<ListItem> listItems) {
         this.context = context;
-        this.customerItems = customerItems;
+        this.listItems = listItems;
     }
 
     @Override
@@ -36,18 +36,17 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
 
     @Override
     public void onBindViewHolder(CustomerResultAdapter.ViewHolder holder, int position) {
-        CustomerItem item = customerItems.get(position);
-        int no = position + 1;
+        ListItem item = listItems.get(position);
         holder.dateTime.setText(item.getDate());
-        holder.productName.setText(no + ". " + item.getProduct());
-        holder.productPrice.setText(context.getResources().getString(R.string.price_amount) + ": " + item.getPrice());
-        holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSale());
-        holder.statusCode.setText(item.getStatus().toUpperCase());
+        holder.productName.setText(item.getProductName() + " (" + item.getProductModel() + ")");
+        holder.productPrice.setText(context.getResources().getString(R.string.price_amount) + ": " + String.format("%,d", item.getTotalPrice()));
+        holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSaleCode());
+        holder.statusCode.setText(item.getCustomerStatus().toUpperCase() + ", " +item.getAccountStatus().toUpperCase());
     }
 
     @Override
     public int getItemCount() {
-        return customerItems.size();
+        return listItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

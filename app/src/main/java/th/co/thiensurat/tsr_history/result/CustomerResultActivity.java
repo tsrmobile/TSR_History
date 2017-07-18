@@ -1,25 +1,23 @@
 package th.co.thiensurat.tsr_history.result;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,18 +28,24 @@ import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.result.adapter.CustomerResultAdapter;
-import th.co.thiensurat.tsr_history.result.item.CustomerItem;
-import th.co.thiensurat.tsr_history.search.SearchActivity;
+import th.co.thiensurat.tsr_history.result.item.ListItem;
+import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
 
 public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter> implements CustomerResultInterface.view{
 
+    private Dialog dialog;
+    private ListItem listItem;
     private LinearLayoutManager layoutManager;
     private CustomerResultAdapter adapter;
-    private List<CustomerItem> customerItems = new ArrayList<CustomerItem>();
+    private List<ListItem> listItemList = new ArrayList<ListItem>();
     @Override
     public CustomerResultInterface.presenter createPresenter() {
         return CustomerResultPresenter.create();
+    }
+
+    public CustomerResultActivity() {
+        super();
     }
 
     @Override
@@ -49,6 +53,8 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         return R.layout.activity_customer_result;
     }
 
+    @Bind(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
+    @Bind(R.id.btn_try_again) Button tryAgain;
     @Bind(R.id.recyclerview) RecyclerView recyclerView;
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
@@ -56,19 +62,17 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.name) TextView customerName;
     @Bind(R.id.address) TextView customerAddress;
     @Bind(R.id.phone) TextView customerPhone;
-    @Bind(R.id.logoToolbar) ImageView camera;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
-        save.setOnClickListener(onSaveData());
-        cancel.setOnClickListener(onCancel());
-        camera.setOnClickListener(onTakeScreen());
+        save.setOnClickListener( onSaveData() );
+        cancel.setOnClickListener( onCancel() );
+        tryAgain.setOnClickListener( onTryAgain() );
     }
 
     @Override
     public void setupInstance() {
         getPresenter().requestItem();
-        adapter = new CustomerResultAdapter(this, customerItems);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -77,7 +81,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public void setupView() {
         layoutManager.setReverseLayout(true);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -92,23 +95,46 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     }
 
     @Override
-    public void setItemToView(List<CustomerItem> customerItems) {
-        this.customerItems = customerItems;
-        textViewTotal.setText(String.valueOf(this.customerItems.size()));
+    public void onBackToSearch() {
+        this.listItemList.clear();
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     @Override
-    public void onBackToSearch() {
-        this.customerItems.clear();
-        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-        finish();
+    public void setItemAdapter(List<ListItem> listItems) {
+        this.listItemList = listItems;
+        adapter = new CustomerResultAdapter(this, listItems);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        setCustomerDetail();
+    }
+
+    private void setCustomerDetail() {
+        textViewTotal.setText(String.valueOf(listItemList.size()));
+        for (ListItem item : listItemList) {
+            customerName.setText(item.getName());
+        }
+    }
+
+    @Override
+    public void showServiceAvailableView() {
+        recyclerView.setVisibility( View.VISIBLE );
+        containerServiceUnvailable.setVisibility( View.GONE );
+    }
+
+    @Override
+    public void showServiceUnavailableView(String fail) {
+        recyclerView.setVisibility( View.GONE );
+        containerServiceUnvailable.setVisibility( View.VISIBLE );
+        AlertDialog.dialogSearchFail(CustomerResultActivity.this, fail);
     }
 
     private View.OnClickListener onSaveData() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                takeScreenshot();
             }
         };
     }
@@ -122,11 +148,11 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         };
     }
 
-    private View.OnClickListener onTakeScreen() {
+    private View.OnClickListener onTryAgain() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeScreenshot();
+                getPresenter().requestItem();
             }
         };
     }
@@ -134,58 +160,75 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     private void takeScreenshot() {
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
-
         try {
-            // image naming and path  to include sd card  appending name you choose for file
-            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
             String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-
-            // create bitmap screen capture
             View v1 = getWindow().getDecorView().getRootView();
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
-
             File imageFile = new File(imagePath + "/" + now + ".jpg");
-
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
-
-            //openScreenshot(imageFile);
             showImage(imageFile);
         } catch (Throwable e) {
-            // Several error may come out with file handling or OOM
             e.printStackTrace();
         }
     }
 
-    private void openScreenshot(File imageFile) {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        //intent.setAction(Intent.ACTION_VIEW);
+    public void showImage(final File imageFile) {
         Uri uri = Uri.fromFile(imageFile);
-        intent.setDataAndType(uri, "image/*");
-        startActivityForResult(intent, Config.REQUEST_IMAGE_VIEW);
-    }
-
-    public void showImage(File imageFile) {
-        Uri uri = Uri.fromFile(imageFile);
-        Dialog builder = new Dialog(this);
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        dialog = new Dialog(this);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_layout);
+        dialog.setTitle("Data validation!");
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText("");
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        image.setImageURI(uri);
+        Button dialogSave = (Button) dialog.findViewById(R.id.save);
+        dialogSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //nothing;
+            public void onClick(View view) {
+                /*listItem = new ListItem();
+                listItem.setImage(encodeImage(imageFile));
+                listItem.setIdcard("");
+                listItem.setSaleid("");
+                listItem.setDatetime("");
+                checkListItemList.add(listItem);
+                getPresenter().sendToServer(checkListItemList);*/
+                dialog.dismiss();
+
             }
         });
 
-        ImageView imageView = new ImageView(this);
-        imageView.setImageURI(uri);
-        builder.addContentView(imageView, new RelativeLayout.LayoutParams(500,500));
-        builder.show();
+        Button dialogCancel = (Button) dialog.findViewById(R.id.cancel);
+        dialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //checkListItemList.clear();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private String encodeImage(File imagefile) {
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(imagefile);
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        //Base64.de
+        return encImage;
+
     }
 }

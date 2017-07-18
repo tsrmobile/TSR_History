@@ -101,6 +101,15 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
             case Config.REQUEST_LOGIN :
                 Log.e("TSR Mobile", "Log in");
                 break;
+            case Config.REQUEST_RESULT :
+                if (resultCode == RESULT_OK) {
+                    Log.e("TSR History", "Success");
+                    inputSearch.setText("");
+                } else if (resultCode == RESULT_CANCELED) {
+                    Log.e("TSR History", "Failed");
+                    inputSearch.setText("");
+                }
+                break;
             default: break;
         }
     }
@@ -116,7 +125,9 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         if (!isNetworkAvailable) {
             AlertDialog.dialogNetworkError(this);
         } else {
-            //dialogLoginConfirm();
+            if (!getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID))) {
+                //dialogLoginConfirm();
+            }
         }
     }
 
@@ -135,31 +146,6 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
             }
         });
     }
-
-    /*private void dialogConfirm() {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg));
-        sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
-        sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_confirm));
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismiss();
-                        finish();
-                    }
-                });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismiss();
-                        Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
-                        startActivityForResult(intent, Config.REQUEST_SETTINGS);
-                    }
-                });
-        sweetAlertDialog.show();
-        sweetAlertDialog.setCancelable(false);
-    }*/
 
     private void dialogLoginConfirm() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
@@ -198,7 +184,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     public void goToResultCustomer(String data) {
         Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
         intent.putExtra(Config.KEY_DATA, data);
-        startActivity(intent);
+        startActivityForResult(intent, Config.REQUEST_RESULT);
     }
 
     @Override

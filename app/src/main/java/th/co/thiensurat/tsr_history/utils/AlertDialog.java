@@ -1,10 +1,12 @@
 package th.co.thiensurat.tsr_history.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
+import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 
 /**
@@ -22,6 +24,55 @@ public class AlertDialog {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
                         dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    public static void dialogSearchFail(final Context context, String fail) {
+        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_error))
+                .setContentText(context.getResources().getString(R.string.dialog_msg_search_fail) + "\n\n" + fail)
+                .showCancelButton(false)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                        ((CustomerResultActivity)context).setResult(Activity.RESULT_CANCELED);
+                        ((CustomerResultActivity)context).finish();
+                    }
+                })
+                .show();
+    }
+
+    public static void dialogSaveFail(final Context context, String fail) {
+        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_error))
+                .setContentText(context.getResources().getString(R.string.dialog_msg_save_fail) + "\n" + fail)
+                .showCancelButton(false)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    public static void dialogSaveSuccess(final Context context) {
+        new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_success))
+                .setContentText(context.getResources().getString(R.string.dialog_msg_save_success))
+                .showCancelButton(false)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                        ((CustomerResultActivity)context).setResult(Activity.RESULT_OK);
+                        ((CustomerResultActivity)context).finish();
                     }
                 })
                 .show();

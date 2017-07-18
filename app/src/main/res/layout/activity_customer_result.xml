@@ -35,10 +35,9 @@
                     android:id="@+id/logoToolbar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="20dp"
+                    android:padding="8dp"
                     android:background="@drawable/circle_shape"
-                    android:src="@drawable/camera"
-                    android:tint="@color/White"/>
+                    android:src="@mipmap/ic_launcher"/>
 
             </RelativeLayout>
 
@@ -61,8 +60,7 @@
                 android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.7"
-                android:text="ลูกค้า ดีเด่น"/>
+                android:layout_weight="1.7"/>
 
         </LinearLayout>
 
@@ -83,8 +81,7 @@
                 android:id="@+id/address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.7"
-                android:text="43/9 หมู่7 ซ.ชูชาติอนุสรณ์ 4 ต.บางตลาด อ.ปากเกร็ด จ.นนทบุรี 11120"/>
+                android:layout_weight="1.7"/>
 
         </LinearLayout>
 
@@ -105,8 +102,7 @@
                 android:id="@+id/phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.7"
-                android:text="02-819-8888 กด 7"/>
+                android:layout_weight="1.7"/>
 
         </LinearLayout>
 
