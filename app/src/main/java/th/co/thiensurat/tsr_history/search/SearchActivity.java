@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -18,6 +20,7 @@ import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.network.ConnectionDetector;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
+import th.co.thiensurat.tsr_history.search.item.AuthenItem;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
@@ -83,7 +86,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     }
 
     private void alert() {
-        AlertDialog.dialogSearchEmpty(this);
+        AlertDialog.dialogSearchEmpty(SearchActivity.this);
     }
 
     @Override
@@ -100,6 +103,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                 break;
             case Config.REQUEST_LOGIN :
                 Log.e("TSR Mobile", "Log in");
+                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
                 break;
             case Config.REQUEST_RESULT :
                 if (resultCode == RESULT_OK) {
@@ -114,20 +118,12 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        OnNetworkChecking();
-    }
-
     private void OnNetworkChecking() {
         boolean isNetworkAvailable = ConnectionDetector.isConnectingToInternet(this);
         if (!isNetworkAvailable) {
-            AlertDialog.dialogNetworkError(this);
+            AlertDialog.dialogNetworkError(SearchActivity.this);
         } else {
-            if (!getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID))) {
-                //dialogLoginConfirm();
-            }
+            getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
         }
     }
 
@@ -145,6 +141,55 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void goToResultCustomer(String data) {
+        Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
+        intent.putExtra(Config.KEY_DATA, data);
+        startActivityForResult(intent, Config.REQUEST_RESULT);
+    }
+
+    @Override
+    public void onFail(String failed) {
+        AlertDialog.dialogSearchFail(SearchActivity.this, failed);
+        AlertDialog.dialogDimiss();
+    }
+
+    @Override
+    public void onAuthen(List<AuthenItem> authenItems) {
+        for (AuthenItem item : authenItems) {
+            Log.e("Authen", item.getUsername());
+            if (item.getLoggedin() != 1) {
+                dialogLoginConfirm();
+            } else if (item.getLoggedin() == 1){
+                MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, item.getUsername());
+            }
+        }
+        AlertDialog.dialogDimiss();
+    }
+
+    private void getDeviceID() {
+        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
+    }
+
+    @Override
+    public void onLoad() {
+        AlertDialog.dialogLoading(SearchActivity.this);
+    }
+
+    @Override
+    public void onDismiss() {
+        AlertDialog.dialogDimiss();
     }
 
     private void dialogLoginConfirm() {
@@ -170,34 +215,5 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         });
         sweetAlertDialog.show();
         sweetAlertDialog.setCancelable(false);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)){
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void goToResultCustomer(String data) {
-        Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
-        intent.putExtra(Config.KEY_DATA, data);
-        startActivityForResult(intent, Config.REQUEST_RESULT);
-    }
-
-    @Override
-    public void onFail(String failed) {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_error));
-        sweetAlertDialog.setContentText(failed);
-        sweetAlertDialog.show();
-    }
-
-    private void getDeviceID() {
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
-        Log.e("Device id", deviceID);
     }
 }

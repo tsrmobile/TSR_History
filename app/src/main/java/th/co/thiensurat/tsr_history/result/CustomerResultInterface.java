@@ -2,6 +2,7 @@ package th.co.thiensurat.tsr_history.result;
 
 import java.util.List;
 
+import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
 
@@ -17,11 +18,16 @@ public class CustomerResultInterface {
         void setItemAdapter(List<ListItem> listItems);
         void showServiceAvailableView();
         void showServiceUnavailableView(String fail);
+        void onLoad();
+        void onDismiss();
+        void onSuccess();
+        void onFail(String fail);
     }
 
     public interface presenter extends BaseMvpInterface.Presenter<CustomerResultInterface.view> {
         void onCancel();
         void requestItem();
-        void setItemAdapter(List<ListItem> listItems);
+        void addHistory(List<AddHistoryItem> items);
+        //void setItemAdapter(List<ListItem> listItems);
     }
 }

@@ -13,46 +13,120 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:paddingTop="4dp"
-            android:gravity="center">
+            android:layout_height="55dp">
 
             <RelativeLayout
                 android:id="@+id/dateLayout"
-                android:layout_width="140dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/background_round">
 
                 <TextView
-                    android:id="@+id/datetime"
+                    android:id="@+id/number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Jul, 04 2017"
+                    android:text="ข0521131"
+                    android:padding="8dp"
+                    android:textSize="18sp"
                     android:textColor="@color/White"
                     android:textStyle="bold"/>
 
             </RelativeLayout>
 
-        </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:paddingRight="4dp"
+                    android:text="Jul, 04 2017"
+                    android:textSize="14sp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/idcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1. เครื่องกรองน้ำ Alkaline Deluxe"
+            android:text="เครื่องกรองน้ำ Alkaline Deluxe"
             android:textStyle="bold"
-            android:padding="4dp"/>
+            android:padding="4dp"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="จำนวนเงิน 7,490"
-            android:padding="4dp"/>
+            android:padding="4dp"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/payType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/text_pay_type"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/payTotalMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/text_pay_total_month"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/payLastMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/text_pay_last_month"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lastStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_last_status"
+            android:padding="4dp"
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:id="@+id/bottomLayout"
@@ -66,7 +140,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="รหัสผู้ขาย : 000001"/>
+                android:text="รหัสผู้ขาย : 000001"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/statusTitle"
@@ -87,7 +162,7 @@
                     android:layout_height="match_parent"
                     android:text="N"
                     android:gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="@color/colorPrimaryDark"/>
 
             </RelativeLayout>

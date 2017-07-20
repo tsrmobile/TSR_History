@@ -32,7 +32,7 @@ public class AlertDialog {
     public static void dialogSearchFail(final Context context, String fail) {
         new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(context.getResources().getString(R.string.dialog_title_error))
-                .setContentText(context.getResources().getString(R.string.dialog_msg_search_fail) + "\n\n" + fail)
+                .setContentText(fail)
                 .showCancelButton(false)
                 .setConfirmText("OK")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -100,5 +100,18 @@ public class AlertDialog {
             }
         })
         .show();
+    }
+
+    private static SweetAlertDialog sweetAlertDialog;
+    public static void dialogLoading(final Context context) {
+        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        sweetAlertDialog.setTitleText("Loading...");
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+    }
+
+    public static void dialogDimiss() {
+        sweetAlertDialog.dismiss();
     }
 }

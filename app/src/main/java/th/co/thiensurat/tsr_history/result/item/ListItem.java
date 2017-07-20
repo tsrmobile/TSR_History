@@ -26,15 +26,8 @@ public class ListItem extends BaseItem implements Parcelable {
     private String productModel;
     private String saleCode;
     private String date;
-
-    public String getDate() {
-        return date;
-    }
-
-    public ListItem setDate(String date) {
-        this.date = date;
-        return this;
-    }
+    private int agingCumulative;
+    private int agingContinuous;
 
     public ListItem() {
 
@@ -166,7 +159,32 @@ public class ListItem extends BaseItem implements Parcelable {
         return this;
     }
 
+    public String getDate() {
+        return date;
+    }
 
+    public ListItem setDate(String date) {
+        this.date = date;
+        return this;
+    }
+
+    public int getAgingCumulative() {
+        return agingCumulative;
+    }
+
+    public ListItem setAgingCumulative(int agingCumulative) {
+        this.agingCumulative = agingCumulative;
+        return this;
+    }
+
+    public int getAgingContinuous() {
+        return agingContinuous;
+    }
+
+    public ListItem setAgingContinuous(int agingContinuous) {
+        this.agingContinuous = agingContinuous;
+        return this;
+    }
 
     protected ListItem(Parcel in) {
         super(in);
@@ -185,6 +203,8 @@ public class ListItem extends BaseItem implements Parcelable {
         productModel = in.readString();
         saleCode = in.readString();
         date = in.readString();
+        agingCumulative = in.readInt();
+        agingContinuous = in.readInt();
     }
 
     @Override
@@ -205,6 +225,8 @@ public class ListItem extends BaseItem implements Parcelable {
         dest.writeString(productModel);
         dest.writeString(saleCode);
         dest.writeString(date);
+        dest.writeInt(agingCumulative);
+        dest.writeInt(agingContinuous);
     }
 
     @Override
@@ -241,7 +263,9 @@ public class ListItem extends BaseItem implements Parcelable {
                 .setProductName(productName)
                 .setProductModel(productModel)
                 .setSaleCode(saleCode)
-                .setDate(date);
+                .setDate(date)
+                .setAgingCumulative(agingCumulative)
+                .setAgingContinuous(agingContinuous);
         return listItem;
     }
 
@@ -262,6 +286,8 @@ public class ListItem extends BaseItem implements Parcelable {
         result = 31 * result + ( productModel != null ? productModel.hashCode() : 0 );
         result = 31 * result + ( saleCode != null ? saleCode.hashCode() : 0 );
         result = 31 * result + (date != null ? date.hashCode() : 0 );
+        result = 31 * result + agingCumulative;
+        result = 31 * result + agingContinuous;
         return result;
     }
 }

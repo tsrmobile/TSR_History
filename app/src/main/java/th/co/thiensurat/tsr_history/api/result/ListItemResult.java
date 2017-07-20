@@ -23,14 +23,8 @@ public class ListItemResult {
     private String productModel;
     private String saleCode;
     private String date;
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
+    private int agingCumulative;
+    private int agingContinuous;
 
     public ListItemResult() {
 
@@ -146,5 +140,29 @@ public class ListItemResult {
 
     public void setSaleCode(String saleCode) {
         this.saleCode = saleCode;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getAgingCumulative() {
+        return agingCumulative;
+    }
+
+    public void setAgingCumulative(int agingCumulative) {
+        this.agingCumulative = agingCumulative;
+    }
+
+    public int getAgingContinuous() {
+        return agingContinuous;
+    }
+
+    public void setAgingContinuous(int agingContinuous) {
+        this.agingContinuous = agingContinuous;
     }
 }

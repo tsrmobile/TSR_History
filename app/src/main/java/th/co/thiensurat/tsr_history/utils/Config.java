@@ -13,8 +13,9 @@ public class Config {
 
     public static final String KEY_DATA = "DATA";
     public static final String KEY_DEVICE_ID = "DEVICEID";
+    public static final String KEY_USERNAME = "USERNAME";
 
     public static final String SUCCESS = "SUCCESS";
-    public static final String FAILED = "FAILED";
+    public static final String FAILED = "FAIL";
     public static final String ERROR = "ERROR";
 }

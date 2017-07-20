@@ -1,11 +1,21 @@
 package th.co.thiensurat.tsr_history.api;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
+import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.result.AuthenItemResult;
+import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
+import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
+import th.co.thiensurat.tsr_history.search.item.AuthenItem;
 
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
 
 /**
  * Created by teerayut.k on 7/17/2017.
@@ -13,6 +23,13 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
 
 public interface ApiService {
 
+    @GET( URL_AUTH )
+    Call<AuthenItemResultGroup> getAuthen(@Query( "device" ) String value);
+
     @GET( URL_HISTORY )
     Call<ListItemResultGroup> getHistory(@Query( "search" ) String value );
+
+    @POST( URL_SAVE )
+    Call<AddHistoryResult> addHistory(@Body AddHistoryBody body);
+
 }

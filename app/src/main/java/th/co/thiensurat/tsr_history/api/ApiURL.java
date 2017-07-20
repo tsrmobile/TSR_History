@@ -5,6 +5,15 @@ package th.co.thiensurat.tsr_history.api;
  */
 
 public class ApiURL {
+    /*public static final String URL_AUTH = "/api/v1/authen/";
+    public static final String URL_SAVE = "/api/v1/add/";
     public static final String URL_HISTORY = "/api/v1/history/";
-    public static final String BASE_URL = "http://192.168.191.137";
+    public static final String BASE_URL = "http://192.168.191.137";*/
+
+    public static final String URL_AUTH = "/history/api/v1/authen/";
+    public static final String URL_SAVE = "/history/api/v1/add/";
+    public static final String URL_HISTORY = "/history/api/v1/history/";
+    public static final String BASE_URL = "http://app.thiensurat.co.th";
+
+
 }

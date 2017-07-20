@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TSR_History</string>
+    <string name="app_name">TSR History</string>
 
     <string name="search_hint">กรุณาใส่ชื่อนามสกุล หรือเลขบัตรประชาชนของลูกค้า</string>
 
@@ -16,13 +16,25 @@
 
     <string name="dialog_login_msg">กรุณาเข้าสู่ระบบ \n ผ่านทางแอพพลิเคชั่น TSR Mobile</string>
     <string name="dialog_button_login">เข้าสู่ระบบ</string>
+    <string name="dialog_title">บันทึกการตรวจสอบข้อมูล</string>
 
     <string name="text_search">ค้นหาข้อมูล</string>
+    <string name="text_name_title">ชื่อ-นามสกุล</string>
+    <string name="text_idcard_title">เลขที่บัตรประชาชน</string>
+    <string name="text_product">ผลิตภัณฑ์</string>
+
+    <string name="text_contract_number">สัญญา</string>
+    <string name="text_contract_date">วันที่สัญญา</string>
+    <string name="text_pay_type">การชำระ</string>
+    <string name="text_pay_total_month">จำนวนงวด</string>
+    <string name="text_pay_last_month">งวดสุดท้ายที่ชำระ</string>
+    <string name="text_last_status">สถานะการชำระครั้งสุดท้าย</string>
 
     <string name="button_save_log">บันทึก</string>
     <string name="button_cancel">ยกเลิก</string>
 
     <string name="list_total">รวม</string>
+    <string name="test_list">รายการ</string>
     <string name="price_amount">จำนวนเงิน</string>
     <string name="sale">ผู้ขาย</string>
 
