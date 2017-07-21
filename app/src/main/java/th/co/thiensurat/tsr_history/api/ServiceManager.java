@@ -74,7 +74,7 @@ public class ServiceManager {
                 Log.e("requestAuthen", response + "");
                 if( callback != null ){
                     if( authenChecker( response ) ){
-                        Log.e("Authentication", response.body().getStatus() + "");
+                        //Log.e("Authentication", response.body().getStatus() + "");
                         callback.onSuccess( response.body() );
                     }else{
                         callback.onFailure( new Throwable( "Response authen invalid." ) );

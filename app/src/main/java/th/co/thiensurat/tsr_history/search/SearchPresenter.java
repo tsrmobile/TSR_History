@@ -12,6 +12,7 @@ import th.co.thiensurat.tsr_history.api.ServiceManager;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.base.BaseMvpPresenter;
 import th.co.thiensurat.tsr_history.search.item.AuthenItem;
+import th.co.thiensurat.tsr_history.utils.Config;
 
 /**
  * Created by teerayut.k on 7/3/2017.
@@ -56,6 +57,13 @@ public class SearchPresenter extends BaseMvpPresenter<SearchInterface.view> impl
             public void onSuccess(AuthenItemResultGroup result) {
                 authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
                 Log.e("onSuccess", authenItems.get(0).getUsername());
+                /*if (result.getMessage().equals(Config.FAILED)) {
+                    getView().onDismiss();
+                    getView().onFail("ไม่พบรหัสผู้ใช้");
+                } else if (result.getMessage().equals(Config.SUCCESS)) {
+                    getView().onDismiss();
+                    getView().onAuthen(authenItems);
+                }*/
                 getView().onDismiss();
                 getView().onAuthen(authenItems);
             }
