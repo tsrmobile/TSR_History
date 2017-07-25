@@ -1,7 +1,9 @@
 package th.co.thiensurat.tsr_history.search;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.Settings;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
@@ -180,6 +183,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     private void getDeviceID() {
         String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
+        getPath();
     }
 
     @Override
@@ -215,5 +219,12 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         });
         sweetAlertDialog.show();
         sweetAlertDialog.setCancelable(false);
+    }
+
+    private void getPath() {
+        final String appPackageName = getApplicationContext().getPackageName();
+        String path = "/android/data/th.co.thiensurat/files/database/tsr.db";
+        File db = new File(path);
+        Log.e("get path", db.getAbsoluteFile().exists() + "");
     }
 }

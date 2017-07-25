@@ -31,7 +31,12 @@
                 android:gravity="center"
                 android:text="@string/load_fail"/>
 
-            <Button
+        </LinearLayout>
+    </FrameLayout>
+</merge>
+
+<!--
+<Button
                 android:id="@+id/btn_try_again"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +45,4 @@
                 android:textSize="@dimen/text_title"
                 android:textColor="@color/White"
                 android:backgroundTint="@color/colorPrimaryDark"/>
-
-        </LinearLayout>
-    </FrameLayout>
-</merge>
+-->

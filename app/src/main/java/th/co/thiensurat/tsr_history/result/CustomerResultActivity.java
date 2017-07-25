@@ -60,7 +60,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     }
 
     @Bind(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
-    @Bind(R.id.btn_try_again) Button tryAgain;
+    //@Bind(R.id.btn_try_again) Button tryAgain;
     @Bind(R.id.recyclerview) RecyclerView recyclerView;
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
@@ -71,7 +71,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
         cancel.setOnClickListener( onCancel() );
-        tryAgain.setOnClickListener( onTryAgain() );
+        //tryAgain.setOnClickListener( onTryAgain() );
     }
 
     @Override
@@ -170,14 +170,14 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         };
     }
 
-    private View.OnClickListener onTryAgain() {
+    /*private View.OnClickListener onTryAgain() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getPresenter().requestItem();
             }
         };
-    }
+    }*/
 
     private void takeScreenshot() {
         Date now = new Date();
