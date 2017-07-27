@@ -25,6 +25,7 @@ public class ListItemResult {
     private String date;
     private int agingCumulative;
     private int agingContinuous;
+    private String agingDetail;
 
     public ListItemResult() {
 
@@ -164,5 +165,13 @@ public class ListItemResult {
 
     public void setAgingContinuous(int agingContinuous) {
         this.agingContinuous = agingContinuous;
+    }
+
+    public String getAgingDetail() {
+        return agingDetail;
+    }
+
+    public void setAgingDetail(String agingDetail) {
+        this.agingDetail = agingDetail;
     }
 }

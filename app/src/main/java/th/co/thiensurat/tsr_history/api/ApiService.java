@@ -6,14 +6,13 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
-import th.co.thiensurat.tsr_history.api.result.AuthenItemResult;
+import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
-import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
-import th.co.thiensurat.tsr_history.search.item.AuthenItem;
 
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTH;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_FULL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
 
@@ -23,6 +22,9 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
 
 public interface ApiService {
 
+    @POST ( URL_FULL_AUTH )
+    Call<AuthenItemResultGroup> getFullAuthen(@Body FullAuthenBody body);
+
     @GET( URL_AUTH )
     Call<AuthenItemResultGroup> getAuthen(@Query( "device" ) String value);
 
@@ -31,5 +33,4 @@ public interface ApiService {
 
     @POST( URL_SAVE )
     Call<AddHistoryResult> addHistory(@Body AddHistoryBody body);
-
 }

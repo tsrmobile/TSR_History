@@ -39,8 +39,6 @@ public class AlertDialog {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
                         dialog.dismiss();
-                        ((CustomerResultActivity)context).setResult(Activity.RESULT_CANCELED);
-                        ((CustomerResultActivity)context).finish();
                     }
                 })
                 .show();

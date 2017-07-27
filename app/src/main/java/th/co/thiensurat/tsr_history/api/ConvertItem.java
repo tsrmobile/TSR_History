@@ -9,8 +9,8 @@ import th.co.thiensurat.tsr_history.api.result.ListItemResult;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
 import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
-import th.co.thiensurat.tsr_history.search.item.AuthenItem;
-import th.co.thiensurat.tsr_history.search.item.AuthenItemGroup;
+import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
+import th.co.thiensurat.tsr_history.full_authen.item.AuthenItemGroup;
 
 /**
  * Created by teerayut.k on 7/17/2017.
@@ -44,7 +44,8 @@ public class ConvertItem {
                     .setProductName(listItemResult.getProductName())
                     .setProductModel(listItemResult.getProductModel())
                     .setSaleCode(listItemResult.getSaleCode())
-                    .setDate(listItemResult.getDate());
+                    .setDate(listItemResult.getDate())
+                    .setAgingDetail(listItemResult.getAgingDetail());
             items.add( item );
         }
         return items;

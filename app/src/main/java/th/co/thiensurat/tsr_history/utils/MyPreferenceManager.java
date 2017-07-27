@@ -41,6 +41,24 @@ public class MyPreferenceManager {
         return pref.getString(key, null);
     }
 
+    public void setPreferrenceTimeStamp(String key, long timestamp) {
+        editor.putLong(key, timestamp);
+        editor.commit();
+    }
+
+    public long getPreferrenceTimeStamp(String key) {
+        return pref.getLong(key, 0);
+    }
+
+    public void setPreferrenceBoolean(String key, boolean status) {
+        editor.putBoolean(key, status);
+        editor.commit();
+    }
+
+    public boolean getPreferrenceBoolean(String key) {
+        return pref.getBoolean(key, false);
+    }
+
     /*public void storeUser(Users user) {
         editor.putString(KEY_DEVICE_ID, user.getDevice_id());
         editor.putString(KEY_EMAIL_ACCOUNT, user.getEmail());

@@ -12,20 +12,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".utils.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".utils.MyApplication"
         tools:replace="android:icon,android:theme">
         <activity android:name=".search.SearchActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- [START network_service] -->
@@ -39,7 +35,14 @@
         </receiver>
         <!-- [END] -->
 
-        <activity android:name=".result.CustomerResultActivity"></activity>
+        <activity android:name=".result.CustomerResultActivity" />
+        <activity android:name=".full_authen.FullAuthenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

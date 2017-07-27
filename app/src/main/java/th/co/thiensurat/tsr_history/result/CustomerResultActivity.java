@@ -68,6 +68,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Override
     public void bindView() {
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
         cancel.setOnClickListener( onCancel() );
@@ -129,7 +130,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     public void showServiceUnavailableView(String fail) {
         recyclerView.setVisibility( View.GONE );
         containerServiceUnvailable.setVisibility( View.VISIBLE );
-        AlertDialog.dialogSearchFail(CustomerResultActivity.this, fail);
     }
 
     @Override

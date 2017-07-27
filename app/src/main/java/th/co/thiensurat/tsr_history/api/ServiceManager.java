@@ -9,10 +9,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
-import th.co.thiensurat.tsr_history.api.result.AuthenItemResult;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.utils.Config;
 
@@ -25,7 +26,8 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.BASE_URL;
 public class ServiceManager {
 
     private Call<AddHistoryResult> historyResultCall;
-    private Call<AuthenItemResult> requestAuthenCall;
+    private Call<AuthenItemResultGroup> requestAuthenCall;
+    private Call<AuthenItemResultGroup> requestFullAuthenCall;
     private static ServiceManager instance;
     private static ApiService api;
 
@@ -67,6 +69,50 @@ public class ServiceManager {
                 .getAuthen( value );
     }
 
+    public Call<AuthenItemResultGroup> requestFullAuthen(FullAuthenBody body ) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .getFullAuthen( body );
+    }
+
+    public void requestFullAuthentication (List<FullAuthenItem> items, final ServiceManagerCallback<AuthenItemResultGroup> callback) {
+        List<FullAuthenBody.authenBody> bodyList = new ArrayList<>();
+        for (FullAuthenItem item : items) {
+            bodyList.add( new FullAuthenBody.authenBody()
+                    .setUsername( item.getUsername() )
+                    .setPassword( item.getPassword() )
+            );
+        }
+        FullAuthenBody body = new FullAuthenBody();
+        body.setBody(bodyList);
+
+        requestFullAuthenCall = requestFullAuthen( body );
+        requestFullAuthenCall.enqueue(new Callback<AuthenItemResultGroup>() {
+            @Override
+            public void onResponse(Call<AuthenItemResultGroup> call, Response<AuthenItemResultGroup> response) {
+                Log.e("requestFullAuthen", response + "");
+                if( callback != null ){
+                    if( fullAuthenChecker( response ) ){
+                        callback.onSuccess( response.body() );
+                        //Log.e("Response full authen", response.body().getStatus());
+                    }else{
+                        callback.onFailure( new Throwable( "response full authen invalid." ) );
+                    }
+                }
+                requestFullAuthenCall = null;
+            }
+
+            @Override
+            public void onFailure(Call<AuthenItemResultGroup> call, Throwable t) {
+                Log.e("requestFullAuthen", t.getMessage() + "" + call);
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+                requestFullAuthenCall = null;
+            }
+        });
+    }
+
     public void requestAuthentication( String value, final ServiceManagerCallback<AuthenItemResultGroup> callback) {
         requestAuthen( value ).enqueue(new Callback<AuthenItemResultGroup>() {
             @Override
@@ -74,7 +120,7 @@ public class ServiceManager {
                 Log.e("requestAuthen", response + "");
                 if( callback != null ){
                     if( authenChecker( response ) ){
-                        //Log.e("Authentication", response.body().getStatus() + "");
+                        Log.e("Authentication", response.body().getMessage() + "");
                         callback.onSuccess( response.body() );
                     }else{
                         callback.onFailure( new Throwable( "Response authen invalid." ) );
@@ -157,6 +203,14 @@ public class ServiceManager {
                 historyResultCall = null;
             }
         } );
+    }
+
+    private boolean fullAuthenChecker (Response<AuthenItemResultGroup> response) {
+        if (response.isSuccessful()) {
+            AuthenItemResultGroup resultGroup = response.body();
+            return Config.SUCCESS.equals( resultGroup.getStatus() ) && resultGroup.getData() != null;
+        }
+        return false;
     }
 
     private boolean authenChecker( Response<AuthenItemResultGroup> response) {

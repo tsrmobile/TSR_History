@@ -10,6 +10,7 @@ public class ApiURL {
     public static final String URL_HISTORY = "/api/v1/history/";
     public static final String BASE_URL = "http://192.168.191.137";*/
 
+    public static final String URL_FULL_AUTH = "/history/api/v1/authen/full/";
     public static final String URL_AUTH = "/history/api/v1/authen/";
     public static final String URL_SAVE = "/history/api/v1/add/";
     public static final String URL_HISTORY = "/history/api/v1/history/";

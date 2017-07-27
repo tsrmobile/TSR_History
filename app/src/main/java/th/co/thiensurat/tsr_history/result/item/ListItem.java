@@ -28,6 +28,7 @@ public class ListItem extends BaseItem implements Parcelable {
     private String date;
     private int agingCumulative;
     private int agingContinuous;
+    private String agingDetail;
 
     public ListItem() {
 
@@ -186,6 +187,15 @@ public class ListItem extends BaseItem implements Parcelable {
         return this;
     }
 
+    public String getAgingDetail() {
+        return agingDetail;
+    }
+
+    public ListItem setAgingDetail(String agingDetail) {
+        this.agingDetail = agingDetail;
+        return this;
+    }
+
     protected ListItem(Parcel in) {
         super(in);
         ref = in.readString();
@@ -205,6 +215,7 @@ public class ListItem extends BaseItem implements Parcelable {
         date = in.readString();
         agingCumulative = in.readInt();
         agingContinuous = in.readInt();
+        agingDetail = in.readString();
     }
 
     @Override
@@ -227,6 +238,7 @@ public class ListItem extends BaseItem implements Parcelable {
         dest.writeString(date);
         dest.writeInt(agingCumulative);
         dest.writeInt(agingContinuous);
+        dest.writeString(agingDetail);
     }
 
     @Override
@@ -265,7 +277,8 @@ public class ListItem extends BaseItem implements Parcelable {
                 .setSaleCode(saleCode)
                 .setDate(date)
                 .setAgingCumulative(agingCumulative)
-                .setAgingContinuous(agingContinuous);
+                .setAgingContinuous(agingContinuous)
+                .setAgingDetail(agingDetail);
         return listItem;
     }
 
@@ -288,6 +301,7 @@ public class ListItem extends BaseItem implements Parcelable {
         result = 31 * result + (date != null ? date.hashCode() : 0 );
         result = 31 * result + agingCumulative;
         result = 31 * result + agingContinuous;
+        result = 31 * result + ( agingDetail != null ? agingDetail.hashCode() : 0 );
         return result;
     }
 }

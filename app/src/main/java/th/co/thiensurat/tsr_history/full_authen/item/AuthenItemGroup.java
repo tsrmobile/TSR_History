@@ -1,4 +1,4 @@
-package th.co.thiensurat.tsr_history.search.item;
+package th.co.thiensurat.tsr_history.full_authen.item;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import th.co.thiensurat.tsr_history.base.adapter.BaseItem;
-import th.co.thiensurat.tsr_history.result.item.ListItem;
 
 /**
  * Created by teerayut.k on 7/20/2017.

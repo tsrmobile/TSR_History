@@ -10,10 +10,13 @@ public class Config {
     public static final int REQUEST_LOGIN = 02;
     public static final int REQUEST_IMAGE_VIEW = 03;
     public static final int REQUEST_RESULT = 04;
+    public static final int REQUEST_FULL_LOGIN = 05;
 
     public static final String KEY_DATA = "DATA";
     public static final String KEY_DEVICE_ID = "DEVICEID";
     public static final String KEY_USERNAME = "USERNAME";
+    public static final String KEY_SESSION = "SESSION";
+    public static final String KEY_BOOLEAN = "STATUS";
 
     public static final String SUCCESS = "SUCCESS";
     public static final String FAILED = "FAIL";
