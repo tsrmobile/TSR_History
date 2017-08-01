@@ -118,18 +118,35 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     @Override
     public void onAuthen(List<AuthenItem> authenItems) {
         if (authenItems.isEmpty()) {
-            if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
+            if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
+                    && !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                 dialogLoginConfirm();
+                Log.e("Authen", "Empty");
             } else {
                 AlertDialog.dialogSearchFail(FullAuthenActivity.this, getResources().getString(R.string.dialog_full_login_msg));
             }
-            //Log.e("onAuthen", "List empty");
+
         } else {
-            //Log.e("onAuthen", "List full");
-            for (AuthenItem item : authenItems) {
+            if (authenItems.get(0).getLoggedin() != 1) {
+                if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
+                        || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                    dialogLoginConfirm();
+                    Log.e("Authen", "Not empty");
+                } else {
+                    AlertDialog.dialogSearchFail(FullAuthenActivity.this, getResources().getString(R.string.dialog_full_login_msg));
+                }
+            } else if (authenItems.get(0).getLoggedin() == 1) {
+                MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
+                MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, authenItems.get(0).getUsername());
+                MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
+                getPresenter().goToSearchActivity();
+            }
+            /*for (AuthenItem item : authenItems) {
                 if (item.getLoggedin() != 1) {
-                    if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
+                    if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
+                            || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                         dialogLoginConfirm();
+                        Log.e("Authen", "Not empty");
                     } else {
                         AlertDialog.dialogSearchFail(FullAuthenActivity.this, getResources().getString(R.string.dialog_full_login_msg));
                     }
@@ -139,6 +156,26 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
                     MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                     getPresenter().goToSearchActivity();
                 }
+            }*/
+        }
+    }
+
+    @Override
+    public void onFullAuthen(List<AuthenItem> authenItems) {
+        if (authenItems.isEmpty()) {
+            if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
+                    || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                dialogLoginConfirm();
+                Log.e("Full authen", "Empty");
+            } else {
+                AlertDialog.dialogSearchFail(FullAuthenActivity.this, getResources().getString(R.string.dialog_full_login_msg));
+            }
+        } else {
+            for (AuthenItem item : authenItems) {
+                MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
+                MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, item.getUsername());
+                MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
+                getPresenter().goToSearchActivity();
             }
         }
     }
@@ -146,8 +183,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     @Override
     public void goToSearchActivity() {
         onDismiss();
-        startActivity(new Intent(FullAuthenActivity.this, SearchActivity.class));
-        finish();
+        startActivityForResult(new Intent(FullAuthenActivity.this, SearchActivity.class), Config.REQUEST_SEARCH);
     }
 
     @Override
@@ -155,10 +191,15 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Config.REQUEST_SETTINGS :
-                OnNetworkChecking();
+                if (resultCode == RESULT_OK) {
+                    OnNetworkChecking();
+                    Log.e("onActivityResult", "Load (onActivityResult)");
+                }
                 break;
             case Config.REQUEST_LOGIN :
                 getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+                break;
+            case Config.REQUEST_SEARCH :
                 break;
             default: break;
         }
@@ -187,7 +228,10 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         }
     }
 
+    int count = 0;
     private void dialogLoginConfirm() {
+        count++;
+        Log.e("Count dialog", count + "");
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
         sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_login_msg));
@@ -197,6 +241,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismiss();
+                sDialog.cancel();
                 //finish();
             }
         });
@@ -204,12 +249,13 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismiss();
+                sDialog.cancel();
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat");
                 startActivityForResult(launchIntent, Config.REQUEST_LOGIN);
             }
         });
         sweetAlertDialog.show();
-        sweetAlertDialog.setCancelable(false);
+        //sweetAlertDialog.setCancelable(false);
     }
 
     private void OnNetworkChecking() {
@@ -217,7 +263,11 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         if (!isNetworkAvailable) {
             AlertDialog.dialogNetworkError(FullAuthenActivity.this);
         } else {
-            getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+            if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+            } else {
+                getPresenter().goToSearchActivity();
+            }
         }
     }
 

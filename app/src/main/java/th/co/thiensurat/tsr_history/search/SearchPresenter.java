@@ -15,17 +15,17 @@ import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 
 public class SearchPresenter extends BaseMvpPresenter<SearchInterface.view> implements SearchInterface.presenter{
 
-    private ServiceManager serviceManager;
-    private List<AuthenItem> authenItems = new ArrayList<AuthenItem>();
+    /*private ServiceManager serviceManager;
+    private List<AuthenItem> authenItems = new ArrayList<AuthenItem>();*/
     public static SearchInterface.presenter create() {
         return new SearchPresenter();
     }
 
     public SearchPresenter(){
-        serviceManager = ServiceManager.getInstance();
+        //serviceManager = ServiceManager.getInstance();
     }
 
-    public void setManager( ServiceManager manager ){
+    /*public void setManager( ServiceManager manager ){
         serviceManager = manager;
     }
 
@@ -37,7 +37,7 @@ public class SearchPresenter extends BaseMvpPresenter<SearchInterface.view> impl
     @Override
     public void onViewDestroy() {
         RxBus.get().unregister( this );
-    }
+    }*/
 
     @Override
     public void goToResultCustomer(String data) {

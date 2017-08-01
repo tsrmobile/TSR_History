@@ -26,7 +26,6 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.BASE_URL;
 public class ServiceManager {
 
     private Call<AddHistoryResult> historyResultCall;
-    private Call<AuthenItemResultGroup> requestAuthenCall;
     private Call<AuthenItemResultGroup> requestFullAuthenCall;
     private static ServiceManager instance;
     private static ApiService api;
@@ -120,7 +119,7 @@ public class ServiceManager {
                 Log.e("requestAuthen", response + "");
                 if( callback != null ){
                     if( authenChecker( response ) ){
-                        Log.e("Authentication", response.body().getMessage() + "");
+                        //Log.e("Authentication", response.body().getMessage() + "");
                         callback.onSuccess( response.body() );
                     }else{
                         callback.onFailure( new Throwable( "Response authen invalid." ) );
@@ -164,20 +163,9 @@ public class ServiceManager {
         } );
     }
 
-    public void AddHistoryRequest(List<AddHistoryItem> items, final ServiceManagerCallback<AddHistoryResult> callback) {
-        List<AddHistoryBody.HistoryBody> bodyList = new ArrayList<>();
-        for (AddHistoryItem item : items) {
-            bodyList.add( new AddHistoryBody.HistoryBody()
-                    .setCustomerID(item.getCustomerID())
-                    .setSaleCode(item.getSaleCode())
-                    .setDateContract(item.getDateContract())
-                    .setImage(item.getImage())
-                    .setCreatedBy(item.getCreatedBy())
-            );
-        }
-
+    public void AddHistoryRequest(List<AddHistoryBody.HistoryBody> items, final ServiceManagerCallback<AddHistoryResult> callback) {
         AddHistoryBody body = new AddHistoryBody();
-        body.setHistoryItems(bodyList);
+        body.setHistoryItems(items);
 
         historyResultCall = requestAddHistory( body );
         historyResultCall.enqueue( new Callback<AddHistoryResult>(){
@@ -185,6 +173,8 @@ public class ServiceManager {
             public void onResponse( Call<AddHistoryResult> call, Response<AddHistoryResult> response ){
                 Log.e("AddHistoryRequest", response + "");
                 if( callback != null ){
+                    //Log.e("Add history", response.body().getData().get(0).getCustomerID());
+                    Log.e("Add history get MSG", response.body().getMessage());
                     if( addHistoryResultChecker( response ) ){
                         callback.onSuccess( response.body() );
                         Log.e("Response", response.body().getStatus());
@@ -197,6 +187,7 @@ public class ServiceManager {
 
             @Override
             public void onFailure( Call<AddHistoryResult> call, Throwable t ){
+                //Log.e("AddHistoryRequest fail", t.getMessage());
                 if( callback != null ){
                     callback.onFailure( t );
                 }

@@ -53,12 +53,12 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
                 authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
                 if (!authenItems.isEmpty()) {
                     getView().onDismiss();
-                    getView().onAuthen(authenItems);
-                    Log.e("onSuccess", authenItems.get(0).getUsername() + "");
+                    getView().onFullAuthen(authenItems);
+                    Log.e("onSuccess full authen", authenItems.get(0).getUsername() + "");
                 } else {
-                    Log.e("onSuccess", authenItems.size() + "");
+                    Log.e("onSuccess full authen", authenItems.size() + "");
                     getView().onDismiss();
-                    getView().onAuthen(authenItems);
+                    getView().onFullAuthen(authenItems);
                 }
             }
             @Override

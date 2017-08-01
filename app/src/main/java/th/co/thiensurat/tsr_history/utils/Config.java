@@ -11,6 +11,7 @@ public class Config {
     public static final int REQUEST_IMAGE_VIEW = 03;
     public static final int REQUEST_RESULT = 04;
     public static final int REQUEST_FULL_LOGIN = 05;
+    public static final int REQUEST_SEARCH = 06;
 
     public static final String KEY_DATA = "DATA";
     public static final String KEY_DEVICE_ID = "DEVICEID";

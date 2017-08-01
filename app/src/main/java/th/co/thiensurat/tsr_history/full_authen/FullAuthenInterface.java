@@ -17,6 +17,7 @@ public class FullAuthenInterface {
         void onDismiss();
         void onFail(String failed);
         void onAuthen(List<AuthenItem> authenItems);
+        void onFullAuthen(List<AuthenItem> authenItems);
         void goToSearchActivity();
     }
 

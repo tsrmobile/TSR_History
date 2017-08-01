@@ -10,6 +10,8 @@ import java.util.List;
 import retrofit2.Response;
 import th.co.thiensurat.tsr_history.api.ConvertItem;
 import th.co.thiensurat.tsr_history.api.ServiceManager;
+import th.co.thiensurat.tsr_history.api.event.AddEvent;
+import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
@@ -83,7 +85,7 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
     }
 
     @Override
-    public void addHistory(final List<AddHistoryItem> items) {
+    public void addHistory(final List<AddHistoryBody.HistoryBody> items) {
         getView().onLoad();
         serviceManager.AddHistoryRequest(items, new ServiceManager.ServiceManagerCallback<AddHistoryResult>() {
             @Override
@@ -99,17 +101,10 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
             }
             @Override
             public void onFailure(Throwable t) {
-                Log.e("Error", t.getMessage());
+                //Log.e("Error", t.getMessage());
+                getView().onFail(t.getMessage());
                 getView().onDismiss();
             }
         });
-    }
-
-    private boolean addHistoryResultChecker( Response<AddHistoryResult> response ){
-        if( response.isSuccessful() ){
-            AddHistoryResult result = response.body();
-            return Config.SUCCESS.equals( result.getStatus() );
-        }
-        return false;
     }
 }

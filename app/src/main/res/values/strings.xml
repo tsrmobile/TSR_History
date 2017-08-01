@@ -24,7 +24,7 @@
     <string name="dialog_title">บันทึกการตรวจสอบข้อมูล</string>
 
     <string name="text_search">ค้นหาข้อมูล</string>
-    <string name="text_name_title">ชื่อ-นามสกุล</string>
+    <string name="text_name_title">ชื่อ</string>
     <string name="text_idcard_title">เลขที่บัตรประชาชน</string>
     <string name="text_product">ผลิตภัณฑ์</string>
 

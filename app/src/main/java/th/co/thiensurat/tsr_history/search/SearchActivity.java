@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,10 +46,12 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
 
     @Bind(R.id.inputSearch) EditText inputSearch;
     @Bind(R.id.display_name) TextView displayName;
+    @Bind(R.id.button_sign_out) Button signOut;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
+        signOut.setOnClickListener( onSignOut() );
     }
 
     @Override
@@ -125,6 +129,23 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     public void onFail(String failed) {
         AlertDialog.dialogSearchFail(SearchActivity.this, failed);
         AlertDialog.dialogDimiss();
+    }
+
+    private View.OnClickListener onSignOut() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSignOut();
+            }
+        };
+    }
+
+    private void setSignOut() {
+        MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
+        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
+        MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, 0);
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     /*@Override

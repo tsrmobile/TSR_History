@@ -40,15 +40,15 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         holder.contractNumber.setText(context.getResources().getString(R.string.text_contract_number) + ": " + item.getCountno());
         holder.dateTime.setText(context.getResources().getString(R.string.text_contract_date) + ": " + item.getDate());
         holder.customerName.setText(context.getResources().getString(R.string.text_name_title) + ": " + item.getName());
-        holder.customerID.setText(context.getResources().getString(R.string.text_idcard_title) + ": " + item.getIdcard());
-        /*holder.productName.setText(context.getResources().getString(R.string.text_product) + ": " + item.getProductName() + " (" + item.getProductModel() + ")");
+        /*holder.customerID.setText(context.getResources().getString(R.string.text_idcard_title) + ": " + item.getIdcard());
+        holder.productName.setText(context.getResources().getString(R.string.text_product) + ": " + item.getProductName() + " (" + item.getProductModel() + ")");
         holder.productPrice.setText(context.getResources().getString(R.string.price_amount) + ": " + String.format("%,d", item.getTotalPrice()));
         holder.type.setText(context.getResources().getString(R.string.text_pay_type) + ": " + item.getPaytype());
         holder.totalMonth.setText(context.getResources().getString(R.string.text_pay_total_month) + ": " + item.getPeriods());
         holder.lastMonth.setText(context.getResources().getString(R.string.text_pay_last_month) + ": " + item.getPaylastmonth());
         holder.laststatus.setText(context.getResources().getString(R.string.text_last_status) + ": " + item.getLastpaystatus());
         holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSaleCode());*/
-        holder.statusCode.setText(context.getResources().getString(R.string.text_last_status) + ": " + ((item.getCustomerStatus() == null)? "" : item.getCustomerStatus().toUpperCase()) + " ("
+        holder.statusCode.setText(((item.getCustomerStatus() == null)? "" : item.getCustomerStatus().toUpperCase()) + " ("
                 + ((item.getCustomerStatus() == null)? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ")");
     }
 
@@ -67,11 +67,11 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         /*@Bind(R.id.payTotalMonth) TextView totalMonth;
         @Bind(R.id.payType) TextView type;
         @Bind(R.id.payLastMonth) TextView lastMonth;
-        @Bind(R.id.lastStatus) TextView laststatus;*/
+        @Bind(R.id.lastStatus) TextView laststatus;
+        @Bind(R.id.idcard) TextView customerID;*/
         @Bind(R.id.number) TextView contractNumber;
         @Bind(R.id.datetime) TextView dateTime;
         @Bind(R.id.name) TextView customerName;
-        @Bind(R.id.idcard) TextView customerID;
         @Bind(R.id.status) TextView statusCode;
         public ViewHolder(View itemView) {
             super(itemView);

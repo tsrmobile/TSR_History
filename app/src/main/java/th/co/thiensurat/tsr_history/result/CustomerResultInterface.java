@@ -2,6 +2,7 @@ package th.co.thiensurat.tsr_history.result;
 
 import java.util.List;
 
+import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
@@ -27,7 +28,6 @@ public class CustomerResultInterface {
     public interface presenter extends BaseMvpInterface.Presenter<CustomerResultInterface.view> {
         void onCancel();
         void requestItem();
-        void addHistory(List<AddHistoryItem> items);
-        //void setItemAdapter(List<ListItem> listItems);
+        void addHistory(List<AddHistoryBody.HistoryBody> items);
     }
 }

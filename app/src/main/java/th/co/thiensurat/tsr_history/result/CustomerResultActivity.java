@@ -1,6 +1,7 @@
 package th.co.thiensurat.tsr_history.result;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -27,9 +28,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.http.Body;
 import th.co.thiensurat.tsr_history.R;
+import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
+import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.result.adapter.CustomerResultAdapter;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
@@ -39,12 +43,9 @@ import th.co.thiensurat.tsr_history.utils.MyApplication;
 public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter> implements CustomerResultInterface.view{
 
     private Dialog dialog;
-    private ListItem listItem;
-    private AddHistoryItem addHistoryItem;
     private LinearLayoutManager layoutManager;
     private CustomerResultAdapter adapter;
     private List<ListItem> listItemList = new ArrayList<ListItem>();
-    private List<AddHistoryItem> itemList = new ArrayList<AddHistoryItem>();
     @Override
     public CustomerResultInterface.presenter createPresenter() {
         return CustomerResultPresenter.create();
@@ -60,19 +61,18 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     }
 
     @Bind(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
-    //@Bind(R.id.btn_try_again) Button tryAgain;
     @Bind(R.id.recyclerview) RecyclerView recyclerView;
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
     @Bind(R.id.btn_cancel) Button cancel;
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.idcard_number) TextView idcardNumber;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
         cancel.setOnClickListener( onCancel() );
-        //tryAgain.setOnClickListener( onTryAgain() );
     }
 
     @Override
@@ -112,12 +112,14 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public void setItemAdapter(List<ListItem> listItems) {
         this.listItemList = listItems;
-        Log.e("List size", listItemList.size() + "");
+        //Log.e("List size", listItemList.size() + "");
         adapter = new CustomerResultAdapter(this, listItems);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         textViewTotal.setText(String.valueOf(listItemList.size()));
         AlertDialog.dialogDimiss();
+
+        idcardNumber.setText(getResources().getString(R.string.text_idcard_title) + ": " + listItems.get(0).getIdcard());
     }
 
     @Override
@@ -170,15 +172,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         };
     }
 
-    /*private View.OnClickListener onTryAgain() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPresenter().requestItem();
-            }
-        };
-    }*/
-
     private void takeScreenshot() {
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
@@ -194,65 +187,23 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
-            showImage(imageFile);
+            setHistoryValidation(imageFile);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    public void showImage(final File imageFile) {
-        Uri uri = Uri.fromFile(imageFile);
-        dialog = new Dialog(this);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_layout);
-        dialog.setTitle(getResources().getString(R.string.dialog_title));
-        TextView text = (TextView) dialog.findViewById(R.id.text);
-        StringBuilder sb = new StringBuilder();
-        for (ListItem item : listItemList) {
-            sb.append( getResources().getString(R.string.text_contract_number) + ": " + item.getCountno() + "\n");
-            sb.append( getResources().getString(R.string.text_contract_date) + ": " + item.getDate() + "\n");
-            sb.append( getResources().getString(R.string.text_idcard_title) + ": " + item.getIdcard() + "\n");
-            sb.append( getResources().getString(R.string.sale) + ": " + item.getSaleCode() + "\n");
-            if (listItemList.size() > 1) {
-                sb.append("\n");
-            }
-        }
-        text.setText(sb.toString());
-        ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        image.setImageURI(uri);
-        Button dialogSave = (Button) dialog.findViewById(R.id.save);
-        dialogSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setHistoryValidation(imageFile);
-                dialog.dismiss();
-
-            }
-        });
-
-        Button dialogCancel = (Button) dialog.findViewById(R.id.cancel);
-        dialogCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                itemList.clear();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
     private void setHistoryValidation(File image) {
-        itemList.clear();
-        addHistoryItem = new AddHistoryItem();
-        for (ListItem item : listItemList) {
-            addHistoryItem.setCustomerID( item.getIdcard() );
-            addHistoryItem.setSaleCode( item.getSaleCode() );
-            addHistoryItem.setDateContract( item.getDate() );
-            addHistoryItem.setImage(encodeImage(image));
-            addHistoryItem.setCreatedBy(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
-        }
-        itemList.add(addHistoryItem);
-        getPresenter().addHistory(itemList);
+        List<AddHistoryBody.HistoryBody> bodyList = new ArrayList<>();
+        String base64IMG = encodeImage(image);
+        bodyList.add( new AddHistoryBody.HistoryBody()
+                .setCustomerID(listItemList.get(0).getIdcard())
+                .setSaleCode(listItemList.get(0).getSaleCode())
+                .setDateContract(listItemList.get(0).getDate())
+                .setImage(base64IMG)
+                .setCreatedBy(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME)));
+
+        getPresenter().addHistory(bodyList);
     }
 
     private String encodeImage(File imagefile) {
@@ -264,10 +215,10 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         }
         Bitmap bm = BitmapFactory.decodeStream(fis);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        //Log.e("base64", encImage);
         return encImage;
-
     }
 }

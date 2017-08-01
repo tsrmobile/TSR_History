@@ -110,6 +110,8 @@ public class AlertDialog {
     }
 
     public static void dialogDimiss() {
-        sweetAlertDialog.dismiss();
+        if (sweetAlertDialog.isShowing()) {
+            sweetAlertDialog.dismiss();
+        }
     }
 }
