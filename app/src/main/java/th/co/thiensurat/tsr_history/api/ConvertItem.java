@@ -45,7 +45,8 @@ public class ConvertItem {
                     .setProductModel(listItemResult.getProductModel())
                     .setSaleCode(listItemResult.getSaleCode())
                     .setDate(listItemResult.getDate())
-                    .setAgingDetail(listItemResult.getAgingDetail());
+                    .setAgingDetail(listItemResult.getAgingDetail())
+                    .setStDate(listItemResult.getStDate());
             items.add( item );
         }
         return items;

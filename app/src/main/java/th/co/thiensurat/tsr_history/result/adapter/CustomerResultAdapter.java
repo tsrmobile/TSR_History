@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -38,7 +40,7 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
     public void onBindViewHolder(CustomerResultAdapter.ViewHolder holder, int position) {
         ListItem item = listItems.get(position);
         holder.contractNumber.setText(context.getResources().getString(R.string.text_contract_number) + ": " + item.getCountno());
-        holder.dateTime.setText(context.getResources().getString(R.string.text_contract_date) + ": " + item.getDate());
+        holder.dateTime.setText(context.getResources().getString(R.string.text_contract_date) + ": " + ConvertDateFormat(item.getDate()));
         holder.customerName.setText(context.getResources().getString(R.string.text_name_title) + ": " + item.getName());
         /*holder.customerID.setText(context.getResources().getString(R.string.text_idcard_title) + ": " + item.getIdcard());
         holder.productName.setText(context.getResources().getString(R.string.text_product) + ": " + item.getProductName() + " (" + item.getProductModel() + ")");
@@ -49,7 +51,8 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         holder.laststatus.setText(context.getResources().getString(R.string.text_last_status) + ": " + item.getLastpaystatus());
         holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSaleCode());*/
         holder.statusCode.setText(((item.getCustomerStatus() == null)? "" : item.getCustomerStatus().toUpperCase()) + " ("
-                + ((item.getCustomerStatus() == null)? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ")");
+                + ((item.getCustomerStatus() == null)? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ") "
+                + context.getResources().getString(R.string.text_date_status) + " " + ConvertDateFormat(item.getStDate()));
     }
 
     @Override
@@ -77,5 +80,19 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private String ConvertDateFormat(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date d = dateFormat.parse(date);
+            System.out.println("DATE"+d);
+            System.out.println("Formated"+dateFormat.format(d));
+            return dateFormat.format(d);
+        } catch(Exception e) {
+            //java.text.ParseException: Unparseable date: Geting error
+            System.out.println("Excep"+e);
+        }
+        return null;
     }
 }

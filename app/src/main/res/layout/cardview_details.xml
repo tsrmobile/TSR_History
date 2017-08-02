@@ -42,10 +42,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:gravity="right"
+                    android:layout_gravity="center_vertical"
                     android:text="N"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/White"/>
 
             </LinearLayout>

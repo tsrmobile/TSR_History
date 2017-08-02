@@ -35,6 +35,7 @@
     <string name="text_pay_total_month">จำนวนงวด</string>
     <string name="text_pay_last_month">งวดสุดท้ายที่ชำระ</string>
     <string name="text_last_status">สถานะ</string>
+    <string name="text_date_status">ณ วันที่</string>
 
     <string name="button_save_log">บันทึก</string>
     <string name="button_cancel">ยกเลิก</string>
