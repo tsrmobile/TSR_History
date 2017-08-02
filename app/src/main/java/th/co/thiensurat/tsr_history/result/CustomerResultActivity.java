@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -42,9 +43,11 @@ import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter> implements CustomerResultInterface.view{
 
+    private String data;
     private Dialog dialog;
     private LinearLayoutManager layoutManager;
     private CustomerResultAdapter adapter;
+    private ListItem listItem;
     private List<ListItem> listItemList = new ArrayList<ListItem>();
     @Override
     public CustomerResultInterface.presenter createPresenter() {
@@ -64,7 +67,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.recyclerview) RecyclerView recyclerView;
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
-    @Bind(R.id.btn_cancel) Button cancel;
+    //@Bind(R.id.btn_cancel) Button cancel;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.idcard_number) TextView idcardNumber;
     @Override
@@ -72,12 +75,12 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
-        cancel.setOnClickListener( onCancel() );
+       // cancel.setOnClickListener( onCancel() );
     }
 
     @Override
     public void setupInstance() {
-        getPresenter().requestItem();
+        getDataFromIntent();
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -85,10 +88,11 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void setupView() {
-        toolbar.setTitle("ผู้ใช้: " + MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
+        toolbar.setTitle(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
         toolbar.setTitleTextColor(getResources().getColor(R.color.White));
         setSupportActionBar(toolbar);
-        layoutManager.setReverseLayout(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //layoutManager.setReverseLayout(true);
     }
 
     @Override
@@ -98,8 +102,17 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public String receiveItem() {
-        String data = getIntent().getStringExtra(Config.KEY_DATA);
         return data;
+    }
+
+    private void getDataFromIntent() {
+        if (getIntent().getStringExtra(Config.KEY_CLASS).equals("SearchActivity")) {
+            data = getIntent().getStringExtra(Config.KEY_DATA);
+            getPresenter().requestItem();
+        } else {
+            data = getIntent().getStringExtra(Config.KEY_DATA);
+            getPresenter().requestItem();
+        }
     }
 
     @Override
@@ -112,7 +125,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public void setItemAdapter(List<ListItem> listItems) {
         this.listItemList = listItems;
-        //Log.e("List size", listItemList.size() + "");
         adapter = new CustomerResultAdapter(this, listItems);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -163,13 +175,22 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         };
     }
 
-    private View.OnClickListener onCancel() {
+    /*private View.OnClickListener onCancel() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getPresenter().onCancel();
             }
         };
+    }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getPresenter().onCancel();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void takeScreenshot() {

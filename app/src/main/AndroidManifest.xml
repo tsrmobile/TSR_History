@@ -20,9 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".search.SearchActivity">
-
-        </activity>
+        <activity android:name=".search.SearchActivity"></activity>
 
         <!-- [START network_service] -->
         <receiver
@@ -43,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".result_customer.CustomerByNameActivity"></activity>
     </application>
 
 </manifest>

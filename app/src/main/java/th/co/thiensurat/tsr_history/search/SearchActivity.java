@@ -2,6 +2,7 @@ package th.co.thiensurat.tsr_history.search;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
+import th.co.thiensurat.tsr_history.result_customer.CustomerByNameActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
@@ -47,11 +49,13 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     @Bind(R.id.inputSearch) EditText inputSearch;
     @Bind(R.id.display_name) TextView displayName;
     @Bind(R.id.button_sign_out) Button signOut;
+    @Bind(R.id.button_to_tsr) Button gotoTSR;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         signOut.setOnClickListener( onSignOut() );
+        gotoTSR.setOnClickListener( onGoToTSR() );
     }
 
     @Override
@@ -122,7 +126,15 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     public void goToResultCustomer(String data) {
         Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
         intent.putExtra(Config.KEY_DATA, data);
+        intent.putExtra(Config.KEY_CLASS, "SearchActivity");
         startActivityForResult(intent, Config.REQUEST_RESULT);
+    }
+
+    @Override
+    public void goToCustomerByName(String data) {
+        Intent intent = new Intent(getApplicationContext(), CustomerByNameActivity.class);
+        intent.putExtra(Config.KEY_DATA, data);
+        startActivityForResult(intent, Config.REQUEST_RESULT_BY_NAME);
     }
 
     @Override
@@ -140,6 +152,29 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         };
     }
 
+    private View.OnClickListener onGoToTSR() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat");
+                    startActivity(launchIntent);
+                } else {
+                    dialogLog();
+                }
+            }
+        };
+    }
+
+    private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packagename, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
     private void setSignOut() {
         MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
@@ -147,39 +182,6 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         setResult(RESULT_CANCELED);
         finish();
     }
-
-    /*@Override
-    public void onAuthen(List<AuthenItem> authenItems) {
-        if (!authenItems.isEmpty()) {
-            for (AuthenItem item : authenItems) {
-                Log.e("Authen", item.getUsername());
-                if (item.getLoggedin() != 1) {
-                    if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
-                        dialogLoginConfirm();
-                    } else {
-                        startActivityForResult(new Intent(this, FullAuthenActivity.class), Config.REQUEST_FULL_LOGIN);
-                    }
-                } else if (item.getLoggedin() == 1) {
-                    MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
-                    MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, item.getUsername());
-                    MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
-                    displayName.setText(getResources().getString(R.string.authen_username) + ": " + item.getUsername());
-                }
-            }
-        } else {
-            if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
-                dialogLoginConfirm();
-            } else {
-                dialogLoginConfirmWithTSR();
-            }
-        }
-    }*/
-
-    /*private void getDeviceID() {
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        //Log.e("Device id", deviceID);
-        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
-    }*/
 
     @Override
     public void onLoad() {
@@ -191,78 +193,18 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         AlertDialog.dialogDimiss();
     }
 
-    /*private void dialogLoginConfirm() {
+    private void dialogLog() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_login_msg));
-        sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
-        sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_login));
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                finish();
-            }
-        });
+        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_msg_not_installed));
+        sweetAlertDialog.showCancelButton(false);
+        sweetAlertDialog.setConfirmText("OK");
         sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismiss();
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat");
-                startActivityForResult(launchIntent, Config.REQUEST_LOGIN);
             }
         });
         sweetAlertDialog.show();
-        sweetAlertDialog.setCancelable(false);
     }
-
-    private void dialogLoginConfirmWithTSR() {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_full_login_msg));
-        sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
-        sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_login));
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                finish();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                startActivityForResult(new Intent(getApplicationContext(), FullAuthenActivity.class), Config.REQUEST_FULL_LOGIN);
-            }
-        });
-        sweetAlertDialog.show();
-        sweetAlertDialog.setCancelable(false);
-    }*/
-
-    /*private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
-        try {
-            packageManager.getPackageInfo(packagename, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }*/
-
-    /*private void loginSession() {
-        long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
-        int minutes = (int) ((loginTime / (1000*60)) % 60);
-        Log.e("Session", minutes + ", " + MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN));
-        if (minutes > 30) {
-            MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
-            MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
-            displayName.setText(getResources().getString(R.string.authen_username) + ": -");
-            getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
-            Log.e("true", MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)+"");
-        } else {
-            Log.e("false", MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)+"");
-            displayName.setText(getResources().getString(R.string.authen_username) + ": "
-                    + MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
-        }
-    }*/
 }

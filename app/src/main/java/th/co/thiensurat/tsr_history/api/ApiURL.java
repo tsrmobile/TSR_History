@@ -13,7 +13,7 @@ public class ApiURL {
     public static final String URL_FULL_AUTH = "/history/api/v1/authen/full/";
     public static final String URL_AUTH = "/history/api/v1/authen/";
     public static final String URL_SAVE = "/history/api/v1/add/";
-    public static final String URL_HISTORY = "/history/api/v1/history/";
+    public static final String URL_HISTORY = "/history/api/v1/search/";
     public static final String BASE_URL = "http://app.thiensurat.co.th";
 
 

@@ -32,7 +32,6 @@ public interface ApiService {
     @GET( URL_HISTORY )
     Call<ListItemResultGroup> getHistory(@Query( "search" ) String value );
 
-    //@FormUrlEncoded
     @POST( URL_SAVE )
     Call<AddHistoryResult> addHistory(@Body AddHistoryBody body);
 }

@@ -16,6 +16,7 @@
     <string name="dialog_msg_save_fail">ไม่สามารถบันทึกข้อมูลได้</string>
     <string name="dialog_msg_save_success">บันทึกสำเร็จ</string>
     <string name="dialog_msg_search_fail">ไม่พบข้อมูล</string>
+    <string name="dialog_msg_not_installed">เครื่องของคุณไม่ได้ติดตั้ง\nTSR Sale Systems - Direct Sale</string>
 
     <string name="dialog_login_msg">กรุณาเข้าสู่ระบบ \n ผ่านทางแอพพลิเคชั่น TSR Mobile</string>
     <string name="dialog_full_login_msg">เครื่องของคุณไม่ได้ติดตั้ง TSR Mobile\n กรุณาเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านเดียวกัน</string>
@@ -47,4 +48,5 @@
     <string name="try_again">ลองอีกครั้ง</string>
 
     <string name="text_warning">** การเข้าสู่ระบบจากแอพพลิเคชั่นนี้\nจะไม่ส่งผลให้ใช้งานแอพพลิเคชั่น TSR Sale Systems - Direct Sale ได้</string>
+    <string name="open_tsr_mobile">ไปยังแอพฯ TSR Sale Systems - Direct Sale</string>
 </resources>

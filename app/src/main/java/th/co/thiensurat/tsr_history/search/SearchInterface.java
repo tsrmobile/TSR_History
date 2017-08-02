@@ -13,6 +13,7 @@ public class SearchInterface {
 
     public interface view extends BaseMvpInterface.View {
         void goToResultCustomer(String data);
+        void goToCustomerByName(String data);
         void onLoad();
         void onDismiss();
         void onFail(String failed);
