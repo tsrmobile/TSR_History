@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,6 +21,7 @@ import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
+import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 import th.co.thiensurat.tsr_history.result_customer.adapter.CustomerByNameAdapter;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
@@ -31,6 +33,15 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
     private CustomerByNameAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<ListItem> listItemList = new ArrayList<ListItem>();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            getPresenter().requestItem();
+        }
+    }
+
     @Override
     public CustomerByNameInterface.Presenter createPresenter() {
         return CustomerByNamePresenter.create();
@@ -51,7 +62,6 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
 
     @Override
     public void setupInstance() {
-        getPresenter().requestItem();
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -65,6 +75,24 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
     @Override
     public void initialize() {
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable( Config.KEY_SAVE_STATE_NAME, getPresenter().onGetItemGroup() );
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getPresenter().onSetItemGroup((ListItemGroup) savedInstanceState.getParcelable( Config.KEY_SAVE_STATE_NAME ));
+    }
+
+    @Override
+    public void restoreView(Bundle savedInstanceState) {
+        super.restoreView(savedInstanceState);
+        getPresenter().onRestoreItemToAdapter( getPresenter().onGetItemGroup() );
     }
 
     @Override
@@ -107,13 +135,18 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
     public void onCustomerClick(View view, int position) {
         ListItem item = listItemList.get(position);
         Intent intent = new Intent(getApplicationContext(), CustomerResultActivity.class);
-        intent.putExtra(Config.KEY_DATA, item.getIdcard());
+        if (item.getIdcard().equals("0") || item.getIdcard().isEmpty()) {
+            intent.putExtra(Config.KEY_DATA, item.getName());
+        } else {
+            intent.putExtra(Config.KEY_DATA, item.getIdcard());
+        }
         intent.putExtra(Config.KEY_CLASS, "CustomerByNameActivity");
         startActivityForResult(intent, Config.REQUEST_RESULT);
     }
 
     private void setToolbar() {
         toolbar.setTitle(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.White));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

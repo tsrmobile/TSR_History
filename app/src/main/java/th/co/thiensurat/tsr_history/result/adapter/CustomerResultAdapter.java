@@ -2,13 +2,16 @@ package th.co.thiensurat.tsr_history.result.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -82,16 +85,19 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         }
     }
 
-    private String ConvertDateFormat(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private String ConvertDateFormat(String strdate) {
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
+        int year = 0, month = 0, day = 0;
         try {
-            Date d = dateFormat.parse(date);
-            System.out.println("DATE"+d);
-            System.out.println("Formated"+dateFormat.format(d));
-            return dateFormat.format(d);
-        } catch(Exception e) {
-            //java.text.ParseException: Unparseable date: Geting error
-            System.out.println("Excep"+e);
+            Date date = dbFormat.parse(strdate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH) + 1;
+            day = c.get(Calendar.DATE);
+            return String.format("%s/%s/%s", day,month,year+543);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
     }

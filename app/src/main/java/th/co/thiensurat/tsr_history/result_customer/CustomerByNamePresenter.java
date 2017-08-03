@@ -23,8 +23,8 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
         implements CustomerByNameInterface.Presenter {
 
     private ServiceManager serviceManager;
-    private ListItemGroup listItemGroup;
-    private List<ListItem> listItemList = new ArrayList<ListItem>();
+    private static ListItemGroup listItemGroup;
+    private static List<ListItem> listItemList = new ArrayList<ListItem>();
 
     public static CustomerByNameInterface.Presenter create() {
         return new CustomerByNamePresenter();
@@ -63,6 +63,8 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
                 } else {
                     listItemList.clear();
                     listItemList = ConvertItem.createListItemGroupFromResult( result ).getData();
+                    ListItemGroup itemGroup = ConvertItem.createListItemGroupFromResult( result );
+                    listItemGroup = itemGroup;
                     getView().setItemAdapter(listItemList);
                     getView().onDismiss();
                 }
@@ -73,8 +75,24 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
                 listItemList.clear();
                 getView().onDismiss();
                 getView().showServiceUnavailableView();
-                Log.e("Error", t.getMessage());
+                //Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onSetItemGroup(ListItemGroup itemGroup) {
+        this.listItemGroup = itemGroup;
+    }
+
+    @Override
+    public ListItemGroup onGetItemGroup() {
+        return listItemGroup;
+    }
+
+    @Override
+    public void onRestoreItemToAdapter(ListItemGroup itemGroup) {
+        this.listItemList = itemGroup.getData();
+        getView().setItemAdapter(listItemList);
     }
 }

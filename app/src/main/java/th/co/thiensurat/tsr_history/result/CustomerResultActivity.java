@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,8 @@ import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.result.adapter.CustomerResultAdapter;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
+import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
+import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
@@ -49,6 +52,15 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     private CustomerResultAdapter adapter;
     private ListItem listItem;
     private List<ListItem> listItemList = new ArrayList<ListItem>();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            getPresenter().requestItem();
+        }
+    }
+
     @Override
     public CustomerResultInterface.presenter createPresenter() {
         return CustomerResultPresenter.create();
@@ -67,7 +79,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.recyclerview) RecyclerView recyclerView;
     @Bind(R.id.totalSummary) TextView textViewTotal;
     @Bind(R.id.btn_save) Button save;
-    //@Bind(R.id.btn_cancel) Button cancel;
+    @Bind(R.id.btn_cancel) Button cancel;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.idcard_number) TextView idcardNumber;
     @Override
@@ -75,7 +87,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
-       // cancel.setOnClickListener( onCancel() );
+        cancel.setOnClickListener( onGoHome() );
     }
 
     @Override
@@ -92,7 +104,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         toolbar.setTitleTextColor(getResources().getColor(R.color.White));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //layoutManager.setReverseLayout(true);
     }
 
     @Override
@@ -101,24 +112,42 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable( Config.KEY_SAVE_STATE_RESULT, getPresenter().onGetItemGroup() );
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getPresenter().onSetItemGroup((ListItemGroup) savedInstanceState.getParcelable( Config.KEY_SAVE_STATE_RESULT ));
+    }
+
+    @Override
+    public void restoreView(Bundle savedInstanceState) {
+        super.restoreView(savedInstanceState);
+        getPresenter().onRestoreItemToAdapter( getPresenter().onGetItemGroup() );
+    }
+
+    @Override
     public String receiveItem() {
         return data;
     }
 
     private void getDataFromIntent() {
-        if (getIntent().getStringExtra(Config.KEY_CLASS).equals("SearchActivity")) {
-            data = getIntent().getStringExtra(Config.KEY_DATA);
-            getPresenter().requestItem();
-        } else {
-            data = getIntent().getStringExtra(Config.KEY_DATA);
-            getPresenter().requestItem();
-        }
+        data = getIntent().getStringExtra(Config.KEY_DATA);
     }
 
     @Override
     public void onBackToSearch() {
         this.listItemList.clear();
         setResult(RESULT_CANCELED);
+        finish();
+    }
+
+    @Override
+    public void onGoToHome() {
+        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
         finish();
     }
 
@@ -175,14 +204,14 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         };
     }
 
-    /*private View.OnClickListener onCancel() {
+    private View.OnClickListener onGoHome() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getPresenter().onCancel();
+                getPresenter().onGoToHome();
             }
         };
-    }*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -38,7 +38,7 @@
     <string name="text_date_status">ณ วันที่</string>
 
     <string name="button_save_log">บันทึก</string>
-    <string name="button_cancel">ยกเลิก</string>
+    <string name="button_cancel">กลับหน้าแรก</string>
 
     <string name="list_total">รวม</string>
     <string name="test_list">รายการ</string>

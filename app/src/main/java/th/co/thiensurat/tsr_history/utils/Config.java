@@ -19,6 +19,8 @@ public class Config {
     public static final String KEY_USERNAME = "USERNAME";
     public static final String KEY_SESSION = "SESSION";
     public static final String KEY_BOOLEAN = "STATUS";
+    public static final String KEY_SAVE_STATE_RESULT = "STATE";
+    public static final String KEY_SAVE_STATE_NAME = "STATE_NAME";
 
     public static final String SUCCESS = "SUCCESS";
     public static final String FAILED = "FAIL";

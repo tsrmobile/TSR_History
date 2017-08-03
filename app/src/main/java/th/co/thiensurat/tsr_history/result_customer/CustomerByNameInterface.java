@@ -4,6 +4,7 @@ import java.util.List;
 
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
+import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 
 /**
  * Created by teerayut.k on 8/2/2017.
@@ -22,5 +23,8 @@ public class CustomerByNameInterface {
 
     public interface Presenter extends BaseMvpInterface.Presenter<CustomerByNameInterface.View> {
         void requestItem();
+        void onSetItemGroup(ListItemGroup itemGroup);
+        ListItemGroup onGetItemGroup();
+        void onRestoreItemToAdapter(ListItemGroup itemGroup);
     }
 }

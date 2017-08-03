@@ -70,4 +70,10 @@ public class ConvertItem {
         }
         return items;
     }
+
+    public static List<ListItem> createListItemsFromItemGroup(ListItemGroup itemGroup) {
+        List<ListItem> items = new ArrayList<>();
+        items = itemGroup.getData();
+        return items;
+    }
 }

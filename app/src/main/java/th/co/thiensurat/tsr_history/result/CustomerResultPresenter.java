@@ -27,8 +27,8 @@ import th.co.thiensurat.tsr_history.utils.Config;
 public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInterface.view> implements CustomerResultInterface.presenter {
 
     private ServiceManager serviceManager;
-    private ListItemGroup listItemGroup;
-    private List<ListItem> listItemList = new ArrayList<ListItem>();
+    private static ListItemGroup listItemGroup;
+    private static List<ListItem> listItemList = new ArrayList<ListItem>();
 
     public static CustomerResultInterface.presenter create() {
         return new CustomerResultPresenter();
@@ -58,6 +58,11 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
     }
 
     @Override
+    public void onGoToHome() {
+        getView().onGoToHome();
+    }
+
+    @Override
     public void requestItem() {
         getView().onLoad();
         String data = getView().receiveItem();
@@ -70,6 +75,8 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
                     getView().showServiceUnavailableView("ไม่พบข้อมูล\nหรือ\nประวัติลูกค้าอาจถูกตรวจสอบแล้ว");
                 } else {
                     listItemList = ConvertItem.createListItemGroupFromResult( result ).getData();
+                    ListItemGroup itemGroup = ConvertItem.createListItemGroupFromResult( result );
+                    listItemGroup = itemGroup;
                     getView().setItemAdapter(listItemList);
                 }
             }
@@ -77,9 +84,10 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
             @Override
             public void onFailure(Throwable t) {
                 listItemList.clear();
+                listItemGroup = null;
                 getView().onDismiss();
                 getView().showServiceUnavailableView("ไม่พบข้อมูล\nหรือ\nประวัติลูกค้าอาจถูกตรวจสอบแล้ว");
-                Log.e("Error", t.getMessage());
+                //Log.e("Error", t.getMessage());
             }
         });
     }
@@ -90,7 +98,7 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
         serviceManager.AddHistoryRequest(items, new ServiceManager.ServiceManagerCallback<AddHistoryResult>() {
             @Override
             public void onSuccess(AddHistoryResult result) {
-                Log.e("Message", result.getMessage());
+                //Log.e("Message", result.getMessage());
                 if (result.getStatus().equals(Config.SUCCESS)) {
                     getView().onDismiss();
                     getView().onSuccess();
@@ -106,5 +114,22 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
                 getView().onDismiss();
             }
         });
+    }
+
+    @Override
+    public void onSetItemGroup(ListItemGroup itemResultGroup) {
+        this.listItemGroup = itemResultGroup;
+    }
+
+    @Override
+    public ListItemGroup onGetItemGroup() {
+        return listItemGroup;
+    }
+
+    @Override
+    public void onRestoreItemToAdapter(ListItemGroup itemGroup) {
+        //Log.e("Group size", itemGroup.getData().size() + "");
+        this.listItemList = itemGroup.getData();
+        getView().setItemAdapter(listItemList);
     }
 }
