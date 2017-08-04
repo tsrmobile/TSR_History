@@ -80,9 +80,9 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
                 if (!authenItems.isEmpty()) {
                     getView().onDismiss();
                     getView().onAuthen(authenItems);
-                    //Log.e("onSuccess", authenItems.get(0).getLoggedin() + "");
+                    Log.e("onSuccess", authenItems.get(0).getLoggedin() + "");
                 } else {
-                    //Log.e("onSuccess", authenItems.size() + "");
+                    Log.e("onSuccess", authenItems.size() + "");
                     getView().onDismiss();
                     getView().onAuthen(authenItems);
                 }

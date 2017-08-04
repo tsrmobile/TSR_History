@@ -125,7 +125,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             } else {
                 AlertDialog.dialogSearchFail(FullAuthenActivity.this, getResources().getString(R.string.dialog_full_login_msg));
             }
-
         } else {
             if (authenItems.get(0).getLoggedin() != 1) {
                 if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
