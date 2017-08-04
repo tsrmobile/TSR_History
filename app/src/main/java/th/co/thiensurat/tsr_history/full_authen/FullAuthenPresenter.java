@@ -20,6 +20,7 @@ import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 
 public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.view> implements FullAuthenInterface.presenter {
 
+    private String exception = null;
     private ServiceManager serviceManager;
     private List<AuthenItem> authenItems = new ArrayList<AuthenItem>();
     public static FullAuthenPresenter create() {
@@ -66,6 +67,7 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
                 Log.e("Full authen onFail", t.getMessage());
                 getView().onDismiss();
                 getView().onFail(t.getLocalizedMessage());
+                setError(t.getMessage());
             }
         });
     }
@@ -93,6 +95,7 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
                 Log.e("Search onFail", t.getMessage());
                 getView().onDismiss();
                 getView().onFail(t.getLocalizedMessage());
+                setError(t.getMessage());
             }
         });
     }
@@ -101,5 +104,14 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
     public void goToSearchActivity() {
         getView().onLoad();
         getView().goToSearchActivity();
+    }
+
+    private void setError(String exception) {
+        this.exception = exception;
+    }
+
+    @Override
+    public String getError() {
+        return exception;
     }
 }

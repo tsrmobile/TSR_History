@@ -145,8 +145,7 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
     }
 
     private void setToolbar() {
-        toolbar.setTitle(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
-        toolbar.setTitleTextColor(getResources().getColor(R.color.White));
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

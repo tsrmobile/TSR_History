@@ -3,6 +3,7 @@ package th.co.thiensurat.tsr_history.search;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,6 +64,25 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Config.KEY_USERNAME, MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, savedInstanceState.getString(Config.KEY_USERNAME));
+    }
+
+    @Override
+    public void restoreView(Bundle savedInstanceState) {
+        super.restoreView(savedInstanceState);
+        displayName.setText(getResources().getString(R.string.authen_username) + ": "
+                + savedInstanceState.getString(Config.KEY_USERNAME));
+    }
+
+    @Override
     public void setupView() {
         inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -104,10 +124,10 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
             case Config.REQUEST_RESULT :
                 if (resultCode == RESULT_OK) {
                     Log.e("TSR History", "Success");
-                    inputSearch.setText("");
+                    //inputSearch.setText("");
                 } else if (resultCode == RESULT_CANCELED) {
                     Log.e("TSR History", "Failed");
-                    inputSearch.setText("");
+                    //inputSearch.setText("");
                 }
                 break;
             default: break;

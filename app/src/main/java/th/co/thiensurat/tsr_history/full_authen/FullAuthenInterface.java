@@ -25,5 +25,6 @@ public class FullAuthenInterface {
         void requestLogin(final List<FullAuthenItem> fullAuthenItems);
         void onLoginValidation(String deviceId);
         void goToSearchActivity();
+        String getError();
     }
 }

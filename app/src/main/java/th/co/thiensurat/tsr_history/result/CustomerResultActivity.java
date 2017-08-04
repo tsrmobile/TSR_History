@@ -100,8 +100,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void setupView() {
-        toolbar.setTitle(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
-        toolbar.setTitleTextColor(getResources().getColor(R.color.White));
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

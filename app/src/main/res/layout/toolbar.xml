@@ -7,11 +7,9 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:gravity="center"
-    android:orientation="vertical"
     app:titleTextColor="@color/colorPrimaryDark"
     app:navigationIcon="@drawable/ic_arrow_back_white_36dp"
     app:theme="@style/DrawerArrowStyle"
     android:backgroundTintMode="@color/White">
-
 
 </android.support.v7.widget.Toolbar>

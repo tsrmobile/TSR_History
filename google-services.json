@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "715448212820",
+    "firebase_url": "https://tsr-history-validation.firebaseio.com",
+    "project_id": "tsr-history-validation",
+    "storage_bucket": "tsr-history-validation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715448212820:android:08c5b96d4a9905b2",
+        "android_client_info": {
+          "package_name": "th.co.thiensurat.tsr_history"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715448212820-dgf41boq5g0lvgu4neuu9fsduc28vosu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "th.co.thiensurat.tsr_history",
+            "certificate_hash": "40fcaebe36879e99ed9d085c28b9ceb88380bc76"
+          }
+        },
+        {
+          "client_id": "715448212820-2k9pg8mg8hi47oihhng5l9tlv1kiqpeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQYw98LllYHvzdOkKEvq34WlqR5qNlcxk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715448212820-2k9pg8mg8hi47oihhng5l9tlv1kiqpeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
