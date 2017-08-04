@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -106,7 +107,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
 
     @Override
     public void initialize() {
-        checkAppVersion();
         textViewVersion.setText("App v." + appVersion());
         getDeviceID();
         loginSession();
@@ -251,13 +251,14 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     private void dialogUpdate() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_login_msg));
+        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg_update));
         sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
         sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_update));
         sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismiss();
+                finish();
             }
         });
         sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -284,11 +285,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         if (!isNetworkAvailable) {
             AlertDialog.dialogNetworkError(FullAuthenActivity.this);
         } else {
-            if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
-            } else {
-                getPresenter().goToSearchActivity();
-            }
+            checkAppVersion();
         }
     }
 
@@ -350,10 +347,12 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     }
 
     private void checkAppVersion() {
+        AlertDialog.dialogLoading(this);
         try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
             PackageManager pm = getPackageManager();
             PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-
             String curVersion = packageInfo.versionName;
             String newVersion = curVersion;
             newVersion = Jsoup.connect(ApiURL.URL_APP_VERSION + "?id=" + packageInfo.packageName)
@@ -363,12 +362,22 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
                     .first()
                     .ownText();
             if (!curVersion.equals(newVersion)) {
+                AlertDialog.dialogDimiss();
                 dialogUpdate();
+            } else {
+                AlertDialog.dialogDimiss();
+                if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                    getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+                } else {
+                    getPresenter().goToSearchActivity();
+                }
             }
         } catch (PackageManager.NameNotFoundException e) {
             Log.e("CheckAppVersion", e.getMessage());
+            AlertDialog.dialogDimiss();
         } catch (IOException e) {
             e.printStackTrace();
+            AlertDialog.dialogDimiss();
         }
     }
 }
