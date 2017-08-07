@@ -80,9 +80,9 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
             public void onSuccess(AuthenItemResultGroup result) {
                 authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
                 if (!authenItems.isEmpty()) {
+                    Log.e("onSuccess", authenItems.get(0).getLoggedin() + "");
                     getView().onDismiss();
                     getView().onAuthen(authenItems);
-                    Log.e("onSuccess", authenItems.get(0).getLoggedin() + "");
                 } else {
                     Log.e("onSuccess", authenItems.size() + "");
                     getView().onDismiss();
@@ -92,7 +92,7 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("Search onFail", t.getMessage());
+                Log.e("validate authen onFail", t.getMessage());
                 getView().onDismiss();
                 getView().onFail(t.getLocalizedMessage());
                 setError(t.getMessage());

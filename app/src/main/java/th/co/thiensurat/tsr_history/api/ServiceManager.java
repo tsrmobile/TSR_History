@@ -15,6 +15,7 @@ import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.TsrAuthenResult;
 import th.co.thiensurat.tsr_history.utils.Config;
 
 import static th.co.thiensurat.tsr_history.api.ApiURL.BASE_URL;
@@ -26,6 +27,7 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.BASE_URL;
 public class ServiceManager {
 
     private Call<AddHistoryResult> historyResultCall;
+    private Call<TsrAuthenResult> tsrAuthenResultCall;
     private Call<AuthenItemResultGroup> requestFullAuthenCall;
     private static ServiceManager instance;
     private static ApiService api;
@@ -68,10 +70,42 @@ public class ServiceManager {
                 .getAuthen( value );
     }
 
-    public Call<AuthenItemResultGroup> requestFullAuthen(FullAuthenBody body ) {
+    public Call<AuthenItemResultGroup> requestFullAuthen( FullAuthenBody body ) {
         return Service.newInstance( BASE_URL )
                 .getApi( api )
                 .getFullAuthen( body );
+    }
+
+    public Call<TsrAuthenResult> requestTSR(String username, String password) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .tsrAuthen(username, password);
+    }
+
+    public void request(String username, String password, final ServiceManagerCallback<TsrAuthenResult> callback) {
+        tsrAuthenResultCall = requestTSR(username, password);
+        tsrAuthenResultCall.enqueue(new Callback<TsrAuthenResult>() {
+            @Override
+            public void onResponse(Call<TsrAuthenResult> call, Response<TsrAuthenResult> response) {
+                Log.e("request TSR success", response + "");
+                if (response.code() == 200) {
+                    Log.e("request result", response.body().getDisplayname());
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure( new Throwable( "response tsr authen invalid." ) );
+                }
+                tsrAuthenResultCall = null;
+            }
+
+            @Override
+            public void onFailure(Call<TsrAuthenResult> call, Throwable t) {
+                Log.e("request TSR failure", t.getMessage());
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+                requestFullAuthenCall = null;
+            }
+        });
     }
 
     public void requestFullAuthentication (List<FullAuthenItem> items, final ServiceManagerCallback<AuthenItemResultGroup> callback) {
@@ -119,7 +153,7 @@ public class ServiceManager {
                 Log.e("requestAuthen", response + "");
                 if( callback != null ){
                     if( authenChecker( response ) ){
-                        //Log.e("Authentication", response.body().getMessage() + "");
+                        Log.e("Authentication", response.body().getMessage() + "");
                         callback.onSuccess( response.body() );
                     }else{
                         callback.onFailure( new Throwable( "Response authen invalid." ) );

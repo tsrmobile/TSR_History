@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     android:windowSoftInputMode="adjustPan|adjustResize"
     android:background="@color/colorPrimaryDark"
-    tools:context="th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity">
+    tools:context="th.co.thiensurat.tsr_history.tsr_full_authen.TsrAuthenActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,18 +35,6 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/Red"
-                android:text="@string/text_warning"
-                android:textSize="14sp"/>
-
-            <View
-                android:layout_width="match_parent"
                 android:layout_height="10dp"/>
 
             <android.support.design.widget.TextInputLayout
@@ -63,7 +51,7 @@
                     android:textColor="@color/White"
                     android:textSize="20sp"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textNoSuggestions|textCapCharacters"
+                    android:inputType="text"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -100,15 +88,6 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/login_tsr"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="@string/dialog_button_login_tsr"
-                    android:textColor="@color/White"/>
-
-                <Button
                     android:id="@+id/login"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -116,7 +95,6 @@
                     android:backgroundTint="@color/White"
                     android:text="@string/dialog_button_login"
                     android:textColor="@color/colorPrimary"/>
-
 
             </LinearLayout>
 
@@ -127,37 +105,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textCopy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Copyright &#169; 2017 by THIENSURAT CO.,LTD"
-                android:textColor="@color/White"/>
-
-            <TextView
-                android:id="@+id/textVersion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="version"
-                android:textColor="@color/White"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>-->
 
 </RelativeLayout>

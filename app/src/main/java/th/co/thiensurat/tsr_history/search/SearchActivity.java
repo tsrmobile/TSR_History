@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
+import th.co.thiensurat.tsr_history.choice_authen.ChoiceActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
@@ -51,12 +53,14 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     @Bind(R.id.display_name) TextView displayName;
     @Bind(R.id.button_sign_out) Button signOut;
     @Bind(R.id.button_to_tsr) Button gotoTSR;
+    @Bind(R.id.button_search) ImageButton search;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         signOut.setOnClickListener( onSignOut() );
         gotoTSR.setOnClickListener( onGoToTSR() );
+        search.setOnClickListener( onSearch() );
     }
 
     @Override
@@ -186,6 +190,19 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         };
     }
 
+    private View.OnClickListener onSearch() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!inputSearch.getText().toString().isEmpty()) {
+                    getPresenter().goToResultCustomer(inputSearch.getText().toString());
+                } else {
+                    alert();
+                }
+            }
+        };
+    }
+
     private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
         try {
             packageManager.getPackageInfo(packagename, 0);
@@ -199,7 +216,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
         MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, 0);
-        setResult(RESULT_CANCELED);
+        startActivity(new Intent(getApplicationContext(), ChoiceActivity.class));
         finish();
     }
 

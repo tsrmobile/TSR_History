@@ -33,6 +33,7 @@ import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.api.ApiURL;
 import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
+import th.co.thiensurat.tsr_history.choice_authen.ChoiceActivity;
 import th.co.thiensurat.tsr_history.network.ConnectionDetector;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
@@ -63,7 +64,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     @Bind(R.id.user_pwd) EditText userpassword;
     @Bind(R.id.login) Button logIn;
     @Bind(R.id.login_tsr) Button logInTSR;
-    @Bind(R.id.textVersion) TextView textViewVersion;
+    //@Bind(R.id.textVersion) TextView textViewVersion;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -103,14 +104,28 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
 
         logIn.setOnClickListener( onLogin() );
         logInTSR.setOnClickListener( onLogInTSR() );
+
+        //textViewVersion.setText("App v." + appVersion());
     }
 
     @Override
     public void initialize() {
-        textViewVersion.setText("App v." + appVersion());
         getDeviceID();
         loginSession();
         OnNetworkChecking();
+    }
+
+    private void OnNetworkChecking() {
+        boolean isNetworkAvailable = ConnectionDetector.isConnectingToInternet(this);
+        if (!isNetworkAvailable) {
+            AlertDialog.dialogNetworkError(FullAuthenActivity.this);
+        } else {
+            if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+            } else {
+                getPresenter().goToSearchActivity();
+            }
+        }
     }
 
     @Override
@@ -142,7 +157,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         } else {
             if (authenItems.get(0).getLoggedin() != 1) {
                 if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
-                        || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                        && !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                     dialogLoginConfirm();
                     Log.e("Authen", "Not empty");
                 } else {
@@ -161,7 +176,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     public void onFullAuthen(List<AuthenItem> authenItems) {
         if (authenItems.isEmpty()) {
             if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
-                    || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                    && !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                 dialogLoginConfirm();
                 Log.e("Full authen", "Empty");
             } else {
@@ -190,7 +205,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             case Config.REQUEST_SETTINGS :
                 if (resultCode == RESULT_OK) {
                     OnNetworkChecking();
-                    Log.e("onActivityResult", "Load (onActivityResult)");
                 }
                 break;
             case Config.REQUEST_LOGIN :
@@ -204,12 +218,13 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
 
     private void getDeviceID() {
         String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        //Log.e("Device id", deviceID);
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
     }
 
     private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
         try {
-            packageManager.getPackageInfo(packagename, 0);
+            packageManager.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
             return false;
@@ -248,7 +263,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         sweetAlertDialog.show();
     }
 
-    private void dialogUpdate() {
+    /*private void dialogUpdate() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
         sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg_update));
@@ -278,16 +293,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             }
         });
         sweetAlertDialog.show();
-    }
-
-    private void OnNetworkChecking() {
-        boolean isNetworkAvailable = ConnectionDetector.isConnectingToInternet(this);
-        if (!isNetworkAvailable) {
-            AlertDialog.dialogNetworkError(FullAuthenActivity.this);
-        } else {
-            checkAppVersion();
-        }
-    }
+    }*/
 
     public void detectWifiConnected(final String state) {
         this.runOnUiThread(new Runnable() {
@@ -331,12 +337,14 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)){
-            return false;
+            startActivity(new Intent(getApplicationContext(), ChoiceActivity.class));
+            finish();
+            return true;
         }
-        return true;
+        return false;
     }
 
-    private String appVersion() {
+     /*private String appVersion() {
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             return pInfo.versionName;
@@ -346,7 +354,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         return null;
     }
 
-    private void checkAppVersion() {
+   private void checkAppVersion() {
         AlertDialog.dialogLoading(this);
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -379,5 +387,5 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             e.printStackTrace();
             AlertDialog.dialogDimiss();
         }
-    }
+    }*/
 }

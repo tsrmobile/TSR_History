@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".search.SearchActivity"></activity>
+        <activity android:name=".search.SearchActivity" />
 
         <!-- [START network_service] -->
         <receiver
@@ -34,14 +34,16 @@
         <!-- [END] -->
 
         <activity android:name=".result.CustomerResultActivity" />
-        <activity android:name=".full_authen.FullAuthenActivity">
+        <activity android:name=".full_authen.FullAuthenActivity"></activity>
+        <activity android:name=".result_customer.CustomerByNameActivity" />
+        <activity android:name=".choice_authen.ChoiceActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".result_customer.CustomerByNameActivity"></activity>
+        <activity android:name=".tsr_full_authen.TsrAuthenActivity"></activity>
     </application>
 
 </manifest>

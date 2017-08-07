@@ -62,9 +62,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/background_edittext"
                     android:padding="2dp"
                     android:layout_margin="8dp"
@@ -80,6 +86,15 @@
                         android:inputType="text|textNoSuggestions"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/button_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@drawable/ic_search_white_48dp"/>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
