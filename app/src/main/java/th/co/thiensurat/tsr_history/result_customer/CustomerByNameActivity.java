@@ -109,8 +109,8 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
 
     @Override
     public String receiveItem() {
-        String data = getIntent().getStringExtra(Config.KEY_DATA);
-        return data;
+        return getIntent().getStringExtra(Config.KEY_DATA);
+        //return data;
     }
 
     @Override

@@ -96,7 +96,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -104,18 +104,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
+                    android:background="@color/colorAccent"
                     android:text="@string/dialog_button_login_tsr"
-                    android:textColor="@color/White"/>
+                    android:textColor="@color/White"
+                    android:layout_margin="2dp"/>
 
                 <Button
                     android:id="@+id/login"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/White"
+                    android:background="@color/White"
                     android:text="@string/dialog_button_login"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorPrimary"
+                    android:layout_margin="2dp"/>
 
 
             </LinearLayout>

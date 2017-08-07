@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TSR History</string>
+    <string name="app_name">TSR History validation</string>
 
     <string name="authen_username">ชื่อผู้ใช้</string>
     <string name="authen_password">รหัสผ่าน</string>
@@ -28,10 +28,10 @@
 
     <string name="text_search">ค้นหาข้อมูล</string>
     <string name="text_name_title">ชื่อ</string>
-    <string name="text_idcard_title">เลขที่บัตรประชาชน</string>
+    <string name="text_idcard_title">เลขบัตรฯ</string>
     <string name="text_product">ผลิตภัณฑ์</string>
 
-    <string name="text_contract_number">เลขที่สัญญา</string>
+    <string name="text_contract_number">สัญญา</string>
     <string name="text_contract_date">วันที่ติดตั้ง</string>
     <string name="text_pay_type">การชำระ</string>
     <string name="text_pay_total_month">จำนวนงวด</string>
@@ -40,7 +40,7 @@
     <string name="text_date_status">ณ วันที่</string>
 
     <string name="button_save_log">บันทึก</string>
-    <string name="button_cancel">กลับหน้าแรก</string>
+    <string name="button_cancel">กลับหน้าค้นหา</string>
 
     <string name="list_total">รวม</string>
     <string name="test_list">รายการ</string>

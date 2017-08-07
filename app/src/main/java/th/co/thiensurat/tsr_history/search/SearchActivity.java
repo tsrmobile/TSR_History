@@ -28,6 +28,7 @@ import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 import th.co.thiensurat.tsr_history.result_customer.CustomerByNameActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
+import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
@@ -95,7 +96,8 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
                     if (!inputSearch.getText().toString().isEmpty()) {
-                        getPresenter().goToResultCustomer(inputSearch.getText().toString());
+                        //getPresenter().goToResultCustomer(inputSearch.getText().toString());
+                        search.performClick();
                         return true;
                     } else {
                         alert();
@@ -116,6 +118,16 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         try {
             displayName.setText(getResources().getString(R.string.authen_username) + ": "
                     + MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME));
+
+            if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
+                gotoTSR.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                gotoTSR.setTextColor(getResources().getColor(R.color.White));
+                gotoTSR.setEnabled(true);
+            } else {
+                gotoTSR.setBackgroundColor(getResources().getColor(R.color.DarkGray));
+                gotoTSR.setTextColor(getResources().getColor(R.color.Black));
+                gotoTSR.setEnabled(false);
+            }
         } catch(Exception e) {
             displayName.setText(getResources().getString(R.string.authen_username) + ": -");
         }
@@ -171,6 +183,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signOut.startAnimation(new AnimateButton().animbutton());
                 setSignOut();
             }
         };
@@ -180,6 +193,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gotoTSR.startAnimation(new AnimateButton().animbutton());
                 if (checkPackageInstalled("th.co.thiensurat", getPackageManager())) {
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat");
                     startActivity(launchIntent);
@@ -194,6 +208,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                search.startAnimation(new AnimateButton().animbutton());
                 if (!inputSearch.getText().toString().isEmpty()) {
                     getPresenter().goToResultCustomer(inputSearch.getText().toString());
                 } else {

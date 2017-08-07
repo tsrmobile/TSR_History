@@ -24,6 +24,7 @@ import th.co.thiensurat.tsr_history.choice_authen.ChoiceActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
+import th.co.thiensurat.tsr_history.utils.AnimateButton;
 
 public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presenter> implements TsrAuthenInterface.View  {
 
@@ -89,6 +90,7 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logIn.startAnimation(new AnimateButton().animbutton());
                 getAuthenInfo();
             }
         };

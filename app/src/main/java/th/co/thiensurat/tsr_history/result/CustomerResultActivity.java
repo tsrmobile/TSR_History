@@ -41,6 +41,7 @@ import th.co.thiensurat.tsr_history.result.item.ListItem;
 import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
+import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
@@ -198,6 +199,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                save.startAnimation(new AnimateButton().animbutton());
                 takeScreenshot();
             }
         };
@@ -207,6 +209,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cancel.startAnimation(new AnimateButton().animbutton());
                 getPresenter().onGoToHome();
             }
         };

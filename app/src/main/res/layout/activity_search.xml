@@ -15,7 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:layout_margin="8dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/button_sign_out"
@@ -65,6 +67,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingRight="8dp"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
@@ -89,9 +93,11 @@
 
                 <ImageButton
                     android:id="@+id/button_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimary"
                     android:src="@drawable/ic_search_white_48dp"/>
 
             </LinearLayout>
@@ -103,12 +109,12 @@
             <Button
                 android:id="@+id/button_to_tsr"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="55dp"
                 android:gravity="center"
                 android:text="@string/open_tsr_mobile"
                 android:textColor="@color/White"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:layout_margin="8dp"
+                android:background="@color/colorPrimary"/>
 
             <View
                 android:layout_width="match_parent"
