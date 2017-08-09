@@ -54,7 +54,7 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         holder.laststatus.setText(context.getResources().getString(R.string.text_last_status) + ": " + item.getLastpaystatus());
         holder.saleID.setText(context.getResources().getString(R.string.sale) + ": " + item.getSaleCode());*/
         holder.statusCode.setText(((item.getCustomerStatus() == null)? "" : item.getCustomerStatus().toUpperCase()) + " ("
-                + ((item.getCustomerStatus() == null)? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ") \n"
+                + ((item.getCustomerStatus().isEmpty())? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ") \n"
                 + context.getResources().getString(R.string.text_date_status) + " " + ConvertDateFormat(item.getStDate()));
     }
 
