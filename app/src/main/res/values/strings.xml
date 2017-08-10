@@ -19,6 +19,7 @@
     <string name="dialog_msg_save_success">บันทึกสำเร็จ</string>
     <string name="dialog_msg_search_fail">ไม่พบข้อมูล</string>
     <string name="dialog_msg_not_installed">เครื่องของคุณไม่ได้ติดตั้ง\nTSR Sale Systems - Direct Sale</string>
+    <string name="dialog_msg_permission">กรุณาเลือก "อนุญาต" หรือ Allow\nเพื่อให้แอพฯ สามารถบันทึกการตรวจสอบได้</string>
 
     <string name="dialog_login_msg">กรุณาเข้าสู่ระบบ \n ผ่านทางแอพพลิเคชั่น TSR Mobile</string>
     <string name="dialog_full_login_msg">เครื่องของคุณไม่ได้ติดตั้ง TSR Mobile\n กรุณาเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านเดียวกัน</string>

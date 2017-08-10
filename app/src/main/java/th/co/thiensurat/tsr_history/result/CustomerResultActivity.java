@@ -1,7 +1,10 @@
 package th.co.thiensurat.tsr_history.result;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -137,6 +142,18 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Config.REQUEST_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                AlertDialog.dialogDenied(CustomerResultActivity.this);
+            } else {
+                takeScreenshot();
+            }
+        }
+    }
+
+    @Override
     public String receiveItem() {
         return data;
     }
@@ -166,7 +183,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         adapter.notifyDataSetChanged();
         textViewTotal.setText(String.valueOf(listItemList.size()));
         AlertDialog.dialogDimiss();
-
         idcardNumber.setText(getResources().getString(R.string.text_idcard_title) + ": " + listItems.get(0).getIdcard());
     }
 
@@ -207,7 +223,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             @Override
             public void onClick(View view) {
                 save.startAnimation(new AnimateButton().animbutton());
-                takeScreenshot();
+                verifyStoragePermissions(CustomerResultActivity.this);
             }
         };
     }
@@ -233,7 +249,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     private void takeScreenshot() {
         Date now = new Date();
-        //String date = android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
         DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
         String imageName = df.format(now);
         try {
@@ -243,14 +258,12 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             Bitmap bitmap = getBitmapFromView(this.getWindow().findViewById(R.id.rootView));
             //Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
-
             File imageFile = new File(imagePath + "/" + imageName + ".jpg");
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 100;
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
-            openScreenshot(imageFile);
             setHistoryValidation(imageFile);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -258,13 +271,13 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         }
     }
 
-    private void openScreenshot(File imageFile) {
+    /*private void openScreenshot(File imageFile) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         Uri uri = Uri.fromFile(imageFile);
         intent.setDataAndType(uri, "image/*");
         startActivity(intent);
-    }
+    }*/
 
     public static Bitmap getBitmapFromView(View view) {
         //Define a bitmap with the same size as the view
@@ -310,7 +323,19 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
-        //Log.e("base64", encImage);
         return encImage;
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    Config.PERMISSIONS_STORAGE,
+                    Config.REQUEST_EXTERNAL_STORAGE
+            );
+        } else {
+            takeScreenshot();
+        }
     }
 }

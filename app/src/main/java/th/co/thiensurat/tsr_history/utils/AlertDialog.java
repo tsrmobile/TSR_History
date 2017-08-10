@@ -69,8 +69,8 @@ public class AlertDialog {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
                         dialog.dismiss();
-                        ((CustomerResultActivity)context).setResult(Activity.RESULT_OK);
-                        ((CustomerResultActivity)context).finish();
+                        /*((CustomerResultActivity)context).setResult(Activity.RESULT_OK);
+                        ((CustomerResultActivity)context).finish();*/
                     }
                 })
                 .show();
@@ -98,6 +98,21 @@ public class AlertDialog {
             }
         })
         .show();
+    }
+
+    public static void dialogDenied(final Context context) {
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_warning))
+                .setContentText(context.getResources().getString(R.string.dialog_msg_permission))
+                .showCancelButton(false)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private static SweetAlertDialog sweetAlertDialog;

@@ -1,5 +1,7 @@
 package th.co.thiensurat.tsr_history.utils;
 
+import android.Manifest;
+
 /**
  * Created by teerayut.k on 7/3/2017.
  */
@@ -12,6 +14,7 @@ public class Config {
     public static final int REQUEST_RESULT = 04;
     public static final int REQUEST_RESULT_BY_NAME = 05;
     public static final int REQUEST_SEARCH = 06;
+    public static final int REQUEST_EXTERNAL_STORAGE = 07;
 
     public static final String KEY_DATA = "DATA";
     public static final String KEY_CLASS = "CLASS";
@@ -25,4 +28,9 @@ public class Config {
     public static final String SUCCESS = "SUCCESS";
     public static final String FAILED = "FAIL";
     public static final String ERROR = "ERROR";
+
+    public static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 }
