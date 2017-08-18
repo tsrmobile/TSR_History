@@ -11,12 +11,15 @@ import retrofit2.http.Query;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.TsrAuthenResult;
+import th.co.thiensurat.tsr_history.utils.Config;
 
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTHEN_TSR;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_DATA;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_FULL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
@@ -42,4 +45,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST( URL_AUTHEN_TSR )
     Call<TsrAuthenResult> tsrAuthen(@Field("username") String username, @Field("password") String password);
+
+    @GET ( URL_DATA )
+    Call<DataItemResultGroup> getData(@Query( "data" ) String key, @Query( "code" ) String code);
+
 }

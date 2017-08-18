@@ -3,6 +3,7 @@ package th.co.thiensurat.tsr_history.result;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,10 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -41,6 +45,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 import retrofit2.http.Body;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
@@ -51,12 +56,14 @@ import th.co.thiensurat.tsr_history.result.adapter.CustomerResultAdapter;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
 import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
+import th.co.thiensurat.tsr_history.send_data.SendDataActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
-public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter> implements CustomerResultInterface.view{
+public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter>
+        implements CustomerResultInterface.view, CustomerResultAdapter.ClickListener{
 
     private String data;
     private Dialog dialog;
@@ -95,12 +102,14 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.idcard_number) TextView idcardNumber;
     @Bind(R.id.rootView) RelativeLayout relativeLayout;
+    @Bind(R.id.fab) FloatingActionButton floatingActionButton;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
         cancel.setOnClickListener( onGoHome() );
+        floatingActionButton.setOnClickListener( onSendData() );
     }
 
     @Override
@@ -120,7 +129,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void initialize() {
-
     }
 
     @Override
@@ -184,6 +192,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         textViewTotal.setText(String.valueOf(listItemList.size()));
         AlertDialog.dialogDimiss();
         idcardNumber.setText(getResources().getString(R.string.text_idcard_title) + ": " + listItems.get(0).getIdcard());
+        adapter.setClickListener(this);
     }
 
     @Override
@@ -234,6 +243,15 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             public void onClick(View view) {
                 cancel.startAnimation(new AnimateButton().animbutton());
                 getPresenter().onGoToHome();
+            }
+        };
+    }
+
+    private View.OnClickListener onSendData() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(CustomerResultActivity.this, SendDataActivity.class), Config.REQUEST_SEND_DATA);
             }
         };
     }
@@ -337,5 +355,13 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         } else {
             takeScreenshot();
         }
+    }
+
+    @Override
+    public void sendClickListener(View view, int position) {
+        ListItem item = listItemList.get(position);
+        Intent intent = new Intent(CustomerResultActivity.this, SendDataActivity.class);
+        intent.putExtra(Config.KEY_CONTACT_CODE, item.getCountno());
+        startActivityForResult(intent, Config.REQUEST_SEND_DATA);
     }
 }

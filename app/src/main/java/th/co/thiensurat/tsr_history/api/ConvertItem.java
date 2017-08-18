@@ -5,12 +5,16 @@ import java.util.List;
 
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResult;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.DataItemResult;
+import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResult;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
 import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItemGroup;
+import th.co.thiensurat.tsr_history.send_data.item.DataItem;
+import th.co.thiensurat.tsr_history.send_data.item.DataItemGroup;
 
 /**
  * Created by teerayut.k on 7/17/2017.
@@ -74,6 +78,25 @@ public class ConvertItem {
     public static List<ListItem> createListItemsFromItemGroup(ListItemGroup itemGroup) {
         List<ListItem> items = new ArrayList<>();
         items = itemGroup.getData();
+        return items;
+    }
+
+    public static DataItemGroup createListDataItemGroupFromResult(DataItemResultGroup result ){
+        DataItemGroup group = new DataItemGroup();
+        group.setStatus( result.getStatus() );
+        group.setMessage( result.getMessage() );
+        group.setData( ConvertItem.createListDataItemsFromResult( result.getData() ) );
+        return group;
+    }
+
+    public static List<DataItem> createListDataItemsFromResult(List<DataItemResult> result){
+        List<DataItem> items = new ArrayList<>();
+        for( DataItemResult dataItemResult : result ){
+            DataItem item = new DataItem()
+                    .setDataCode(dataItemResult.getDataCode())
+                    .setDataName(dataItemResult.getDataName());
+            items.add( item );
+        }
         return items;
     }
 }

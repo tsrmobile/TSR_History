@@ -6,7 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +33,7 @@ import th.co.thiensurat.tsr_history.result.item.ListItem;
 public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAdapter.ViewHolder> {
 
     private Context context;
+    private ClickListener clickListener;
     private List<ListItem> listItems = new ArrayList<ListItem>();
     public CustomerResultAdapter(Context context, List<ListItem> listItems) {
         this.context = context;
@@ -56,12 +63,31 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         holder.statusCode.setText(((item.getCustomerStatus() == null)? "" : item.getCustomerStatus().toUpperCase()) + " ("
                 + ((item.getCustomerStatus().isEmpty())? "ไม่สามารถแสดงสถานะได้" : item.getAgingDetail()) + ") \n"
                 + context.getResources().getString(R.string.text_date_status) + " " + ConvertDateFormat(item.getStDate()));
+
+
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left, holder.btnSend);
+        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.send));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return listItems.size();
     }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    /*@Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -79,9 +105,22 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         @Bind(R.id.datetime) TextView dateTime;
         @Bind(R.id.name) TextView customerName;
         @Bind(R.id.status) TextView statusCode;
+        @Bind(R.id.btn_send) LinearLayout btnSend;
+        @Bind(R.id.swipe) SwipeLayout swipeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            btnSend.setOnClickListener( onSend() );
+        }
+
+        private View.OnClickListener onSend() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (clickListener != null)
+                        clickListener.sendClickListener(view, getPosition());
+                }
+            };
         }
     }
 
@@ -100,5 +139,10 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
             e.printStackTrace();
         }
         return null;
+    }
+
+    public interface ClickListener{
+        public void sendClickListener(View view, int position);
+
     }
 }

@@ -63,8 +63,10 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
                 } else {
                     listItemList.clear();
                     listItemList = ConvertItem.createListItemGroupFromResult( result ).getData();
+
                     ListItemGroup itemGroup = ConvertItem.createListItemGroupFromResult( result );
                     listItemGroup = itemGroup;
+
                     getView().setItemAdapter(listItemList);
                     getView().onDismiss();
                 }

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
+    android:windowSoftInputMode="adjustPan|adjustResize"
+    tools:context=".send_data.SendDataActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/layoutBottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/count_no"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_count_no"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/addr_number"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:hint="@string/hint_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true"/>
+
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"/>
+
+                <EditText
+                    android:id="@+id/addr_moo"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:hint="@string/hint_moo"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_soi"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_soi"
+                android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_road"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_road"
+                android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@drawable/widget_border">
+
+                <Spinner
+                    android:id="@+id/addr_province"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@drawable/widget_border">
+
+                <Spinner
+                    android:id="@+id/addr_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@drawable/widget_border">
+
+                <Spinner
+                    android:id="@+id/addr_sub_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tint="@color/colorPrimaryDark"
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_zipcode"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_zipcode"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_phone"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_phone"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_work_phone"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_work_phone"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_mobile"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_email"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:hint="@string/hint_email"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/button_send"
+                android:textColor="@color/White"/>
+
+            <Button
+                android:id="@+id/button_back"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/button_back"
+                android:textColor="@color/White"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

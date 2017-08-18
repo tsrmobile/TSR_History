@@ -13,6 +13,8 @@ import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
+import th.co.thiensurat.tsr_history.api.result.DataItemResult;
+import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.TsrAuthenResult;
@@ -80,6 +82,12 @@ public class ServiceManager {
         return Service.newInstance( BASE_URL )
                 .getApi( api )
                 .tsrAuthen(username, password);
+    }
+
+    public Call<DataItemResultGroup> requestData(String key, String code) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .getData(key, code);
     }
 
     public void request(String username, String password, final ServiceManagerCallback<TsrAuthenResult> callback) {
@@ -197,6 +205,31 @@ public class ServiceManager {
         } );
     }
 
+    public void requestData(String key, String code, final ServiceManagerCallback<DataItemResultGroup> callback) {
+        requestData(key, code).enqueue(new Callback<DataItemResultGroup>() {
+            @Override
+            public void onResponse(Call<DataItemResultGroup> call, Response<DataItemResultGroup> response) {
+                Log.e("requestData", response + "");
+                if( callback != null ){
+                    if( dataChecker( response ) ){
+                        callback.onSuccess( response.body() );
+                    }else{
+                        callback.onFailure( new Throwable( "Response data invalid." ) );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataItemResultGroup> call, Throwable t) {
+                if( !call.isCanceled() ){
+                    if( callback != null ){
+                        callback.onFailure( t );
+                    }
+                }
+            }
+        });
+    }
+
     public void AddHistoryRequest(List<AddHistoryBody.HistoryBody> items, final ServiceManagerCallback<AddHistoryResult> callback) {
         AddHistoryBody body = new AddHistoryBody();
         body.setHistoryItems(items);
@@ -258,6 +291,14 @@ public class ServiceManager {
         if( response.isSuccessful() ){
             AddHistoryResult result = response.body();
             return Config.SUCCESS.equals( result.getStatus() );
+        }
+        return false;
+    }
+
+    private boolean dataChecker(Response<DataItemResultGroup> response) {
+        if (response.isSuccessful()) {
+            DataItemResultGroup resultGroup = response.body();
+            return Config.SUCCESS.equals( resultGroup.getStatus() ) && resultGroup.getData() != null;
         }
         return false;
     }

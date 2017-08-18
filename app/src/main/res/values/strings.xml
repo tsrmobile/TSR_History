@@ -42,6 +42,8 @@
 
     <string name="button_save_log">บันทึก</string>
     <string name="button_cancel">กลับหน้าค้นหา</string>
+    <string name="button_send">ส่งข้อมูล</string>
+    <string name="button_back">กลับ</string>
 
     <string name="list_total">รวม</string>
     <string name="test_list">รายการ</string>
@@ -53,4 +55,30 @@
 
     <string name="text_warning">** การเข้าสู่ระบบจากแอพพลิเคชั่นนี้\nจะไม่ส่งผลให้ใช้งานแอพพลิเคชั่น TSR Sale Systems - Direct Sale ได้</string>
     <string name="open_tsr_mobile">ไปยังแอพฯ TSR Sale Systems - Direct Sale</string>
+
+    /**
+    * Address form hint
+    **/
+    <string name="hint_count_no">เลขที่สัญญา</string>
+    <string name="hint_number">บ้านเลขที่</string>
+    <string name="hint_moo">หมู่ที่</string>
+    <string name="hint_soi">ตรอก/ซอย</string>
+    <string name="hint_road">ถนน</string>
+    <string name="hint_province">จังหวัด</string>
+    <string name="hint_district">อำเภอ/เขต</string>
+    <string name="hint_sub_district">ตำบล/แขวง</string>
+    <string name="hint_zipcode">รหัสไปรษณีย์</string>
+    <string name="hint_phone">เบอร์บ้าน</string>
+    <string name="hint_work_phone">เบอร์โทรที่ทำงาน</string>
+    <string name="hint_mobile">มือถือ/ที่ติดต่อได้</string>
+    <string name="hint_email">อีเมล</string>
+    /****/
+
+    /*
+    * Spinner hint
+    **/
+    <string name="spinner_province">กรุณาเลือกจังหวัด</string>
+    <string name="spinner_district">กรุณาเลือกเขต/อำเภอ</string>
+    <string name="spinner_sub_district">กรุณาเลือกแขวง/ตำบล</string>
+    /****/
 </resources>

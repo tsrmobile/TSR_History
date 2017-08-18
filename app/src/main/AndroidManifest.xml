@@ -34,16 +34,17 @@
         <!-- [END] -->
 
         <activity android:name=".result.CustomerResultActivity" />
-        <activity android:name=".full_authen.FullAuthenActivity"></activity>
+        <activity android:name=".full_authen.FullAuthenActivity" />
         <activity android:name=".result_customer.CustomerByNameActivity" />
-        <activity android:name=".choice_authen.ChoiceActivity" >
+        <activity android:name=".choice_authen.ChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".tsr_full_authen.TsrAuthenActivity"></activity>
+        <activity android:name=".tsr_full_authen.TsrAuthenActivity" />
+        <activity android:name=".send_data.SendDataActivity"></activity>
     </application>
 
 </manifest>
