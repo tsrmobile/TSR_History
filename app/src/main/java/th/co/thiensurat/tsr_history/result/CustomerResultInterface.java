@@ -3,6 +3,7 @@ package th.co.thiensurat.tsr_history.result;
 import java.util.List;
 
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.request.LogBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
@@ -35,5 +36,6 @@ public class CustomerResultInterface {
         void onSetItemGroup(ListItemGroup itemGroup);
         ListItemGroup onGetItemGroup();
         void onRestoreItemToAdapter(ListItemGroup itemGroup);
+        void saveLogToServer(List<LogBody.logBody> logBodyList);
     }
 }

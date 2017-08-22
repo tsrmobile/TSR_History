@@ -2,6 +2,7 @@ package th.co.thiensurat.tsr_history.send_data;
 
 import java.util.List;
 
+import th.co.thiensurat.tsr_history.api.request.SendDataBody;
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.send_data.item.DataItem;
 import th.co.thiensurat.tsr_history.send_data.item.DataItemGroup;
@@ -15,6 +16,8 @@ public class SendDataInterface {
     public interface View extends BaseMvpInterface.View {
         void onLoad();
         void onDismiss();
+        void onSuccess();
+        void onFail(String fail);
         void setProvince(List<DataItem> dataItemList);
         void setDistrict(List<DataItem> dataItemList);
         void setSubDistrict(List<DataItem> dataItemList);
@@ -22,8 +25,11 @@ public class SendDataInterface {
 
     public interface Presenter extends BaseMvpInterface.Presenter<SendDataInterface.View> {
         void requestData(String key, String code);
+        void requestDistrict(String key, String code);
+        void requestSubDistrict(String key, String code);
         void setDataItemGroup(DataItemGroup dataGroup);
         DataItemGroup getDataItemGroup();
         void onRestoreToAdapter(DataItemGroup dataGroup);
+        void sendDataToServer(List<SendDataBody.dataBody> dataBodyList);
     }
 }

@@ -93,6 +93,7 @@ public class ConvertItem {
         List<DataItem> items = new ArrayList<>();
         for( DataItemResult dataItemResult : result ){
             DataItem item = new DataItem()
+                    .setDataId(dataItemResult.getDataId())
                     .setDataCode(dataItemResult.getDataCode())
                     .setDataName(dataItemResult.getDataName());
             items.add( item );

@@ -6,11 +6,20 @@ package th.co.thiensurat.tsr_history.api.result;
 
 public class DataItemResult {
 
+    private String dataId;
     private String dataCode;
     private String dataName;
 
     public DataItemResult() {
 
+    }
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
     }
 
     public String getDataCode() {

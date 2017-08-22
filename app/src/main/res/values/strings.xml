@@ -14,6 +14,7 @@
     <string name="dialog_button_cancel">ไม่</string>
     <string name="dialog_button_confirm">ตั้งค่า</string>
     <string name="dialog_button_update">อัพเดท</string>
+    <string name="dialog_msg_required">กรุณากรอกข้อมูลให้ครบถ้วน</string>
     <string name="dialog_msg_empty_error">กรุณาใส่ข้อมูลให้ถูกต้อง</string>
     <string name="dialog_msg_save_fail">ไม่สามารถบันทึกข้อมูลได้</string>
     <string name="dialog_msg_save_success">บันทึกสำเร็จ</string>
@@ -44,6 +45,7 @@
     <string name="button_cancel">กลับหน้าค้นหา</string>
     <string name="button_send">ส่งข้อมูล</string>
     <string name="button_back">กลับ</string>
+    <string name="button_send_data">ส่งข้อมูลให้ปฏิบัติการตรวจสอบ</string>
 
     <string name="list_total">รวม</string>
     <string name="test_list">รายการ</string>
@@ -60,10 +62,13 @@
     * Address form hint
     **/
     <string name="hint_count_no">เลขที่สัญญา</string>
+    <string name="hint_customer_name">ชื่อลูกค้า</string>
     <string name="hint_number">บ้านเลขที่</string>
     <string name="hint_moo">หมู่ที่</string>
     <string name="hint_soi">ตรอก/ซอย</string>
     <string name="hint_road">ถนน</string>
+    <string name="hint_village">หมู่บ้าน</string>
+    <string name="hint_building">อาคาร</string>
     <string name="hint_province">จังหวัด</string>
     <string name="hint_district">อำเภอ/เขต</string>
     <string name="hint_sub_district">ตำบล/แขวง</string>
@@ -72,6 +77,8 @@
     <string name="hint_work_phone">เบอร์โทรที่ทำงาน</string>
     <string name="hint_mobile">มือถือ/ที่ติดต่อได้</string>
     <string name="hint_email">อีเมล</string>
+    <string name="hint_has_product">มีเครื่อง</string>
+    <string name="hint_no_product">ไม่มีเครื่อง</string>
     /****/
 
     /*
@@ -80,5 +87,11 @@
     <string name="spinner_province">กรุณาเลือกจังหวัด</string>
     <string name="spinner_district">กรุณาเลือกเขต/อำเภอ</string>
     <string name="spinner_sub_district">กรุณาเลือกแขวง/ตำบล</string>
+    /****/
+
+    /**
+    * GPS String
+    **/
+    <string name="GPSAlertDialogMessage">ไม่ได้เปิดการใช้งาน GPS. กรุณา ตั้งค่า เพื่อเปิดการใช้งาน GPS</string>
     /****/
 </resources>

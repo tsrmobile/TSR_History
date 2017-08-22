@@ -32,6 +32,7 @@ public class Config {
     public static final String KEY_STATE_SUB_DISTRICT = "STATE_SUB_DISTRICT";
 
     public static final String KEY_CONTACT_CODE = "contactCode";
+    public static final String KEY_CONTACT_NAME = "contactName";
 
     public static final String KEY_PROVINCE = "province";
     public static final String KEY_DISTRICT = "district";

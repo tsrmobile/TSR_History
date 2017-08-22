@@ -11,11 +11,21 @@ import th.co.thiensurat.tsr_history.base.adapter.BaseItem;
 
 public class DataItem extends BaseItem implements Parcelable {
 
+    private String dataId;
     private String dataCode;
     private String dataName;
 
     public DataItem() {
 
+    }
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public DataItem setDataId(String dataId) {
+        this.dataId = dataId;
+        return this;
     }
 
     public String getDataCode() {
@@ -44,12 +54,14 @@ public class DataItem extends BaseItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeString(dataId);
         dest.writeString(dataCode);
         dest.writeString(dataName);
     }
 
     protected DataItem(Parcel in) {
         super(in);
+        dataId = in.readString();
         dataCode = in.readString();
         dataName = in.readString();
     }
@@ -57,6 +69,7 @@ public class DataItem extends BaseItem implements Parcelable {
     @Override
     public BaseItem clone() throws CloneNotSupportedException {
         DataItem item = new DataItem()
+                .setDataId(dataId)
                 .setDataCode(dataCode)
                 .setDataName(dataName);
         return item;

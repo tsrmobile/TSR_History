@@ -3,11 +3,13 @@ package th.co.thiensurat.tsr_history.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
+import th.co.thiensurat.tsr_history.send_data.SendDataActivity;
 
 /**
  * Created by teerayut.k on 7/6/2017.
@@ -98,6 +100,29 @@ public class AlertDialog {
             }
         })
         .show();
+    }
+
+    public static void dialogLocationError(final Context context) {
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_warning))
+                .setContentText(context.getResources().getString(R.string.GPSAlertDialogMessage))
+                .setCancelText(context.getResources().getString(R.string.dialog_button_cancel))
+                .setConfirmText(context.getResources().getString(R.string.dialog_button_confirm))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        ((SendDataActivity)context).startActivityForResult(intent, Config.REQUEST_SETTINGS);
+                    }
+                })
+                .show();
     }
 
     public static void dialogDenied(final Context context) {

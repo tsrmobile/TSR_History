@@ -26,8 +26,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
+                android:background="@drawable/widget_disable"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_count_no"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_disable"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/hint_customer_name"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:singleLine="true"/>
@@ -48,6 +65,7 @@
                     android:layout_weight="1"
                     android:paddingLeft="8dp"
                     android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:hint="@string/hint_number"
                     android:imeOptions="actionNext"
                     android:inputType="number"
@@ -64,6 +82,7 @@
                     android:layout_weight="1"
                     android:paddingLeft="8dp"
                     android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
                     android:hint="@string/hint_moo"
                     android:imeOptions="actionNext"
                     android:inputType="number"
@@ -81,6 +100,7 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_soi"
                 android:imeOptions="actionNext"
                 android:inputType="text|textNoSuggestions"
@@ -96,7 +116,40 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_road"
+                android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_village"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/hint_village"
+                android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <EditText
+                android:id="@+id/addr_building"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="8dp"
+                android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/hint_building"
                 android:imeOptions="actionNext"
                 android:inputType="text|textNoSuggestions"
                 android:singleLine="true"/>
@@ -116,14 +169,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp" />
+                    android:paddingLeft="8dp"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
 
             </LinearLayout>
 
@@ -142,14 +196,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"/>
+                    android:paddingLeft="8dp"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
 
             </LinearLayout>
 
@@ -167,15 +222,15 @@
                     android:id="@+id/addr_sub_district"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingLeft="8dp"/>
+                    android:paddingLeft="8dp"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
 
             </LinearLayout>
 
@@ -189,9 +244,11 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_zipcode"
                 android:imeOptions="actionNext"
                 android:inputType="number"
+                android:maxLength="5"
                 android:singleLine="true"/>
 
             <View
@@ -204,9 +261,11 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_phone"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
+                android:maxLength="9"
                 android:singleLine="true"/>
 
             <View
@@ -219,9 +278,11 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_work_phone"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
+                android:maxLength="9"
                 android:singleLine="true"/>
 
             <View
@@ -234,9 +295,11 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_mobile"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
+                android:maxLength="10"
                 android:singleLine="true"/>
 
             <View
@@ -249,10 +312,39 @@
                 android:layout_height="45dp"
                 android:paddingLeft="8dp"
                 android:background="@drawable/widget_border"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:hint="@string/hint_email"
                 android:imeOptions="actionDone"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/have_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_has_product"/>
+
+                <RadioButton
+                    android:id="@+id/no_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_no_product"/>
+
+            </RadioGroup>
 
         </LinearLayout>
 

@@ -10,6 +10,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
+import th.co.thiensurat.tsr_history.api.request.LogBody;
+import th.co.thiensurat.tsr_history.api.request.SendDataBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
@@ -28,9 +30,11 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.BASE_URL;
 
 public class ServiceManager {
 
+    private Call<DataItemResultGroup> dataItemResultGroupCall;
     private Call<AddHistoryResult> historyResultCall;
     private Call<TsrAuthenResult> tsrAuthenResultCall;
     private Call<AuthenItemResultGroup> requestFullAuthenCall;
+    private Call<DataItemResultGroup> saveLogGroupCall;
     private static ServiceManager instance;
     private static ApiService api;
 
@@ -88,6 +92,18 @@ public class ServiceManager {
         return Service.newInstance( BASE_URL )
                 .getApi( api )
                 .getData(key, code);
+    }
+
+    public Call<DataItemResultGroup> requestSendData(SendDataBody body) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .sendData( body );
+    }
+
+    public Call<DataItemResultGroup> requestSaveLog(LogBody body) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .saveLog( body );
     }
 
     public void request(String username, String password, final ServiceManagerCallback<TsrAuthenResult> callback) {
@@ -263,6 +279,68 @@ public class ServiceManager {
         } );
     }
 
+    public void SendDataRequest(List<SendDataBody.dataBody> body, final ServiceManagerCallback<DataItemResultGroup> callback) {
+        SendDataBody sendDataBody = new SendDataBody();
+        sendDataBody.setDataBodyList(body);
+
+        dataItemResultGroupCall = requestSendData( sendDataBody );
+        dataItemResultGroupCall.enqueue(new Callback<DataItemResultGroup>() {
+            @Override
+            public void onResponse(Call<DataItemResultGroup> call, Response<DataItemResultGroup> response) {
+                Log.e("SendDataRequest", response + "");
+                if( callback != null ){
+                    Log.e("Send data get MSG", response.body().getMessage());
+                    if( sendDataChecker( response ) ){
+                        callback.onSuccess( response.body() );
+                        Log.e("Response", response.body().getStatus());
+                    }else{
+                        callback.onFailure( new Throwable( "response send invalid." ) );
+                    }
+                }
+                dataItemResultGroupCall = null;
+            }
+
+            @Override
+            public void onFailure(Call<DataItemResultGroup> call, Throwable t) {
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+                dataItemResultGroupCall = null;
+            }
+        });
+    }
+
+    public void saveLogRequest(List<LogBody.logBody> body, final ServiceManagerCallback<DataItemResultGroup> callback) {
+        LogBody log = new LogBody();
+        log.setLogBody(body);
+
+        saveLogGroupCall = requestSaveLog( log );
+        saveLogGroupCall.enqueue(new Callback<DataItemResultGroup>() {
+            @Override
+            public void onResponse(Call<DataItemResultGroup> call, Response<DataItemResultGroup> response) {
+                Log.e("SaveLogRequest", response + "");
+                if( callback != null ){
+                    Log.e("Save Log get MSG", response.body().getMessage());
+                    if( saveLogChecker( response ) ){
+                        callback.onSuccess( response.body() );
+                        Log.e("Response", response.body().getStatus());
+                    }else{
+                        callback.onFailure( new Throwable( "response log invalid." ) );
+                    }
+                }
+                saveLogGroupCall = null;
+            }
+
+            @Override
+            public void onFailure(Call<DataItemResultGroup> call, Throwable t) {
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+                saveLogGroupCall = null;
+            }
+        });
+    }
+
     private boolean fullAuthenChecker (Response<AuthenItemResultGroup> response) {
         if (response.isSuccessful()) {
             AuthenItemResultGroup resultGroup = response.body();
@@ -299,6 +377,22 @@ public class ServiceManager {
         if (response.isSuccessful()) {
             DataItemResultGroup resultGroup = response.body();
             return Config.SUCCESS.equals( resultGroup.getStatus() ) && resultGroup.getData() != null;
+        }
+        return false;
+    }
+
+    private boolean sendDataChecker( Response<DataItemResultGroup> response) {
+        if (response.isSuccessful()) {
+            DataItemResultGroup resultGroup = response.body();
+            return  Config.SUCCESS.equals( resultGroup.getStatus());
+        }
+        return false;
+    }
+
+    private boolean saveLogChecker( Response<DataItemResultGroup> response) {
+        if (response.isSuccessful()) {
+            DataItemResultGroup resultGroup = response.body();
+            return  Config.SUCCESS.equals( resultGroup.getStatus());
         }
         return false;
     }

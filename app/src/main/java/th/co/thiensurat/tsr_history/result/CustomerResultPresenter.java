@@ -12,8 +12,10 @@ import th.co.thiensurat.tsr_history.api.ConvertItem;
 import th.co.thiensurat.tsr_history.api.ServiceManager;
 import th.co.thiensurat.tsr_history.api.event.AddEvent;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.request.LogBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
+import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.base.BaseMvpPresenter;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
@@ -131,5 +133,24 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
         //Log.e("Group size", itemGroup.getData().size() + "");
         this.listItemList = itemGroup.getData();
         getView().setItemAdapter(listItemList);
+    }
+
+    @Override
+    public void saveLogToServer(List<LogBody.logBody> logBodyList) {
+        serviceManager.saveLogRequest(logBodyList, new ServiceManager.ServiceManagerCallback<DataItemResultGroup>() {
+            @Override
+            public void onSuccess(DataItemResultGroup result) {
+                if (result.getStatus().equals(Config.SUCCESS)) {
+                    Log.e("Save Log success", result.getMessage());
+                } else if (result.getStatus().equals(Config.FAILED)) {
+                    Log.e("Save Log failed", result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("Save Log failure", t.getMessage());
+            }
+        });
     }
 }

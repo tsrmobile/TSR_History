@@ -49,6 +49,7 @@ import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 import retrofit2.http.Body;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.request.LogBody;
 import th.co.thiensurat.tsr_history.api.result.AddHistoryItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
@@ -102,14 +103,14 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.idcard_number) TextView idcardNumber;
     @Bind(R.id.rootView) RelativeLayout relativeLayout;
-    @Bind(R.id.fab) FloatingActionButton floatingActionButton;
+    @Bind(R.id.button_send) Button buttonSend;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ButterKnife.bind(this);
         save.setOnClickListener( onSaveData() );
         cancel.setOnClickListener( onGoHome() );
-        floatingActionButton.setOnClickListener( onSendData() );
+        buttonSend.setOnClickListener( onSendData() );
     }
 
     @Override
@@ -193,6 +194,13 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         AlertDialog.dialogDimiss();
         idcardNumber.setText(getResources().getString(R.string.text_idcard_title) + ": " + listItems.get(0).getIdcard());
         adapter.setClickListener(this);
+        if (listItems.get(0).getCustomerStatus().equals("R")) {
+            buttonSend.setVisibility(View.VISIBLE);
+        } else {
+            buttonSend.setVisibility(View.GONE);
+        }
+
+        saveLog(this.listItemList, "Load page");
     }
 
     @Override
@@ -242,6 +250,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             @Override
             public void onClick(View view) {
                 cancel.startAnimation(new AnimateButton().animbutton());
+                saveLog(listItemList, "Back home page");
                 getPresenter().onGoToHome();
             }
         };
@@ -251,7 +260,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(CustomerResultActivity.this, SendDataActivity.class), Config.REQUEST_SEND_DATA);
+                onSend();
             }
         };
     }
@@ -259,6 +268,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            saveLog(this.listItemList, "Back search page");
             getPresenter().onCancel();
         }
 
@@ -274,7 +284,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
             View v1 = getWindow().getDecorView().getRootView();
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = getBitmapFromView(this.getWindow().findViewById(R.id.rootView));
-            //Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
             File imageFile = new File(imagePath + "/" + imageName + ".jpg");
             FileOutputStream outputStream = new FileOutputStream(imageFile);
@@ -289,30 +298,15 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         }
     }
 
-    /*private void openScreenshot(File imageFile) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(imageFile);
-        intent.setDataAndType(uri, "image/*");
-        startActivity(intent);
-    }*/
-
     public static Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
         Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
         Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
         Drawable bgDrawable =view.getBackground();
         if (bgDrawable!=null)
-            //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
         else
-            //does not have background drawable, then draw white background on the canvas
             canvas.drawColor(Color.WHITE);
-        // draw the view on the canvas
         view.draw(canvas);
-        //return the bitmap
         return returnedBitmap;
     }
 
@@ -327,6 +321,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
                 .setCreatedBy(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME)));
 
         getPresenter().addHistory(bodyList);
+        saveLog(this.listItemList, "Save");
     }
 
     private String encodeImage(File imagefile) {
@@ -359,9 +354,43 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void sendClickListener(View view, int position) {
-        ListItem item = listItemList.get(position);
+        ListItem item = this.listItemList.get(position);
         Intent intent = new Intent(CustomerResultActivity.this, SendDataActivity.class);
         intent.putExtra(Config.KEY_CONTACT_CODE, item.getCountno());
+        intent.putExtra(Config.KEY_CONTACT_NAME, item.getName());
         startActivityForResult(intent, Config.REQUEST_SEND_DATA);
+    }
+
+    private void onSend() {
+        ListItem item = this.listItemList.get(0);
+        Intent intent = new Intent(CustomerResultActivity.this, SendDataActivity.class);
+        intent.putExtra(Config.KEY_CONTACT_CODE, item.getCountno());
+        intent.putExtra(Config.KEY_CONTACT_NAME, item.getName());
+        startActivityForResult(intent, Config.REQUEST_SEND_DATA);
+    }
+
+    private void saveLog(List<ListItem> listItemList, String event) {
+        int i = 1;
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        for (ListItem item : listItemList) {
+            sb1.append(item.getCustomerStatus());
+            sb2.append(item.getCountno());
+            if (listItemList.size() > i) {
+                sb1.append(",");
+                sb2.append(",");
+                i++;
+            }
+        }
+
+        List<LogBody.logBody> logBodyList = new ArrayList<>();
+        logBodyList.add(new LogBody.logBody()
+                .setUsername(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME))
+                .setSearchBy(data)
+                .setStatusValue(sb1.toString())
+                .setContNo(sb2.toString())
+                .setEvent(event)
+        );
+        getPresenter().saveLogToServer(logBodyList);
     }
 }

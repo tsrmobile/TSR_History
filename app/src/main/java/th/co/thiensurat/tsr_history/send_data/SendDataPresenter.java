@@ -7,6 +7,7 @@ import java.util.List;
 
 import th.co.thiensurat.tsr_history.api.ConvertItem;
 import th.co.thiensurat.tsr_history.api.ServiceManager;
+import th.co.thiensurat.tsr_history.api.request.SendDataBody;
 import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.base.BaseMvpInterface;
 import th.co.thiensurat.tsr_history.base.BaseMvpPresenter;
@@ -24,6 +25,8 @@ public class SendDataPresenter extends BaseMvpPresenter<SendDataInterface.View> 
     private ServiceManager serviceManager;
     private static DataItemGroup dataItemGroup;
     private static List<DataItem> dataItemList = new ArrayList<DataItem>();
+    private static List<DataItem> dataItemListDistrict = new ArrayList<DataItem>();
+    private static List<DataItem> dataItemListSubDistrict = new ArrayList<DataItem>();
 
     public static SendDataInterface.Presenter create() {
         return new SendDataPresenter();
@@ -57,21 +60,10 @@ public class SendDataPresenter extends BaseMvpPresenter<SendDataInterface.View> 
                     dataItemList.clear();
                 } else {
                     dataItemList.clear();
+                    DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
+                    dataItemGroup = dataGroup;
                     dataItemList = ConvertItem.createListDataItemGroupFromResult( result ).getData();
-
-                    if (result.getMessage().equals(Config.KEY_PROVINCE)) {
-                        DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
-                        dataItemGroup = dataGroup;
-                        getView().setProvince(dataItemList);
-                    } else if (result.getMessage().equals(Config.KEY_DISTRICT)) {
-                        DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
-                        dataItemGroup = dataGroup;
-                        getView().setDistrict(dataItemList);
-                    } else if (result.getMessage().equals(Config.KEY_SUB_DISTRICT)) {
-                        DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
-                        dataItemGroup = dataGroup;
-                        getView().setSubDistrict(dataItemList);
-                    }
+                    getView().setProvince(dataItemList);
                     getView().onDismiss();
                 }
             }
@@ -79,6 +71,58 @@ public class SendDataPresenter extends BaseMvpPresenter<SendDataInterface.View> 
             @Override
             public void onFailure(Throwable t) {
                 dataItemList.clear();
+                getView().onDismiss();
+            }
+        });
+    }
+
+    @Override
+    public void requestDistrict(String key, String code) {
+        getView().onLoad();
+        serviceManager.requestData(key, code, new ServiceManager.ServiceManagerCallback<DataItemResultGroup>() {
+            @Override
+            public void onSuccess(DataItemResultGroup result) {
+                if (result.getMessage().equals(Config.FAILED)) {
+                    dataItemListDistrict.clear();
+                } else {
+                    dataItemListDistrict.clear();
+                    DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
+                    dataItemGroup = dataGroup;
+                    dataItemListDistrict = ConvertItem.createListDataItemGroupFromResult( result ).getData();
+                    getView().setDistrict(dataItemListDistrict);
+                    getView().onDismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                dataItemListDistrict.clear();
+                getView().onDismiss();
+            }
+        });
+    }
+
+    @Override
+    public void requestSubDistrict(String key, String code) {
+        getView().onLoad();
+        serviceManager.requestData(key, code, new ServiceManager.ServiceManagerCallback<DataItemResultGroup>() {
+            @Override
+            public void onSuccess(DataItemResultGroup result) {
+                if (result.getMessage().equals(Config.FAILED)) {
+                    dataItemListSubDistrict.clear();
+                } else {
+                    dataItemListSubDistrict.clear();
+                    DataItemGroup dataGroup = ConvertItem.createListDataItemGroupFromResult( result );
+                    dataItemGroup = dataGroup;
+                    dataItemListSubDistrict = ConvertItem.createListDataItemGroupFromResult( result ).getData();
+                    getView().setSubDistrict(dataItemListSubDistrict);
+                    getView().onDismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                dataItemListSubDistrict.clear();
                 getView().onDismiss();
             }
         });
@@ -97,17 +141,40 @@ public class SendDataPresenter extends BaseMvpPresenter<SendDataInterface.View> 
     @Override
     public void onRestoreToAdapter(DataItemGroup dataGroup) {
         this.dataItemList.clear();
-        /*this.dataItemList = dataGroup.getData();
-        getView().setProvince(dataItemList);*/
+        this.dataItemListDistrict.clear();
+        this.dataItemListSubDistrict.clear();
         if (dataItemGroup.getMessage().equals(Config.KEY_PROVINCE)) {
             this.dataItemList = dataItemGroup.getData();
             getView().setProvince(dataItemList);
         } else if (dataItemGroup.getMessage().equals(Config.KEY_DISTRICT)) {
-            this.dataItemList = dataItemGroup.getData();
-            getView().setDistrict(dataItemList);
+            this.dataItemListDistrict = dataItemGroup.getData();
+            getView().setDistrict(dataItemListDistrict);
         } else if (dataItemGroup.getMessage().equals(Config.KEY_SUB_DISTRICT)) {
-            this.dataItemList = dataItemGroup.getData();
-            getView().setSubDistrict(dataItemList);
+            this.dataItemListSubDistrict = dataItemGroup.getData();
+            getView().setSubDistrict(dataItemListSubDistrict);
         }
+    }
+
+    @Override
+    public void sendDataToServer(final List<SendDataBody.dataBody> dataBodyList) {
+        getView().onLoad();
+        serviceManager.SendDataRequest(dataBodyList, new ServiceManager.ServiceManagerCallback<DataItemResultGroup>() {
+            @Override
+            public void onSuccess(DataItemResultGroup result) {
+                if (result.getStatus().equals(Config.SUCCESS)) {
+                    getView().onDismiss();
+                    getView().onSuccess();
+                } else if (result.getStatus().equals(Config.FAILED)) {
+                    getView().onDismiss();
+                    getView().onFail(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                getView().onFail(t.getMessage());
+                getView().onDismiss();
+            }
+        });
     }
 }

@@ -10,6 +10,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
 import th.co.thiensurat.tsr_history.api.request.FullAuthenBody;
+import th.co.thiensurat.tsr_history.api.request.LogBody;
+import th.co.thiensurat.tsr_history.api.request.SendDataBody;
 import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.DataItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
@@ -23,6 +25,8 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.URL_DATA;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_FULL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE_INFO;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE_LOG;
 
 /**
  * Created by teerayut.k on 7/17/2017.
@@ -48,5 +52,11 @@ public interface ApiService {
 
     @GET ( URL_DATA )
     Call<DataItemResultGroup> getData(@Query( "data" ) String key, @Query( "code" ) String code);
+
+    @POST ( URL_SAVE_INFO )
+    Call<DataItemResultGroup> sendData(@Body SendDataBody body);
+
+    @POST ( URL_SAVE_LOG )
+    Call<DataItemResultGroup> saveLog(@Body LogBody body);
 
 }

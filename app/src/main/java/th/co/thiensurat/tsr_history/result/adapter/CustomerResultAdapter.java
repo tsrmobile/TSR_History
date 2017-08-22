@@ -73,6 +73,12 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.send));
             }
         });
+
+        /*if ((position + 1) == listItems.size()) {
+            Log.e("Last item", ConvertDateFormat(item.getDate()));
+        } else {
+
+        }*/
     }
 
     @Override
