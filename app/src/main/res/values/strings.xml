@@ -79,6 +79,11 @@
     <string name="hint_email">อีเมล</string>
     <string name="hint_has_product">มีเครื่อง</string>
     <string name="hint_no_product">ไม่มีเครื่อง</string>
+    <string name="hint_check_condition">เงื่อนไขในการตรวจสอบ</string>
+    <string name="hint_condition_1">ตรวจสอบ</string>
+    <string name="hint_condition_2">ติดตั้งเครื่อง</string>
+    <string name="hint_condition_3">ขายเครื่องใหม่</string>
+    <string name="hint_condition_4">อื่นๆ</string>
     /****/
 
     /*

@@ -21,138 +21,202 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/count_no"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_disable"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_count_no"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel_gray">
+
+                <EditText
+                    android:id="@+id/count_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_disable"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_count_no"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="10dp"/>
 
-            <EditText
-                android:id="@+id/customer_name"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_disable"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_customer_name"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel_gray">
+
+                <EditText
+                    android:id="@+id/customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_disable"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_customer_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/addr_number"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_height="58dp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:background="@drawable/widget_border"
-                    android:textCursorDrawable="@drawable/cursor_color"
-                    android:hint="@string/hint_number"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:singleLine="true"/>
+                    android:gravity="bottom"
+                    android:theme="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/addr_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:paddingLeft="8dp"
+                        android:background="@drawable/widget_border"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:hint="@string/hint_number"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress"
+                        android:singleLine="true"/>
+
+                </android.support.design.widget.TextInputLayout>
 
                 <View
                     android:layout_width="15dp"
                     android:layout_height="match_parent"/>
 
-                <EditText
-                    android:id="@+id/addr_moo"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_height="58dp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:background="@drawable/widget_border"
-                    android:textCursorDrawable="@drawable/cursor_color"
-                    android:hint="@string/hint_moo"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:singleLine="true"/>
+                    android:gravity="bottom"
+                    android:theme="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/addr_moo"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:paddingLeft="8dp"
+                        android:background="@drawable/widget_border"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:hint="@string/hint_moo"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:singleLine="true"/>
+
+                </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_soi"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_soi"
-                android:imeOptions="actionNext"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/addr_soi"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_soi"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textNoSuggestions"
+                    android:singleLine="true"/>
 
-            <EditText
-                android:id="@+id/addr_road"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_road"
-                android:imeOptions="actionNext"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_village"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_village"
-                android:imeOptions="actionNext"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_road"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_road"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textNoSuggestions"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_building"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_building"
-                android:imeOptions="actionNext"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_village"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_village"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textNoSuggestions"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_building"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_building"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textNoSuggestions"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -160,7 +224,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:background="@drawable/widget_border">
 
@@ -172,13 +236,6 @@
                     android:paddingLeft="8dp"
                     android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <!--<ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
-
             </LinearLayout>
 
             <View
@@ -187,7 +244,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:background="@drawable/widget_border">
 
@@ -199,13 +256,6 @@
                     android:paddingLeft="8dp"
                     android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <!--<ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
-
             </LinearLayout>
 
             <View
@@ -214,7 +264,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:background="@drawable/widget_border">
 
@@ -225,102 +275,135 @@
                     android:paddingLeft="8dp"
                     android:backgroundTint="@color/colorPrimaryDark"/>
 
-                <!--<ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:tint="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"/>-->
-
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_zipcode"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_zipcode"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="5"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/addr_zipcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_zipcode"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:singleLine="true"/>
 
-            <EditText
-                android:id="@+id/addr_phone"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_phone"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxLength="9"
-                android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_work_phone"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_work_phone"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxLength="9"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/addr_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_phone"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="9"
+                    android:singleLine="true"/>
 
-            <EditText
-                android:id="@+id/addr_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_mobile"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxLength="10"
-                android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
 
-            <EditText
-                android:id="@+id/addr_email"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:paddingLeft="8dp"
-                android:background="@drawable/widget_border"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:hint="@string/hint_email"
-                android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"/>
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_work_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_work_phone"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="9"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"/>
+                android:layout_height="5dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_mobile"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/addr_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="@string/hint_email"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
 
             <RadioGroup
                 android:id="@+id/radio_group"
@@ -343,6 +426,55 @@
                     android:layout_weight="1"
                     android:buttonTint="@color/colorPrimaryDark"
                     android:text="@string/hint_no_product"/>
+
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_check_condition"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group_condition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/condition_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_1"/>
+
+                <RadioButton
+                    android:id="@+id/condition_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_2"/>
+
+                <RadioButton
+                    android:id="@+id/condition_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_3"/>
+
+                <RadioButton
+                    android:id="@+id/condition_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_4"/>
 
             </RadioGroup>
 

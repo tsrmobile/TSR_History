@@ -68,12 +68,15 @@ public class SpinnerCustomAdapter extends ArrayAdapter<String> {
             switch (header) {
                 case "province" :
                     textView.setText(activity.getResources().getString(R.string.spinner_province));
+                    textView.setTextColor(activity.getResources().getColor(R.color.colorPrimaryDark));
                     break;
                 case "district" :
                     textView.setText(activity.getResources().getString(R.string.spinner_district));
+                    textView.setTextColor(activity.getResources().getColor(R.color.colorPrimaryDark));
                     break;
                 case "subdistrict" :
                     textView.setText(activity.getResources().getString(R.string.spinner_sub_district));
+                    textView.setTextColor(activity.getResources().getColor(R.color.colorPrimaryDark));
                     break;
                 default: break;
             }

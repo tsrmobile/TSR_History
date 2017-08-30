@@ -40,6 +40,7 @@ public class SendDataBody {
         private String created;
         private String location;
         private String product;
+        private String condition;
 
         public String getCountno() {
             return contno;
@@ -209,6 +210,15 @@ public class SendDataBody {
 
         public dataBody setProduct(String product) {
             this.product = product;
+            return this;
+        }
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public dataBody setCondition(String condition) {
+            this.condition = condition;
             return this;
         }
     }

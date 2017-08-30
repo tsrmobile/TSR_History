@@ -60,6 +60,7 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
     private String subdistrict = "";
     private String currentLocation = "";
     private String product = "";
+    private String condition = "";
     private GPSTracker gpsTracker;
     private SpinnerCustomAdapter spinnerCustomAdapter;
     private List<DataItem> dataItemList = new ArrayList<DataItem>();
@@ -80,44 +81,32 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         return R.layout.activity_send_data;
     }
 
-    @Bind(R.id.count_no)
-    EditText countNo;
-    @Bind(R.id.addr_number)
-    EditText addrNumber;
-    @Bind(R.id.addr_moo)
-    EditText addrMoo;
-    @Bind(R.id.addr_soi)
-    EditText addrSoi;
-    @Bind(R.id.addr_road)
-    EditText addrRoad;
-    @Bind(R.id.addr_village)
-    EditText addrVillage;
-    @Bind(R.id.addr_building)
-    EditText addrBuilding;
-    @Bind(R.id.addr_province)
-    Spinner spinnerProvince;
-    @Bind(R.id.addr_district)
-    Spinner spinnerDistrict;
-    @Bind(R.id.addr_sub_district)
-    Spinner spinnerSubDistrict;
-    @Bind(R.id.addr_zipcode)
-    EditText addrZip;
-    @Bind(R.id.addr_phone)
-    EditText addrPhone;
-    @Bind(R.id.addr_work_phone)
-    EditText addrWorkPhone;
-    @Bind(R.id.addr_mobile)
-    EditText addrMobile;
-    @Bind(R.id.addr_email)
-    EditText addrEmail;
-    @Bind(R.id.button_send)
-    Button buttonSend;
-    @Bind(R.id.button_back)
-    Button buttonBack;
+    @Bind(R.id.count_no) EditText countNo;
+    @Bind(R.id.addr_number) EditText addrNumber;
+    @Bind(R.id.addr_moo) EditText addrMoo;
+    @Bind(R.id.addr_soi) EditText addrSoi;
+    @Bind(R.id.addr_road) EditText addrRoad;
+    @Bind(R.id.addr_village) EditText addrVillage;
+    @Bind(R.id.addr_building) EditText addrBuilding;
+    @Bind(R.id.addr_province) Spinner spinnerProvince;
+    @Bind(R.id.addr_district) Spinner spinnerDistrict;
+    @Bind(R.id.addr_sub_district) Spinner spinnerSubDistrict;
+    @Bind(R.id.addr_zipcode) EditText addrZip;
+    @Bind(R.id.addr_phone) EditText addrPhone;
+    @Bind(R.id.addr_work_phone) EditText addrWorkPhone;
+    @Bind(R.id.addr_mobile) EditText addrMobile;
+    @Bind(R.id.addr_email) EditText addrEmail;
+    @Bind(R.id.button_send) Button buttonSend;
+    @Bind(R.id.button_back) Button buttonBack;
     @Bind(R.id.customer_name) EditText customerName;
     @Bind(R.id.have_product) RadioButton radioButtonHave;
     @Bind(R.id.no_product) RadioButton radioButtonNo;
     @Bind(R.id.radio_group) RadioGroup radioGroup;
+    @Bind(R.id.condition_1) RadioButton radioButtonCondition1;
+    @Bind(R.id.condition_2) RadioButton radioButtonCondition2;
+    @Bind(R.id.condition_3) RadioButton radioButtonCondition3;
+    @Bind(R.id.condition_4) RadioButton radioButtonCondition4;
+    @Bind(R.id.radio_group_condition) RadioGroup radioGroupCondition;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -187,6 +176,10 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         buttonBack.setOnClickListener(onBack());
         radioButtonHave.setOnClickListener(OptionClickListener);
         radioButtonNo.setOnClickListener(OptionClickListener);
+        radioButtonCondition1.setOnClickListener(OptionConditionClickListener);
+        radioButtonCondition2.setOnClickListener(OptionConditionClickListener);
+        radioButtonCondition3.setOnClickListener(OptionConditionClickListener);
+        radioButtonCondition4.setOnClickListener(OptionConditionClickListener);
     }
 
     private void getDataFromIntent() {
@@ -354,33 +347,9 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
                 .setCreated(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME))
                 .setLocation(currentLocation)
                 .setProduct((product.isEmpty()) ? "-" : product)
+                .setCondition((condition.isEmpty()) ? "-" : condition)
         );
         getPresenter().sendDataToServer(dataBodyList);
-        /*if (validate(new EditText[]{countNo, addrNumber, addrSoi, addrVillage, addrBuilding, addrMobile})) {
-            dataBodyList.add(new SendDataBody.dataBody()
-                    .setCountno((countNo.getText().toString().equals("")) ? "-" : coutno)
-                    .setName((customerName.getText().toString().equals("")) ? "-" : name)
-                    .setNumber((addrNumber.getText().toString().equals("")) ? "-" : addrNumber.getText().toString())
-                    .setMoo((addrMoo.getText().toString().equals("")) ? "-" : addrMoo.getText().toString())
-                    .setSoi((addrSoi.getText().toString().equals("")) ? "-" : addrSoi.getText().toString())
-                    .setRoad((addrRoad.getText().toString().equals("")) ? "-" : addrRoad.getText().toString())
-                    .setVillage((addrVillage.getText().toString().equals("")) ? "-" : addrVillage.getText().toString())
-                    .setBuilding((addrBuilding.getText().toString().equals("")) ? "-" : addrBuilding.getText().toString())
-                    .setProvince((province.isEmpty()) ? "-" : province)
-                    .setDistrict((district.isEmpty()) ? "-" : district)
-                    .setSubdistrict((subdistrict.isEmpty()) ? "-" : subdistrict)
-                    .setZipcode((addrZip.getText().toString().equals("")) ? "-" : addrZip.getText().toString())
-                    .setHomephone((addrPhone.getText().toString().equals("")) ? "-" : addrPhone.getText().toString())
-                    .setWorkphone((addrWorkPhone.getText().toString().equals("")) ? "-" : addrWorkPhone.getText().toString())
-                    .setMobile((addrMobile.getText().toString().equals("")) ? "-" : addrMobile.getText().toString())
-                    .setEmail((addrEmail.getText().toString().equals("")) ? "-" : addrEmail.getText().toString())
-                    .setCreated(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME))
-                    .setLocation(currentLocation)
-            );
-            getPresenter().sendDataToServer(dataBodyList);
-        } else {
-            AlertDialog.dialogSaveFail(SendDataActivity.this, getResources().getString(R.string.dialog_msg_required));
-        }*/
     }
 
     private void clearText() {
@@ -401,21 +370,8 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         addrMobile.setText("");
         addrEmail.setText("");
         radioGroup.clearCheck();
+        radioGroupCondition.clearCheck();
     }
-
-    /*private boolean validate(EditText[] fields) {
-        boolean valid = false;
-        for (int i = 0; i < fields.length; i++) {
-            EditText currentField = fields[i];
-            if (currentField.getText().toString().length() <= 0) {
-                currentField.setBackgroundDrawable(getResources().getDrawable(R.drawable.widget_empty));
-                valid = false;
-            } else {
-                valid = true;
-            }
-        }
-        return valid;
-    }*/
 
     @Override
     protected void onResume() {
@@ -474,9 +430,6 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
     }
 
     RadioButton.OnClickListener OptionClickListener = new RadioButton.OnClickListener() {
-
-        int i = 0;
-
         @Override
         public void onClick(View view) {
             if (radioButtonHave.isChecked()) {
@@ -486,20 +439,23 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
                 product = "false";
                 Log.e("Product not have", "false");
             }
-            /*if (i == 0) {
-                i++;
-                existAddress.setChecked(true);
-                if (addressModelList.size() > 0) {
-                    setAddress();
-                } else {
-                    notSearch();
-                }
+        }
+    };
+
+    RadioButton.OnClickListener OptionConditionClickListener = new RadioButton.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (radioButtonCondition1.isChecked()) {
+                condition = radioButtonCondition1.getText().toString();
+            } else if (radioButtonCondition2.isChecked()) {
+                condition = radioButtonCondition2.getText().toString();
+            } else if (radioButtonCondition3.isChecked()) {
+                condition = radioButtonCondition3.getText().toString();
             } else {
-                existAddress.setChecked(false);
-                clearAddress();
-                initProvince();
-                i = 0;
-            }*/
+                condition = radioButtonCondition4.getText().toString();
+            }
+
+            Log.e("Codition choice", condition);
         }
     };
 }

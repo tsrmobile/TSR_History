@@ -367,6 +367,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         intent.putExtra(Config.KEY_CONTACT_CODE, item.getCountno());
         intent.putExtra(Config.KEY_CONTACT_NAME, item.getName());
         startActivityForResult(intent, Config.REQUEST_SEND_DATA);
+        saveLog(this.listItemList, "Send data");
     }
 
     private void saveLog(List<ListItem> listItemList, String event) {
