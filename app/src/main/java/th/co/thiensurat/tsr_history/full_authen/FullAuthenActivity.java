@@ -111,7 +111,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     @Override
     public void initialize() {
         getDeviceID();
-        loginSession();
+        //loginSession();
         OnNetworkChecking();
     }
 
@@ -120,11 +120,16 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         if (!isNetworkAvailable) {
             AlertDialog.dialogNetworkError(FullAuthenActivity.this);
         } else {
-            if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+            if (loginSession()) {
+                getPresenter().goToSearchActivity();
+            } else {
+                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
+            }
+            /*if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                 getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
             } else {
                 getPresenter().goToSearchActivity();
-            }
+            }*/
         }
     }
 
@@ -166,7 +171,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             } else if (authenItems.get(0).getLoggedin() == 1) {
                 MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
                 MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, authenItems.get(0).getUsername());
-                MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
+                //MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                 getPresenter().goToSearchActivity();
             }
         }
@@ -186,7 +191,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             for (AuthenItem item : authenItems) {
                 MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
                 MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, item.getUsername());
-                MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
+                //MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                 getPresenter().goToSearchActivity();
             }
         }
@@ -217,9 +222,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
     }
 
     private void getDeviceID() {
-        String deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        //Log.e("Device id", deviceID);
-        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, deviceID);
+        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
     }
 
     private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
@@ -231,12 +234,21 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         }
     }
 
-    private void loginSession() {
-        long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
+    private boolean loginSession() {
+        /*long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
         int minutes = (int) ((loginTime / (1000*60)) % 60);
-        if (minutes > 360) {
-            MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
-            MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
+        if (minutes > 360 || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+            MyApplication.getInstance().getPrefManager().clear();
+        }*/
+        try {
+            if (MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                return true;
+            } else {
+                MyApplication.getInstance().getPrefManager().clear();
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
         }
     }
 

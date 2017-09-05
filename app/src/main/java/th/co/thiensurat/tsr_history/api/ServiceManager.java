@@ -123,7 +123,7 @@ public class ServiceManager {
 
             @Override
             public void onFailure(Call<TsrAuthenResult> call, Throwable t) {
-                Log.e("request TSR failure", t.getMessage());
+                //Log.e("request TSR failure", t.getMessage());
                 if( callback != null ){
                     callback.onFailure( t );
                 }

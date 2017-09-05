@@ -52,14 +52,15 @@ public class TsrAuthenPresenter extends BaseMvpPresenter<TsrAuthenInterface.View
                 Log.e("TSR Authen result", result.getDisplayname());
                 MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
                 MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, result.getAd_name());
-                MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
+                //MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                 getView().onDismiss();
                 getView().goToSearchActivity();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("TSR Authen fail", t.getMessage());
+                //Log.e("TSR Authen fail", t.getMessage());
+                MyApplication.getInstance().getPrefManager().clear();
                 getView().onDismiss();
                 getView().onFail(t.getMessage());
             }

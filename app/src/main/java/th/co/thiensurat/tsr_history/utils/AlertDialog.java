@@ -3,10 +3,12 @@ package th.co.thiensurat.tsr_history.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.Settings;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
+import th.co.thiensurat.tsr_history.choice_authen.ChoiceActivity;
 import th.co.thiensurat.tsr_history.result.CustomerResultActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.send_data.SendDataActivity;
@@ -100,6 +102,29 @@ public class AlertDialog {
             }
         })
         .show();
+    }
+
+    public static void dialogAlertUpdate(final Context context, final String appPackageName) {
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(context.getResources().getString(R.string.dialog_title_warning))
+                .setContentText(context.getResources().getString(R.string.dialog_text_msg_update))
+                .setCancelText(context.getResources().getString(R.string.dialog_button_cancel))
+                .setConfirmText(context.getResources().getString(R.string.dialog_button_update))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                        ((ChoiceActivity)context).finish();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                        ((ChoiceActivity)context).startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                })
+                .show();
     }
 
     public static void dialogLocationError(final Context context) {

@@ -3,9 +3,15 @@ package th.co.thiensurat.tsr_history.choice_authen;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.github.javiersantos.appupdater.AppUpdaterUtils;
+import com.github.javiersantos.appupdater.enums.AppUpdaterError;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.github.javiersantos.appupdater.objects.Update;
 
 import org.w3c.dom.Text;
 
@@ -18,6 +24,7 @@ import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
 import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.tsr_full_authen.TsrAuthenActivity;
+import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
@@ -57,7 +64,7 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
     @Override
     public void initialize() {
         textViewVersion.setText("App v." + appVersion());
-        loginSession();
+        updateApp();
     }
 
     private View.OnClickListener onBighead() {
@@ -102,15 +109,58 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
         return null;
     }
 
-    private void loginSession() {
-        long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
+    private boolean loginSession() {
+        /*long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
         int minutes = (int) ((loginTime / (1000*60)) % 60);
         if (minutes > 360 || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-            MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
-            MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
+            MyApplication.getInstance().getPrefManager().clear();
         } else {
             startActivity(new Intent(getApplicationContext(), SearchActivity.class));
             finish();
         }
+        Log.e("Timestamp", minutes + ", "+ loginTime);*/
+        try {
+            if (MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
+                return true;
+            } else {
+                MyApplication.getInstance().getPrefManager().clear();
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void updateApp() {
+        AlertDialog.dialogLoading(ChoiceActivity.this);
+        AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this)
+                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+                .withListener(new AppUpdaterUtils.UpdateListener() {
+                    @Override
+                    public void onSuccess(Update update, Boolean isUpdateAvailable) {
+                        Log.e("Latest Version", update.getLatestVersion());
+                        //Log.d("Latest Version Code", update.getLatestVersionCode());
+                        Log.e("Release notes", update.getReleaseNotes());
+                        //Log.d("URL", update.getUrlToDownload());
+                        Log.e("Is update available?", Boolean.toString(isUpdateAvailable));
+                        AlertDialog.dialogDimiss();
+                        if (isUpdateAvailable) {
+                            MyApplication.getInstance().getPrefManager().clear();
+                            AlertDialog.dialogAlertUpdate(ChoiceActivity.this, getApplicationContext().getPackageName());
+                        } else {
+                            if (loginSession()) {
+                                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                                finish();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(AppUpdaterError error) {
+                        AlertDialog.dialogDimiss();
+                        Log.d("AppUpdater Error", "Something went wrong");
+                    }
+                });
+        appUpdaterUtils.start();
     }
 }

@@ -228,9 +228,10 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     }
 
     private void setSignOut() {
-        MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
+        /*MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
-        MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, 0);
+        MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, 0);*/
+        MyApplication.getInstance().getPrefManager().clear();
         startActivity(new Intent(getApplicationContext(), ChoiceActivity.class));
         finish();
     }
