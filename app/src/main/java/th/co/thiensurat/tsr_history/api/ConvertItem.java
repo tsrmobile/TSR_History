@@ -91,6 +91,11 @@ public class ConvertItem {
 
     public static List<DataItem> createListDataItemsFromResult(List<DataItemResult> result){
         List<DataItem> items = new ArrayList<>();
+        DataItem itemHeader = new DataItem()
+                .setDataId("")
+                .setDataCode("header")
+                .setDataName("");
+        items.add( itemHeader );
         for( DataItemResult dataItemResult : result ){
             DataItem item = new DataItem()
                     .setDataId(dataItemResult.getDataId())
