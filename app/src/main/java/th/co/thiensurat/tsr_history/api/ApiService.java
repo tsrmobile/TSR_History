@@ -5,6 +5,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -24,6 +25,7 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTHEN_TSR;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_DATA;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_FULL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY_BY_NAME;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE_INFO;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE_LOG;
@@ -43,6 +45,9 @@ public interface ApiService {
     @GET( URL_HISTORY )
     Call<ListItemResultGroup> getHistory(@Query( "search" ) String value );
 
+    @GET( URL_HISTORY_BY_NAME )
+    Call<ListItemResultGroup> getHistoryByName(@Query( "search" ) String value );
+    
     @POST( URL_SAVE )
     Call<AddHistoryResult> addHistory(@Body AddHistoryBody body);
 

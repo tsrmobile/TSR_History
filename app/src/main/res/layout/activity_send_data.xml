@@ -395,7 +395,7 @@
                     android:background="@drawable/widget_border"
                     android:textCursorDrawable="@drawable/cursor_color"
                     android:hint="@string/hint_email"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"/>
 
@@ -438,7 +438,46 @@
                 android:layout_height="wrap_content"
                 android:text="@string/hint_check_condition"/>
 
-            <RadioGroup
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/condition_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_1"/>
+
+                <CheckBox
+                    android:id="@+id/condition_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_2"/>
+
+                <CheckBox
+                    android:id="@+id/condition_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_3"/>
+
+                <CheckBox
+                    android:id="@+id/condition_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:text="@string/hint_condition_4"/>
+
+            </LinearLayout>
+
+            <!--<RadioGroup
                 android:id="@+id/radio_group_condition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -476,7 +515,27 @@
                     android:buttonTint="@color/colorPrimaryDark"
                     android:text="@string/hint_condition_4"/>
 
-            </RadioGroup>
+            </RadioGroup>-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_desc"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/widget_border"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    android:hint="อื่นๆ"
+                    android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -508,7 +567,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="@string/button_back"
+                android:text="@string/button_cancel"
                 android:textColor="@color/White"/>
 
         </LinearLayout>

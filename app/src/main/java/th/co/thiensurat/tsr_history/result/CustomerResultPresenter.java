@@ -79,6 +79,7 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
                     listItemList = ConvertItem.createListItemGroupFromResult( result ).getData();
                     ListItemGroup itemGroup = ConvertItem.createListItemGroupFromResult( result );
                     listItemGroup = itemGroup;
+                    Log.e("request history by name", listItemList.get(0).getName());
                     getView().setItemAdapter(listItemList);
                 }
             }
@@ -149,7 +150,7 @@ public class CustomerResultPresenter extends BaseMvpPresenter<CustomerResultInte
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("Save Log failure", t.getMessage());
+                //Log.e("Save Log failure", t.getMessage());
             }
         });
     }

@@ -41,6 +41,7 @@ public class SearchPresenter extends BaseMvpPresenter<SearchInterface.view> impl
 
     @Override
     public void goToResultCustomer(String data) {
+        //getView().goToResultCustomer(data);
         if (data.matches("\\d{13}")) {
             getView().goToResultCustomer(data);
         } else {

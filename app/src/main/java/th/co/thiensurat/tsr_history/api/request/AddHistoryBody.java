@@ -23,6 +23,7 @@ public class AddHistoryBody {
     public static class HistoryBody{
 
         private String customerID;
+        private String customerName;
         private String saleCode;
         private String dateContract;
         private String image;
@@ -70,6 +71,15 @@ public class AddHistoryBody {
 
         public HistoryBody setCustomerID(String customerID) {
             this.customerID = customerID;
+            return this;
+        }
+
+        public String getCustomerName() {
+            return customerName;
+        }
+
+        public HistoryBody setCustomerName(String customerName) {
+            this.customerName = customerName;
             return this;
         }
     }

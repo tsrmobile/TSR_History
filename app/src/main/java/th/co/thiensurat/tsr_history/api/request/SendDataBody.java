@@ -41,6 +41,7 @@ public class SendDataBody {
         private String location;
         private String product;
         private String condition;
+        private String description;
 
         public String getCountno() {
             return contno;
@@ -219,6 +220,15 @@ public class SendDataBody {
 
         public dataBody setCondition(String condition) {
             this.condition = condition;
+            return this;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public dataBody setDescription(String description) {
+            this.description = description;
             return this;
         }
     }

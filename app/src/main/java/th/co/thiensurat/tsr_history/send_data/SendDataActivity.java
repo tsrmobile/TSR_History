@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -60,8 +62,12 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
     private String subdistrict = "";
     private String currentLocation = "";
     private String product = "";
-    private String condition = "";
+    private String condition1 = "";
+    private String condition2 = "";
+    private String condition3 = "";
+    private String condition4 = "";
     private GPSTracker gpsTracker;
+    private StringBuilder condition;
     private SpinnerCustomAdapter spinnerCustomAdapter;
     private List<DataItem> dataItemList = new ArrayList<DataItem>();
 
@@ -96,17 +102,19 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
     @Bind(R.id.addr_work_phone) EditText addrWorkPhone;
     @Bind(R.id.addr_mobile) EditText addrMobile;
     @Bind(R.id.addr_email) EditText addrEmail;
+    @Bind(R.id.description) EditText edtDescription;
+    @Bind(R.id.layout_desc) TextInputLayout descLayout;
     @Bind(R.id.button_send) Button buttonSend;
     @Bind(R.id.button_back) Button buttonBack;
     @Bind(R.id.customer_name) EditText customerName;
     @Bind(R.id.have_product) RadioButton radioButtonHave;
     @Bind(R.id.no_product) RadioButton radioButtonNo;
     @Bind(R.id.radio_group) RadioGroup radioGroup;
-    @Bind(R.id.condition_1) RadioButton radioButtonCondition1;
-    @Bind(R.id.condition_2) RadioButton radioButtonCondition2;
-    @Bind(R.id.condition_3) RadioButton radioButtonCondition3;
-    @Bind(R.id.condition_4) RadioButton radioButtonCondition4;
-    @Bind(R.id.radio_group_condition) RadioGroup radioGroupCondition;
+    @Bind(R.id.condition_1) CheckBox checkBoxCondition1;
+    @Bind(R.id.condition_2) CheckBox checkBoxCondition2;
+    @Bind(R.id.condition_3) CheckBox checkBoxCondition3;
+    @Bind(R.id.condition_4) CheckBox checkBoxCondition4;
+    //@Bind(R.id.radio_group_condition) RadioGroup radioGroupCondition;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -176,10 +184,10 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         buttonBack.setOnClickListener(onBack());
         radioButtonHave.setOnClickListener(OptionClickListener);
         radioButtonNo.setOnClickListener(OptionClickListener);
-        radioButtonCondition1.setOnClickListener(OptionConditionClickListener);
-        radioButtonCondition2.setOnClickListener(OptionConditionClickListener);
-        radioButtonCondition3.setOnClickListener(OptionConditionClickListener);
-        radioButtonCondition4.setOnClickListener(OptionConditionClickListener);
+        checkBoxCondition1.setOnClickListener(checkBoxClickListener);
+        checkBoxCondition2.setOnClickListener(checkBoxClickListener);
+        checkBoxCondition3.setOnClickListener(checkBoxClickListener);
+        checkBoxCondition4.setOnClickListener(checkBoxClickListener);
     }
 
     private void getDataFromIntent() {
@@ -213,7 +221,8 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(RESULT_CANCELED);
+                //setResult(RESULT_CANCELED);
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                 finish();
             }
         };
@@ -347,7 +356,8 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
                 .setCreated(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_USERNAME))
                 .setLocation(currentLocation)
                 .setProduct((product.isEmpty()) ? "-" : product)
-                .setCondition((condition.isEmpty()) ? "-" : condition)
+                .setCondition(condition.toString())
+                .setDescription((checkBoxCondition4.isChecked()) ? edtDescription.getText().toString() : "")
         );
         getPresenter().sendDataToServer(dataBodyList);
     }
@@ -370,7 +380,12 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         addrMobile.setText("");
         addrEmail.setText("");
         radioGroup.clearCheck();
-        radioGroupCondition.clearCheck();
+        checkBoxCondition1.setChecked(false);
+        checkBoxCondition2.setChecked(false);
+        checkBoxCondition3.setChecked(false);
+        checkBoxCondition4.setChecked(false);
+        //radioGroupCondition.clearCheck();
+        edtDescription.setText("");
     }
 
     @Override
@@ -442,7 +457,7 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         }
     };
 
-    RadioButton.OnClickListener OptionConditionClickListener = new RadioButton.OnClickListener() {
+    /*RadioButton.OnClickListener OptionConditionClickListener = new RadioButton.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (radioButtonCondition1.isChecked()) {
@@ -456,6 +471,48 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
             }
 
             Log.e("Codition choice", condition);
+        }
+    };*/
+
+    CheckBox.OnClickListener checkBoxClickListener = new CheckBox.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            condition = new StringBuilder();
+            if (checkBoxCondition1.isChecked()) {
+                condition1 = checkBoxCondition1.getText().toString();
+            } else {
+                condition1 = "";
+            }
+
+            if (checkBoxCondition2.isChecked()) {
+                condition2 = checkBoxCondition2.getText().toString();
+            } else {
+                condition2 = "";
+            }
+
+            if (checkBoxCondition3.isChecked()) {
+                condition3 = checkBoxCondition3.getText().toString();
+            } else {
+                condition3 = "";
+            }
+
+            if (checkBoxCondition4.isChecked()) {
+                condition4 = checkBoxCondition4.getText().toString();
+                descLayout.setVisibility(View.VISIBLE);
+                edtDescription.requestFocus();
+            } else {
+                condition4 = "";
+                descLayout.setVisibility(View.GONE);
+            }
+
+            condition.append(
+                    ((condition1.isEmpty()) ? "" : condition1 + ", ") +
+                    ((condition2.isEmpty()) ? "" : condition2 + ", ") +
+                    ((condition3.isEmpty()) ? "" : condition3 + ", ") +
+                    ((condition4.isEmpty()) ? "" : condition4)
+            );
+
+            Log.e("Codition choice", condition.toString());
         }
     };
 }

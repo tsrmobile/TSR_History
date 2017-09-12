@@ -7,8 +7,8 @@ android {
         applicationId "th.co.thiensurat.tsr_history"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 13
-        versionName "1.2.2"
+        versionCode 14
+        versionName "1.2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptSupportModeEnabled true
     }

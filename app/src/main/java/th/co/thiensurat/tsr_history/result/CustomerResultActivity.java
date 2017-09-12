@@ -68,6 +68,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     private String data;
     private Dialog dialog;
+    private String classValue;
     private LinearLayoutManager layoutManager;
     private CustomerResultAdapter adapter;
     private ListItem listItem;
@@ -76,9 +77,9 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             getPresenter().requestItem();
-        }
+        }*/
     }
 
     @Override
@@ -116,6 +117,13 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
     @Override
     public void setupInstance() {
         getDataFromIntent();
+        getPresenter().requestItem();
+        //getPresenter().requestItem();
+        /*if (classValue.equals("CustomerByNameActivity")) {
+
+        } else {
+            getPresenter().requestItem();
+        }*/
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -169,6 +177,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     private void getDataFromIntent() {
         data = getIntent().getStringExtra(Config.KEY_DATA);
+        //classValue = getIntent().getStringExtra(Config.KEY_CLASS);
     }
 
     @Override
@@ -315,6 +324,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         String base64IMG = encodeImage(image);
         bodyList.add( new AddHistoryBody.HistoryBody()
                 .setCustomerID(listItemList.get(0).getIdcard())
+                .setCustomerName(listItemList.get(0).getName())
                 .setSaleCode(listItemList.get(0).getSaleCode())
                 .setDateContract(listItemList.get(0).getDate())
                 .setImage(base64IMG)
@@ -367,7 +377,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         intent.putExtra(Config.KEY_CONTACT_CODE, item.getCountno());
         intent.putExtra(Config.KEY_CONTACT_NAME, item.getName());
         startActivityForResult(intent, Config.REQUEST_SEND_DATA);
-        saveLog(this.listItemList, "Send data");
+        //saveLog(this.listItemList, "Send data");
     }
 
     private void saveLog(List<ListItem> listItemList, String event) {
@@ -381,6 +391,9 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
                 sb1.append(",");
                 sb2.append(",");
                 i++;
+            } else {
+                sb1.append("");
+                sb2.append("");
             }
         }
 

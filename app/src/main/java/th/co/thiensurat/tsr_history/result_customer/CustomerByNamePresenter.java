@@ -9,6 +9,8 @@ import java.util.List;
 
 import th.co.thiensurat.tsr_history.api.ConvertItem;
 import th.co.thiensurat.tsr_history.api.ServiceManager;
+import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
+import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.ListItemResultGroup;
 import th.co.thiensurat.tsr_history.base.BaseMvpPresenter;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
@@ -63,10 +65,9 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
                 } else {
                     listItemList.clear();
                     listItemList = ConvertItem.createListItemGroupFromResult( result ).getData();
-
                     ListItemGroup itemGroup = ConvertItem.createListItemGroupFromResult( result );
                     listItemGroup = itemGroup;
-
+                    Log.e("request history by name", listItemList.get(0).getName());
                     getView().setItemAdapter(listItemList);
                     getView().onDismiss();
                 }
@@ -96,5 +97,29 @@ public class CustomerByNamePresenter extends BaseMvpPresenter<CustomerByNameInte
     public void onRestoreItemToAdapter(ListItemGroup itemGroup) {
         this.listItemList = itemGroup.getData();
         getView().setItemAdapter(listItemList);
+    }
+
+    @Override
+    public void checkHistory(List<AddHistoryBody.HistoryBody> items) {
+        getView().onLoad();
+        serviceManager.AddHistoryRequest(items, new ServiceManager.ServiceManagerCallback<AddHistoryResult>() {
+            @Override
+            public void onSuccess(AddHistoryResult result) {
+                //Log.e("Message", result.getMessage());
+                if (result.getStatus().equals(Config.SUCCESS)) {
+                    getView().onDismiss();
+                    getView().onSuccess();
+                } else if (result.getStatus().equals(Config.FAILED)) {
+                    getView().onDismiss();
+                    getView().onFail(result.getMessage());
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                //Log.e("Error", t.getMessage());
+                getView().onDismiss();
+                getView().onFail(t.getMessage());
+            }
+        });
     }
 }

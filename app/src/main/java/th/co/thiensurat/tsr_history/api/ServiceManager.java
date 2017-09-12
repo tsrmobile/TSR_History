@@ -64,6 +64,12 @@ public class ServiceManager {
                 .getHistory( value );
     }
 
+    public Call<ListItemResultGroup> requestHistoryCallByName(String value ){
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .getHistoryByName( value );
+    }
+
     public Call<AddHistoryResult> requestAddHistory( AddHistoryBody body ){
         return Service.newInstance( BASE_URL )
                 .getApi( api )
@@ -203,6 +209,7 @@ public class ServiceManager {
                 Log.e("requestHistory", response + "");
                 if( callback != null ){
                     if( historyChecker( response ) ){
+                        //Log.e("request history years", response.body().getMessage());
                         callback.onSuccess( response.body() );
                     }else{
                         callback.onFailure( new Throwable( "Response history invalid." ) );
@@ -219,6 +226,20 @@ public class ServiceManager {
                 }
             }
         } );
+    }
+
+    public void requestHistoryByName(String value, final ServiceManagerCallback<ListItemResultGroup> callback) {
+        requestHistoryCallByName( value ).enqueue(new Callback<ListItemResultGroup>() {
+            @Override
+            public void onResponse(Call<ListItemResultGroup> call, Response<ListItemResultGroup> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ListItemResultGroup> call, Throwable t) {
+
+            }
+        });
     }
 
     public void requestData(String key, String code, final ServiceManagerCallback<DataItemResultGroup> callback) {
@@ -257,7 +278,7 @@ public class ServiceManager {
                 Log.e("AddHistoryRequest", response + "");
                 if( callback != null ){
                     //Log.e("Add history", response.body().getData().get(0).getCustomerID());
-                    Log.e("Add history get MSG", response.body().getMessage());
+                    Log.e("Add history get msg", response.body().getMessage());
                     if( addHistoryResultChecker( response ) ){
                         callback.onSuccess( response.body() );
                         Log.e("Response", response.body().getStatus());
@@ -270,7 +291,7 @@ public class ServiceManager {
 
             @Override
             public void onFailure( Call<AddHistoryResult> call, Throwable t ){
-                //Log.e("AddHistoryRequest fail", t.getMessage());
+                Log.e("AddHistoryRequest fail", t.getMessage());
                 if( callback != null ){
                     callback.onFailure( t );
                 }
