@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.result.item.ListItem;
@@ -107,12 +107,12 @@ public class CustomerResultAdapter extends RecyclerView.Adapter<CustomerResultAd
         @Bind(R.id.payLastMonth) TextView lastMonth;
         @Bind(R.id.lastStatus) TextView laststatus;
         @Bind(R.id.idcard) TextView customerID;*/
-        @Bind(R.id.number) TextView contractNumber;
-        @Bind(R.id.datetime) TextView dateTime;
-        @Bind(R.id.name) TextView customerName;
-        @Bind(R.id.status) TextView statusCode;
-        @Bind(R.id.btn_send) LinearLayout btnSend;
-        @Bind(R.id.swipe) SwipeLayout swipeLayout;
+        @BindView(R.id.number) TextView contractNumber;
+        @BindView(R.id.datetime) TextView dateTime;
+        @BindView(R.id.name) TextView customerName;
+        @BindView(R.id.status) TextView statusCode;
+        @BindView(R.id.btn_send) LinearLayout btnSend;
+        @BindView(R.id.swipe) SwipeLayout swipeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

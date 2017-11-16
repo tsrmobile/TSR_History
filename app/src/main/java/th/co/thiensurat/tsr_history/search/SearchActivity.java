@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
@@ -30,11 +30,12 @@ import th.co.thiensurat.tsr_history.result_customer.CustomerByNameActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> implements SearchInterface.view{
 
-    private SweetAlertDialog sweetAlertDialog;
+    private CustomDialog dialog;
 
     public SearchActivity() {
         super();
@@ -50,11 +51,11 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
         return R.layout.activity_search;
     }
 
-    @Bind(R.id.inputSearch) EditText inputSearch;
-    @Bind(R.id.display_name) TextView displayName;
-    @Bind(R.id.button_sign_out) Button signOut;
-    @Bind(R.id.button_to_tsr) Button gotoTSR;
-    @Bind(R.id.button_search) ImageButton search;
+    @BindView(R.id.inputSearch) EditText inputSearch;
+    @BindView(R.id.display_name) TextView displayName;
+    @BindView(R.id.button_sign_out) Button signOut;
+    @BindView(R.id.button_to_tsr) Button gotoTSR;
+    @BindView(R.id.button_search) ImageButton search;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -66,6 +67,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
 
     @Override
     public void setupInstance() {
+        dialog = new CustomDialog(SearchActivity.this);
     }
 
     @Override
@@ -96,21 +98,16 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(inputSearch.getWindowToken(), 0);
                     if (!inputSearch.getText().toString().isEmpty()) {
-                        //getPresenter().goToResultCustomer(inputSearch.getText().toString());
                         search.performClick();
                         return true;
                     } else {
-                        alert();
+                        onFail(getResources().getString(R.string.dialog_msg_empty_error));
                         return false;
                     }
                 }
                 return false;
             }
         });
-    }
-
-    private void alert() {
-        AlertDialog.dialogSearchEmpty(SearchActivity.this);
     }
 
     @Override
@@ -175,8 +172,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
 
     @Override
     public void onFail(String failed) {
-        AlertDialog.dialogSearchFail(SearchActivity.this, failed);
-        AlertDialog.dialogDimiss();
+        dialog.dialogFail(failed);
     }
 
     private View.OnClickListener onSignOut() {
@@ -212,7 +208,7 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
                 if (!inputSearch.getText().toString().isEmpty()) {
                     getPresenter().goToResultCustomer(inputSearch.getText().toString());
                 } else {
-                    alert();
+                    onFail(getResources().getString(R.string.dialog_msg_empty_error));
                 }
             }
         };
@@ -228,9 +224,6 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
     }
 
     private void setSignOut() {
-        /*MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, false);
-        MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, "");
-        MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, 0);*/
         MyApplication.getInstance().getPrefManager().clear();
         startActivity(new Intent(getApplicationContext(), ChoiceActivity.class));
         finish();
@@ -238,26 +231,15 @@ public class SearchActivity extends BaseMvpActivity<SearchInterface.presenter> i
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(SearchActivity.this);
+        dialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        dialog.dialogDimiss();
     }
 
     private void dialogLog() {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_msg_not_installed));
-        sweetAlertDialog.showCancelButton(false);
-        sweetAlertDialog.setConfirmText("OK");
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.show();
+        dialog.dialogWarning(getResources().getString(R.string.dialog_msg_not_installed));
     }
 }

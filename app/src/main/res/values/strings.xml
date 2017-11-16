@@ -4,7 +4,7 @@
     <string name="authen_username">ชื่อผู้ใช้</string>
     <string name="authen_password">รหัสผ่าน</string>
 
-    <string name="search_hint">กรุณาใส่ชื่อนามสกุล หรือเลขบัตรประชาชนของลูกค้า</string>
+    <string name="search_hint">ใส่ชื่อนามสกุล/เลขบัตรประชาชนของลูกค้า</string>
 
     <string name="dialog_title_warning">คำเตือน</string>
     <string name="dialog_title_error">พบข้อผิดพลาด</string>

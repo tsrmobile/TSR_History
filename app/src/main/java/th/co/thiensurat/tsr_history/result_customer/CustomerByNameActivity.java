@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.api.request.AddHistoryBody;
@@ -49,11 +49,13 @@ import th.co.thiensurat.tsr_history.result.item.ListItemGroup;
 import th.co.thiensurat.tsr_history.result_customer.adapter.CustomerByNameAdapter;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterface.Presenter>
         implements CustomerByNameInterface.View, CustomerByNameAdapter.OnCustomerItemClickListener {
 
+    private CustomDialog dialog;
     private String customerName;
     private CustomerByNameAdapter adapter;
     private LinearLayoutManager layoutManager;
@@ -77,13 +79,13 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
         return R.layout.activity_customer_same_name;
     }
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.ctm_name) TextView textViewName;
-    @Bind(R.id.btn_save) Button buttonSave;
-    @Bind(R.id.btn_cancel) Button buttonCancel;
-    @Bind(R.id.recyclerview) RecyclerView recyclerView;
-    @Bind(R.id.layoutBottom) RelativeLayout relativeLayoutBottom;
-    @Bind(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.ctm_name) TextView textViewName;
+    @BindView(R.id.btn_save) Button buttonSave;
+    @BindView(R.id.btn_cancel) Button buttonCancel;
+    @BindView(R.id.recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.layoutBottom) RelativeLayout relativeLayoutBottom;
+    @BindView(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -91,6 +93,7 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
 
     @Override
     public void setupInstance() {
+        dialog = new CustomDialog(CustomerByNameActivity.this);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -150,22 +153,22 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(CustomerByNameActivity.this);
+        dialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        dialog.dialogDimiss();
     }
 
     @Override
     public void onSuccess() {
-        AlertDialog.dialogSaveSuccess(CustomerByNameActivity.this);
+        dialog.dialogSuccess(getResources().getString(R.string.dialog_msg_save_success));
     }
 
     @Override
     public void onFail(String fail) {
-        AlertDialog.dialogSaveFail(CustomerByNameActivity.this, fail);
+        dialog.dialogFail(fail);
     }
 
     @Override
@@ -209,7 +212,7 @@ public class CustomerByNameActivity extends BaseMvpActivity<CustomerByNameInterf
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Config.REQUEST_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                AlertDialog.dialogDenied(CustomerByNameActivity.this);
+                dialog.dialogWarning(getResources().getString(R.string.dialog_msg_permission));
             } else {
                 takeScreenshot();
             }

@@ -49,20 +49,17 @@ public class TsrAuthenPresenter extends BaseMvpPresenter<TsrAuthenInterface.View
         serviceManager.request(username, password, new ServiceManager.ServiceManagerCallback<TsrAuthenResult>() {
             @Override
             public void onSuccess(TsrAuthenResult result) {
-                Log.e("TSR Authen result", result.getDisplayname());
                 MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
                 MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, result.getAd_name());
-                //MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                 getView().onDismiss();
                 getView().goToSearchActivity();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                //Log.e("TSR Authen fail", t.getMessage());
                 MyApplication.getInstance().getPrefManager().clear();
                 getView().onDismiss();
-                getView().onFail(t.getMessage());
+                getView().onFail("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
             }
         });
     }

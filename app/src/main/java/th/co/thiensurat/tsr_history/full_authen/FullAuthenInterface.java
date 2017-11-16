@@ -16,14 +16,15 @@ public class FullAuthenInterface {
         void onLoad();
         void onDismiss();
         void onFail(String failed);
-        void onAuthen(List<AuthenItem> authenItems);
-        void onFullAuthen(List<AuthenItem> authenItems);
+        void onSuccess();
+        //void onAuthen(List<AuthenItem> authenItems);
+        //void onFullAuthen(List<AuthenItem> authenItems);
         void goToSearchActivity();
     }
 
     public interface presenter extends BaseMvpInterface.Presenter<FullAuthenInterface.view> {
         void requestLogin(final List<FullAuthenItem> fullAuthenItems);
-        void onLoginValidation(String deviceId);
+        //void onLoginValidation(String deviceId);
         void goToSearchActivity();
         String getError();
     }

@@ -67,17 +67,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingRight="8dp"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/background_edittext"
                     android:padding="2dp"
-                    android:layout_margin="8dp"
+                    android:layout_margin="6dp"
                     android:theme="@style/TextLabel">
 
                     <EditText
@@ -88,6 +89,7 @@
                         android:textColor="@color/DarkGray"
                         android:imeOptions="actionDone"
                         android:inputType="text|textNoSuggestions"
+                        android:textSize="14sp"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
 
@@ -108,11 +110,15 @@
 
             <Button
                 android:id="@+id/button_to_tsr"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:text="@string/open_tsr_mobile"
+                android:textSize="12sp"
                 android:textColor="@color/White"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"/>
 

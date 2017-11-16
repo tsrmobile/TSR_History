@@ -12,7 +12,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.result.adapter.CustomerResultAdapter;
@@ -57,8 +57,8 @@ public class CustomerByNameAdapter extends RecyclerView.Adapter<CustomerByNameAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.name) TextView textViewName;
-        @Bind(R.id.idcard) TextView idCard;
+        @BindView(R.id.name) TextView textViewName;
+        @BindView(R.id.idcard) TextView idCard;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

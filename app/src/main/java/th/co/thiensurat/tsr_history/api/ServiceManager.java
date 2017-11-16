@@ -76,11 +76,11 @@ public class ServiceManager {
                 .addHistory( body );
     }
 
-    public Call<AuthenItemResultGroup> requestAuthen( String value ) {
+    /*public Call<AuthenItemResultGroup> requestAuthen( String value ) {
         return Service.newInstance( BASE_URL )
                 .getApi( api )
                 .getAuthen( value );
-    }
+    }*/
 
     public Call<AuthenItemResultGroup> requestFullAuthen( FullAuthenBody body ) {
         return Service.newInstance( BASE_URL )
@@ -117,19 +117,16 @@ public class ServiceManager {
         tsrAuthenResultCall.enqueue(new Callback<TsrAuthenResult>() {
             @Override
             public void onResponse(Call<TsrAuthenResult> call, Response<TsrAuthenResult> response) {
-                Log.e("request TSR success", response + "");
-                if (response.code() == 200) {
-                    Log.e("request result", response.body().getDisplayname());
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onFailure( new Throwable( "response tsr authen invalid." ) );
+                Log.e("request TSR success", response.body() + "");
+                if( callback != null ) {
+                    callback.onSuccess( response.body() );
                 }
                 tsrAuthenResultCall = null;
             }
 
             @Override
             public void onFailure(Call<TsrAuthenResult> call, Throwable t) {
-                //Log.e("request TSR failure", t.getMessage());
+                Log.e("request TSR failure", t.getMessage());
                 if( callback != null ){
                     callback.onFailure( t );
                 }
@@ -154,20 +151,14 @@ public class ServiceManager {
             @Override
             public void onResponse(Call<AuthenItemResultGroup> call, Response<AuthenItemResultGroup> response) {
                 Log.e("requestFullAuthen", response + "");
-                if( callback != null ){
-                    if( fullAuthenChecker( response ) ){
-                        callback.onSuccess( response.body() );
-                        //Log.e("Response full authen", response.body().getStatus());
-                    }else{
-                        callback.onFailure( new Throwable( "response full authen invalid." ) );
-                    }
+                if( callback != null ) {
+                    callback.onSuccess( response.body() );
                 }
                 requestFullAuthenCall = null;
             }
 
             @Override
             public void onFailure(Call<AuthenItemResultGroup> call, Throwable t) {
-                Log.e("requestFullAuthen", t.getMessage() + "" + call);
                 if( callback != null ){
                     callback.onFailure( t );
                 }
@@ -176,18 +167,13 @@ public class ServiceManager {
         });
     }
 
-    public void requestAuthentication( String value, final ServiceManagerCallback<AuthenItemResultGroup> callback) {
+    /*public void requestAuthentication( String value, final ServiceManagerCallback<AuthenItemResultGroup> callback) {
         requestAuthen( value ).enqueue(new Callback<AuthenItemResultGroup>() {
             @Override
             public void onResponse(Call<AuthenItemResultGroup> call, Response<AuthenItemResultGroup> response) {
                 Log.e("requestAuthen", response + "");
-                if( callback != null ){
-                    if( authenChecker( response ) ){
-                        Log.e("Authentication", response.body().getMessage() + "");
-                        callback.onSuccess( response.body() );
-                    }else{
-                        callback.onFailure( new Throwable( "Response authen invalid." ) );
-                    }
+                if( callback != null ) {
+                    callback.onSuccess( response.body() );
                 }
             }
 
@@ -200,7 +186,7 @@ public class ServiceManager {
                 }
             }
         });
-    }
+    }*/
 
     public void requestHistory( String value, final ServiceManagerCallback<ListItemResultGroup> callback ){
         requestHistoryCall( value ).enqueue( new Callback<ListItemResultGroup>(){

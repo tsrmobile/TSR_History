@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
@@ -25,9 +25,11 @@ import th.co.thiensurat.tsr_history.full_authen.FullAuthenActivity;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 
 public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presenter> implements TsrAuthenInterface.View  {
 
+    private CustomDialog dialog;
     private List<FullAuthenItem> fullAuthenItemList = new ArrayList<FullAuthenItem>();
     @Override
     public TsrAuthenInterface.Presenter createPresenter() {
@@ -39,9 +41,9 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
         return R.layout.activity_tsr_authen;
     }
 
-    @Bind(R.id.user_name) EditText username;
-    @Bind(R.id.user_pwd) EditText userpassword;
-    @Bind(R.id.login) Button logIn;
+    @BindView(R.id.user_name) EditText username;
+    @BindView(R.id.user_pwd) EditText userpassword;
+    @BindView(R.id.login) Button logIn;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -50,7 +52,7 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
 
     @Override
     public void setupInstance() {
-
+        dialog = new CustomDialog(TsrAuthenActivity.this);
     }
 
     @Override
@@ -100,7 +102,8 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
         if (!username.getText().toString().isEmpty() & !userpassword.getText().toString().isEmpty()) {
             getPresenter().requestTSR(username.getText().toString(), userpassword.getText().toString());
         } else {
-            AlertDialog.dialogSearchEmpty(this);
+            //AlertDialog.dialogSearchEmpty(this);
+            dialog.dialogFail("กรุณาใส่ชื่อผู้ใช้และรหัสผ่านให้ถูกต้อง");
         }
     }
 
@@ -116,12 +119,14 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(TsrAuthenActivity.this);
+        //AlertDialog.dialogLoading(TsrAuthenActivity.this);
+        dialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        //AlertDialog.dialogDimiss();
+        dialog.dialogDimiss();
     }
 
     @Override
@@ -132,7 +137,8 @@ public class TsrAuthenActivity extends BaseMvpActivity<TsrAuthenInterface.Presen
 
     @Override
     public void onFail(String fail) {
-        AlertDialog.dialogSearchFail(TsrAuthenActivity.this, fail);
-        AlertDialog.dialogDimiss();
+        //AlertDialog.dialogSearchFail(TsrAuthenActivity.this, fail);
+        //AlertDialog.dialogDimiss();
+        dialog.dialogFail(fail);
     }
 }

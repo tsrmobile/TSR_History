@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.tsr_history.R;
@@ -39,11 +39,12 @@ import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
 import th.co.thiensurat.tsr_history.search.SearchActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.presenter> implements FullAuthenInterface.view {
 
-    private SweetAlertDialog sweetAlertDialog;
+    private CustomDialog customDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
     private List<FullAuthenItem> fullAuthenItemList = new ArrayList<FullAuthenItem>();
     @Override
@@ -60,11 +61,9 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         return R.layout.activity_full_authen;
     }
 
-    @Bind(R.id.user_name) EditText username;
-    @Bind(R.id.user_pwd) EditText userpassword;
-    @Bind(R.id.login) Button logIn;
-    @Bind(R.id.login_tsr) Button logInTSR;
-    //@Bind(R.id.textVersion) TextView textViewVersion;
+    @BindView(R.id.user_name) EditText username;
+    @BindView(R.id.user_pwd) EditText userpassword;
+    @BindView(R.id.login) Button logIn;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -72,6 +71,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
 
     @Override
     public void setupInstance() {
+        customDialog = new CustomDialog(FullAuthenActivity.this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
@@ -103,15 +103,11 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         });
 
         logIn.setOnClickListener( onLogin() );
-        logInTSR.setOnClickListener( onLogInTSR() );
-
-        //textViewVersion.setText("App v." + appVersion());
     }
 
     @Override
     public void initialize() {
         getDeviceID();
-        //loginSession();
         OnNetworkChecking();
     }
 
@@ -122,34 +118,31 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         } else {
             if (loginSession()) {
                 getPresenter().goToSearchActivity();
-            } else {
-                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
             }
-            /*if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
-            } else {
-                getPresenter().goToSearchActivity();
-            }*/
         }
     }
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(FullAuthenActivity.this);
+        customDialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        customDialog.dialogDimiss();
     }
 
     @Override
     public void onFail(String failed) {
-        AlertDialog.dialogSearchFail(FullAuthenActivity.this, failed);
-        AlertDialog.dialogDimiss();
+        customDialog.dialogFail(failed);
     }
 
     @Override
+    public void onSuccess() {
+        getPresenter().goToSearchActivity();
+    }
+
+    /*@Override
     public void onAuthen(List<AuthenItem> authenItems) {
         if (authenItems.isEmpty()) {
             if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
@@ -175,9 +168,9 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
                 getPresenter().goToSearchActivity();
             }
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onFullAuthen(List<AuthenItem> authenItems) {
         if (authenItems.isEmpty()) {
             if (checkPackageInstalled("th.co.thiensurat", getPackageManager())
@@ -191,15 +184,13 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             for (AuthenItem item : authenItems) {
                 MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
                 MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, item.getUsername());
-                //MyApplication.getInstance().getPrefManager().setPreferrenceTimeStamp(Config.KEY_SESSION, new Date().getTime());
                 getPresenter().goToSearchActivity();
             }
         }
-    }
+    }*/
 
     @Override
     public void goToSearchActivity() {
-        onDismiss();
         startActivityForResult(new Intent(FullAuthenActivity.this, SearchActivity.class), Config.REQUEST_SEARCH);
     }
 
@@ -212,9 +203,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
                     OnNetworkChecking();
                 }
                 break;
-            case Config.REQUEST_LOGIN :
-                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
-                break;
             case Config.REQUEST_SEARCH :
                 break;
             default: break;
@@ -225,21 +213,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_DEVICE_ID, Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
     }
 
-    private boolean checkPackageInstalled(String packagename, PackageManager packageManager) {
-        try {
-            packageManager.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
     private boolean loginSession() {
-        /*long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
-        int minutes = (int) ((loginTime / (1000*60)) % 60);
-        if (minutes > 360 || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-            MyApplication.getInstance().getPrefManager().clear();
-        }*/
         try {
             if (MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                 return true;
@@ -251,61 +225,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             return false;
         }
     }
-
-    private void dialogLoginConfirm() {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_login_msg));
-        sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
-        sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_login));
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("th.co.thiensurat");
-                startActivityForResult(launchIntent, Config.REQUEST_LOGIN);
-            }
-        });
-        sweetAlertDialog.show();
-    }
-
-    /*private void dialogUpdate() {
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setTitleText(getResources().getString(R.string.dialog_title_warning));
-        sweetAlertDialog.setContentText(getResources().getString(R.string.dialog_text_msg_update));
-        sweetAlertDialog.setCancelText(getResources().getString(R.string.dialog_button_cancel));
-        sweetAlertDialog.setConfirmText(getResources().getString(R.string.dialog_button_update));
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                finish();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-                try {
-                    PackageManager pm = getPackageManager();
-                    PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=" + packageInfo.packageName));
-                    startActivity(intent);
-                } catch (PackageManager.NameNotFoundException e) {
-                    Log.i("CheckAppVersion", e.getMessage());
-                }
-            }
-        });
-        sweetAlertDialog.show();
-    }*/
 
     public void detectWifiConnected(final String state) {
         this.runOnUiThread(new Runnable() {
@@ -325,7 +244,7 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
             public void onClick(View view) {
                 fullAuthenItemList.clear();
                 if (username.getText().toString().isEmpty() && userpassword.getText().toString().isEmpty()) {
-                    AlertDialog.dialogSearchEmpty(getApplicationContext());
+                    customDialog.dialogFail("กรุณาใส่ชื่อผู้ใช้และรหัสผ่านให้ถูกต้อง");
                 } else {
                     FullAuthenItem item = new FullAuthenItem();
                     item.setUsername(username.getText().toString());
@@ -333,15 +252,6 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
                     fullAuthenItemList.add(item);
                     getPresenter().requestLogin(fullAuthenItemList);
                 }
-            }
-        };
-    }
-
-    private View.OnClickListener onLogInTSR() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
             }
         };
     }
@@ -355,49 +265,4 @@ public class FullAuthenActivity extends BaseMvpActivity<FullAuthenInterface.pres
         }
         return false;
     }
-
-     /*private String appVersion() {
-        try {
-            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-   private void checkAppVersion() {
-        AlertDialog.dialogLoading(this);
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            PackageManager pm = getPackageManager();
-            PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-            String curVersion = packageInfo.versionName;
-            String newVersion = curVersion;
-            newVersion = Jsoup.connect(ApiURL.URL_APP_VERSION + "?id=" + packageInfo.packageName)
-                    .timeout(3000)
-                    .get()
-                    .select("div[itemprop=softwareVersion]")
-                    .first()
-                    .ownText();
-            if (!curVersion.equals(newVersion)) {
-                AlertDialog.dialogDimiss();
-                dialogUpdate();
-            } else {
-                AlertDialog.dialogDimiss();
-                if (!MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-                    getPresenter().onLoginValidation(MyApplication.getInstance().getPrefManager().getPreferrence(Config.KEY_DEVICE_ID));
-                } else {
-                    getPresenter().goToSearchActivity();
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("CheckAppVersion", e.getMessage());
-            AlertDialog.dialogDimiss();
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertDialog.dialogDimiss();
-        }
-    }*/
 }

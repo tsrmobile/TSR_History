@@ -36,7 +36,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.http.Body;
 import th.co.thiensurat.tsr_history.R;
@@ -48,6 +48,7 @@ import th.co.thiensurat.tsr_history.send_data.item.DataItem;
 import th.co.thiensurat.tsr_history.send_data.item.DataItemGroup;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.GPSTracker;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
@@ -55,6 +56,8 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         implements SendDataInterface.View, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+
+    private CustomDialog dialog;
 
     private String coutno, name;
     private String province = "";
@@ -87,33 +90,61 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
         return R.layout.activity_send_data;
     }
 
-    @Bind(R.id.count_no) EditText countNo;
-    @Bind(R.id.addr_number) EditText addrNumber;
-    @Bind(R.id.addr_moo) EditText addrMoo;
-    @Bind(R.id.addr_soi) EditText addrSoi;
-    @Bind(R.id.addr_road) EditText addrRoad;
-    @Bind(R.id.addr_village) EditText addrVillage;
-    @Bind(R.id.addr_building) EditText addrBuilding;
-    @Bind(R.id.addr_province) Spinner spinnerProvince;
-    @Bind(R.id.addr_district) Spinner spinnerDistrict;
-    @Bind(R.id.addr_sub_district) Spinner spinnerSubDistrict;
-    @Bind(R.id.addr_zipcode) EditText addrZip;
-    @Bind(R.id.addr_phone) EditText addrPhone;
-    @Bind(R.id.addr_work_phone) EditText addrWorkPhone;
-    @Bind(R.id.addr_mobile) EditText addrMobile;
-    @Bind(R.id.addr_email) EditText addrEmail;
-    @Bind(R.id.description) EditText edtDescription;
-    @Bind(R.id.layout_desc) TextInputLayout descLayout;
-    @Bind(R.id.button_send) Button buttonSend;
-    @Bind(R.id.button_back) Button buttonBack;
-    @Bind(R.id.customer_name) EditText customerName;
-    @Bind(R.id.have_product) RadioButton radioButtonHave;
-    @Bind(R.id.no_product) RadioButton radioButtonNo;
-    @Bind(R.id.radio_group) RadioGroup radioGroup;
-    @Bind(R.id.condition_1) CheckBox checkBoxCondition1;
-    @Bind(R.id.condition_2) CheckBox checkBoxCondition2;
-    @Bind(R.id.condition_3) CheckBox checkBoxCondition3;
-    @Bind(R.id.condition_4) CheckBox checkBoxCondition4;
+    @BindView(R.id.count_no)
+    EditText countNo;
+    @BindView(R.id.addr_number)
+    EditText addrNumber;
+    @BindView(R.id.addr_moo)
+    EditText addrMoo;
+    @BindView(R.id.addr_soi)
+    EditText addrSoi;
+    @BindView(R.id.addr_road)
+    EditText addrRoad;
+    @BindView(R.id.addr_village)
+    EditText addrVillage;
+    @BindView(R.id.addr_building)
+    EditText addrBuilding;
+    @BindView(R.id.addr_province)
+    Spinner spinnerProvince;
+    @BindView(R.id.addr_district)
+    Spinner spinnerDistrict;
+    @BindView(R.id.addr_sub_district)
+    Spinner spinnerSubDistrict;
+    @BindView(R.id.addr_zipcode)
+    EditText addrZip;
+    @BindView(R.id.addr_phone)
+    EditText addrPhone;
+    @BindView(R.id.addr_work_phone)
+    EditText addrWorkPhone;
+    @BindView(R.id.addr_mobile)
+    EditText addrMobile;
+    @BindView(R.id.addr_email)
+    EditText addrEmail;
+    @BindView(R.id.description)
+    EditText edtDescription;
+    @BindView(R.id.layout_desc)
+    TextInputLayout descLayout;
+    @BindView(R.id.button_send)
+    Button buttonSend;
+    @BindView(R.id.button_back)
+    Button buttonBack;
+    @BindView(R.id.customer_name)
+    EditText customerName;
+    @BindView(R.id.have_product)
+    RadioButton radioButtonHave;
+    @BindView(R.id.no_product)
+    RadioButton radioButtonNo;
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+    @BindView(R.id.condition_1)
+    CheckBox checkBoxCondition1;
+    @BindView(R.id.condition_2)
+    CheckBox checkBoxCondition2;
+    @BindView(R.id.condition_3)
+    CheckBox checkBoxCondition3;
+    @BindView(R.id.condition_4)
+    CheckBox checkBoxCondition4;
+
     //@Bind(R.id.radio_group_condition) RadioGroup radioGroupCondition;
     @Override
     public void bindView() {
@@ -152,6 +183,7 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
 
     @Override
     public void setupInstance() {
+        dialog = new CustomDialog(SendDataActivity.this);
         gpsTracker = new GPSTracker(SendDataActivity.this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -241,23 +273,23 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(SendDataActivity.this);
+        dialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        dialog.dialogDimiss();
     }
 
     @Override
     public void onSuccess() {
-        AlertDialog.dialogSaveSuccess(SendDataActivity.this);
+        dialog.dialogSuccess(getResources().getString(R.string.dialog_msg_save_success));
         clearText();
     }
 
     @Override
     public void onFail(String fail) {
-        AlertDialog.dialogSaveFail(SendDataActivity.this, fail);
+        dialog.dialogFail(fail);
     }
 
     @Override
@@ -406,6 +438,16 @@ public class SendDataActivity extends BaseMvpActivity<SendDataInterface.Presente
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location == null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

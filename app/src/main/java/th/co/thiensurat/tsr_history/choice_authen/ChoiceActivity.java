@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
 
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import th.co.thiensurat.tsr_history.R;
 import th.co.thiensurat.tsr_history.base.BaseMvpActivity;
@@ -27,9 +27,12 @@ import th.co.thiensurat.tsr_history.tsr_full_authen.TsrAuthenActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> implements ChoiceInterface.View {
+
+    private CustomDialog customDialog;
 
     @Override
     public ChoiceInterface.Presenter createPresenter() {
@@ -41,9 +44,9 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
         return R.layout.activity_choice;
     }
 
-    @Bind(R.id.textVersion) TextView textViewVersion;
-    @Bind(R.id.tsr_button) LinearLayout tsrButton;
-    @Bind(R.id.bighead_button) LinearLayout bigheadButton;
+    @BindView(R.id.textVersion) TextView textViewVersion;
+    @BindView(R.id.tsr_button) LinearLayout tsrButton;
+    @BindView(R.id.bighead_button) LinearLayout bigheadButton;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -52,7 +55,7 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
 
     @Override
     public void setupInstance() {
-
+        customDialog = new CustomDialog(ChoiceActivity.this);
     }
 
     @Override
@@ -110,15 +113,6 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
     }
 
     private boolean loginSession() {
-        /*long loginTime = new Date().getTime() - MyApplication.getInstance().getPrefManager().getPreferrenceTimeStamp(Config.KEY_SESSION);
-        int minutes = (int) ((loginTime / (1000*60)) % 60);
-        if (minutes > 360 || !MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
-            MyApplication.getInstance().getPrefManager().clear();
-        } else {
-            startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-            finish();
-        }
-        Log.e("Timestamp", minutes + ", "+ loginTime);*/
         try {
             if (MyApplication.getInstance().getPrefManager().getPreferrenceBoolean(Config.KEY_BOOLEAN)) {
                 return true;
@@ -132,7 +126,8 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
     }
 
     private void updateApp() {
-        AlertDialog.dialogLoading(ChoiceActivity.this);
+        //AlertDialog.dialogLoading(ChoiceActivity.this);
+        customDialog.dialogLoading();
         AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this)
                 .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
                 .withListener(new AppUpdaterUtils.UpdateListener() {
@@ -143,10 +138,12 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
                         Log.e("Release notes", update.getReleaseNotes());
                         //Log.d("URL", update.getUrlToDownload());
                         Log.e("Is update available?", Boolean.toString(isUpdateAvailable));
-                        AlertDialog.dialogDimiss();
+                        //AlertDialog.dialogDimiss();
+                        customDialog.dialogDimiss();
                         if (isUpdateAvailable) {
                             MyApplication.getInstance().getPrefManager().clear();
-                            AlertDialog.dialogAlertUpdate(ChoiceActivity.this, getApplicationContext().getPackageName());
+                            customDialog.dialogAppUpdate(getApplicationContext().getPackageName());
+                            //AlertDialog.dialogAlertUpdate(ChoiceActivity.this, getApplicationContext().getPackageName());
                         } else {
                             if (loginSession()) {
                                 startActivity(new Intent(getApplicationContext(), SearchActivity.class));
@@ -157,7 +154,8 @@ public class ChoiceActivity extends BaseMvpActivity<ChoiceInterface.Presenter> i
 
                     @Override
                     public void onFailed(AppUpdaterError error) {
-                        AlertDialog.dialogDimiss();
+                        //AlertDialog.dialogDimiss();
+                        customDialog.dialogDimiss();
                         Log.d("AppUpdater Error", "Something went wrong");
                     }
                 });

@@ -12,6 +12,10 @@ public class AuthenItemResultGroup {
     private String message;
     private List<AuthenItemResult> data;
 
+    public AuthenItemResultGroup() {
+
+    }
+
     public String getStatus() {
         return status;
     }

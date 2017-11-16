@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SweetAlert/SweetAlert.iml" filepath="$PROJECT_DIR$/SweetAlert/SweetAlert.iml" />
       <module fileurl="file://$PROJECT_DIR$/SwipeLayout/SwipeLayout.iml" filepath="$PROJECT_DIR$/SwipeLayout/SwipeLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/TSR_History.iml" filepath="$PROJECT_DIR$/TSR_History.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

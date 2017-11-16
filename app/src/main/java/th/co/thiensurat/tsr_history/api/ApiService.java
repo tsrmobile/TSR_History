@@ -20,10 +20,9 @@ import th.co.thiensurat.tsr_history.api.result.AddHistoryResult;
 import th.co.thiensurat.tsr_history.api.result.TsrAuthenResult;
 import th.co.thiensurat.tsr_history.utils.Config;
 
-import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTHEN_TSR;
+import static th.co.thiensurat.tsr_history.api.ApiURL.URL_AUTH_V2;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_DATA;
-import static th.co.thiensurat.tsr_history.api.ApiURL.URL_FULL_AUTH;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_HISTORY_BY_NAME;
 import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE;
@@ -36,11 +35,11 @@ import static th.co.thiensurat.tsr_history.api.ApiURL.URL_SAVE_LOG;
 
 public interface ApiService {
 
-    @POST ( URL_FULL_AUTH )
+    @POST ( URL_AUTH_V2 )
     Call<AuthenItemResultGroup> getFullAuthen(@Body FullAuthenBody body);
 
-    @GET( URL_AUTH )
-    Call<AuthenItemResultGroup> getAuthen(@Query( "device" ) String value);
+    /*@GET( URL_AUTH_V2 )
+    Call<AuthenItemResultGroup> getAuthen(@Query( "device" ) String value);*/
 
     @GET( URL_HISTORY )
     Call<ListItemResultGroup> getHistory(@Query( "search" ) String value );

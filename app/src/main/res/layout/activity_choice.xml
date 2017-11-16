@@ -28,18 +28,19 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"/>
+                android:layout_height="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/bighead_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_margin="16dp"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -55,23 +56,20 @@
                         app:civ_border_overlay="true"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="BigHead"
+                        android:gravity="center"
+                        android:text="ล็อกอินด้วย Username Password ที่ใช้กับแอพฯ TSR Mobile"
                         android:textColor="@color/White"
-                        android:textSize="22sp"
                         android:layout_margin="4dp"/>
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent" />
-
                 <LinearLayout
                     android:id="@+id/tsr_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_margin="16dp"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -87,11 +85,11 @@
                         app:civ_border_overlay="true"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TSR"
+                        android:gravity="center"
+                        android:text="ล็อกอินด้วย Username Password ที่ใช้คอมฯ บริษัทฯ"
                         android:textColor="@color/White"
-                        android:textSize="22sp"
                         android:layout_margin="4dp"/>
 
                 </LinearLayout>

@@ -1,1 +1,1 @@
-include ':app', ':SwipeLayout'
+include ':app', ':SwipeLayout', ':SweetAlert'

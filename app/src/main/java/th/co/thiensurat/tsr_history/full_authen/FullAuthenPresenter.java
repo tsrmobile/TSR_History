@@ -13,6 +13,8 @@ import th.co.thiensurat.tsr_history.api.result.AuthenItemResultGroup;
 import th.co.thiensurat.tsr_history.api.result.FullAuthenItem;
 import th.co.thiensurat.tsr_history.base.BaseMvpPresenter;
 import th.co.thiensurat.tsr_history.full_authen.item.AuthenItem;
+import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 /**
  * Created by teerayut.k on 7/25/2017.
@@ -51,7 +53,7 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
         serviceManager.requestFullAuthentication(fullAuthenItems, new ServiceManager.ServiceManagerCallback<AuthenItemResultGroup>() {
             @Override
             public void onSuccess(AuthenItemResultGroup result) {
-                authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
+                /*authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
                 if (!authenItems.isEmpty()) {
                     getView().onDismiss();
                     getView().onFullAuthen(authenItems);
@@ -60,49 +62,57 @@ public class FullAuthenPresenter extends BaseMvpPresenter<FullAuthenInterface.vi
                     Log.e("onSuccess full authen", authenItems.size() + "");
                     getView().onDismiss();
                     getView().onFullAuthen(authenItems);
+                }*/
+                if (result.getStatus().equals("SUCCESS")) {
+                    getView().onDismiss();
+                    authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
+                    MyApplication.getInstance().getPrefManager().setPreferrenceBoolean(Config.KEY_BOOLEAN, true);
+                    MyApplication.getInstance().getPrefManager().setPreferrence(Config.KEY_USERNAME, authenItems.get(0).getUsername());
+                    getView().onSuccess();
+                } else if (result.getStatus().equals("FAIL")) {
+                    getView().onDismiss();
+                    getView().onFail(result.getMessage());
+                } else if (result.getStatus().equals("ERROR")) {
+                    getView().onDismiss();
+                    getView().onFail(result.getMessage());
                 }
             }
             @Override
             public void onFailure(Throwable t) {
-                Log.e("Full authen onFail", t.getMessage());
                 getView().onDismiss();
-                getView().onFail(t.getLocalizedMessage());
-                setError(t.getMessage());
             }
         });
     }
 
-    @Override
+    /*@Override
     public void onLoginValidation(String deviceId) {
         getView().onLoad();
         serviceManager.requestAuthentication(deviceId, new ServiceManager.ServiceManagerCallback<AuthenItemResultGroup>() {
             @Override
             public void onSuccess(AuthenItemResultGroup result) {
-                authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
-                if (!authenItems.isEmpty()) {
-                    Log.e("onSuccess", authenItems.get(0).getLoggedin() + "");
+                if (result.getStatus().equals("SUCCESS")) {
                     getView().onDismiss();
+                    authenItems = ConvertItem.createListAuthenGroupFromResult( result ).getData();
                     getView().onAuthen(authenItems);
-                } else {
-                    Log.e("onSuccess", authenItems.size() + "");
+                } else if (result.getStatus().equals("FAIL")) {
                     getView().onDismiss();
-                    getView().onAuthen(authenItems);
+                    //getView().onFail(result.getMessage());
+                } else if (result.getStatus().equals("ERROR")) {
+                    getView().onDismiss();
+                    //getView().onFail(result.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("validate authen onFail", t.getMessage());
                 getView().onDismiss();
-                getView().onFail(t.getLocalizedMessage());
-                setError(t.getMessage());
             }
         });
-    }
+    }*/
 
     @Override
     public void goToSearchActivity() {
-        getView().onLoad();
+        //getView().onLoad();
         getView().goToSearchActivity();
     }
 

@@ -6,8 +6,12 @@ package th.co.thiensurat.tsr_history.api.result;
 
 public class AuthenItemResult {
 
-    private int loggedin;
     private String username;
+    private int loggedin;
+
+    private AuthenItemResult() {
+
+    }
 
     public int getLoggedin() {
         return loggedin;

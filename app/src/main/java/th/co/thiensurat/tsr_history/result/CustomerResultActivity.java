@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 import retrofit2.http.Body;
@@ -61,11 +61,13 @@ import th.co.thiensurat.tsr_history.send_data.SendDataActivity;
 import th.co.thiensurat.tsr_history.utils.AlertDialog;
 import th.co.thiensurat.tsr_history.utils.AnimateButton;
 import th.co.thiensurat.tsr_history.utils.Config;
+import th.co.thiensurat.tsr_history.utils.CustomDialog;
 import th.co.thiensurat.tsr_history.utils.MyApplication;
 
 public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterface.presenter>
         implements CustomerResultInterface.view, CustomerResultAdapter.ClickListener{
 
+    private CustomDialog customDialog;
     private String data;
     private Dialog dialog;
     private String classValue;
@@ -96,15 +98,15 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         return R.layout.activity_customer_result;
     }
 
-    @Bind(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
-    @Bind(R.id.recyclerview) RecyclerView recyclerView;
-    @Bind(R.id.totalSummary) TextView textViewTotal;
-    @Bind(R.id.btn_save) Button save;
-    @Bind(R.id.btn_cancel) Button cancel;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.idcard_number) TextView idcardNumber;
-    @Bind(R.id.rootView) RelativeLayout relativeLayout;
-    @Bind(R.id.button_send) Button buttonSend;
+    @BindView(R.id.container_service_unavailable) FrameLayout containerServiceUnvailable;
+    @BindView(R.id.recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.totalSummary) TextView textViewTotal;
+    @BindView(R.id.btn_save) Button save;
+    @BindView(R.id.btn_cancel) Button cancel;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.idcard_number) TextView idcardNumber;
+    @BindView(R.id.rootView) RelativeLayout relativeLayout;
+    @BindView(R.id.button_send) Button buttonSend;
     @Override
     public void bindView() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -116,14 +118,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void setupInstance() {
-        getDataFromIntent();
-        getPresenter().requestItem();
-        //getPresenter().requestItem();
-        /*if (classValue.equals("CustomerByNameActivity")) {
-
-        } else {
-            getPresenter().requestItem();
-        }*/
+        customDialog = new CustomDialog(CustomerResultActivity.this);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -138,6 +133,8 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void initialize() {
+        getDataFromIntent();
+        getPresenter().requestItem();
     }
 
     @Override
@@ -163,7 +160,7 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Config.REQUEST_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                AlertDialog.dialogDenied(CustomerResultActivity.this);
+                customDialog.dialogWarning(getResources().getString(R.string.dialog_msg_permission));
             } else {
                 takeScreenshot();
             }
@@ -177,7 +174,6 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     private void getDataFromIntent() {
         data = getIntent().getStringExtra(Config.KEY_DATA);
-        //classValue = getIntent().getStringExtra(Config.KEY_CLASS);
     }
 
     @Override
@@ -200,7 +196,9 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         textViewTotal.setText(String.valueOf(listItemList.size()));
-        AlertDialog.dialogDimiss();
+
+        onDismiss();
+
         idcardNumber.setText(getResources().getString(R.string.text_idcard_title) + ": " + listItems.get(0).getIdcard());
         adapter.setClickListener(this);
         if (listItems.get(0).getCustomerStatus().equals("R")) {
@@ -226,22 +224,22 @@ public class CustomerResultActivity extends BaseMvpActivity<CustomerResultInterf
 
     @Override
     public void onLoad() {
-        AlertDialog.dialogLoading(CustomerResultActivity.this);
+        customDialog.dialogLoading();
     }
 
     @Override
     public void onDismiss() {
-        AlertDialog.dialogDimiss();
+        customDialog.dialogDimiss();
     }
 
     @Override
     public void onSuccess() {
-        AlertDialog.dialogSaveSuccess(CustomerResultActivity.this);
+        customDialog.dialogSuccess(getResources().getString(R.string.dialog_msg_save_success));
     }
 
     @Override
     public void onFail(String fail) {
-        AlertDialog.dialogSaveFail(CustomerResultActivity.this, fail);
+        customDialog.dialogFail(fail);
     }
 
     private View.OnClickListener onSaveData() {
